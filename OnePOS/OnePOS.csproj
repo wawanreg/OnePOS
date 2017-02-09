@@ -159,26 +159,84 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="FunctionController\DashboardFunction.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702061114048_Initial.cs" />
+    <Compile Include="Migrations\201702061114048_Initial.Designer.cs">
+      <DependentUpon>201702061114048_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Dashboard\VendorViewModels.cs" />
+    <Compile Include="Models\Dashboard\ManufacturerViewModels.cs" />
+    <Compile Include="Models\Dashboard\BrandViewModels.cs" />
+    <Compile Include="Models\Dashboard\ItemViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\css\sb-admin-2.css" />
+    <Content Include="Assets\css\sb-admin-2.min.css" />
+    <Content Include="Assets\font-awesome\css\font-awesome.css" />
+    <Content Include="Assets\font-awesome\css\font-awesome.min.css" />
+    <Content Include="Assets\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Assets\js\metisMenu.js" />
+    <Content Include="Assets\js\sb-admin-2.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Assets\css\metisMenu.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Assets\font-awesome\css\font-awesome.css.map" />
+    <Content Include="Assets\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="Assets\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Assets\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="Assets\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Assets\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Assets\font-awesome\less\animated.less" />
+    <Content Include="Assets\font-awesome\less\bordered-pulled.less" />
+    <Content Include="Assets\font-awesome\less\core.less" />
+    <Content Include="Assets\font-awesome\less\extras.less" />
+    <Content Include="Assets\font-awesome\less\fixed-width.less" />
+    <Content Include="Assets\font-awesome\less\font-awesome.less" />
+    <Content Include="Assets\font-awesome\less\icons.less" />
+    <Content Include="Assets\font-awesome\less\larger.less" />
+    <Content Include="Assets\font-awesome\less\list.less" />
+    <Content Include="Assets\font-awesome\less\mixins.less" />
+    <Content Include="Assets\font-awesome\less\path.less" />
+    <Content Include="Assets\font-awesome\less\rotated-flipped.less" />
+    <Content Include="Assets\font-awesome\less\screen-reader.less" />
+    <Content Include="Assets\font-awesome\less\spinning.less" />
+    <Content Include="Assets\font-awesome\less\stacked.less" />
+    <Content Include="Assets\font-awesome\less\variables.less" />
+    <Content Include="Assets\font-awesome\scss\font-awesome.scss" />
+    <Content Include="Assets\font-awesome\scss\_animated.scss" />
+    <Content Include="Assets\font-awesome\scss\_bordered-pulled.scss" />
+    <Content Include="Assets\font-awesome\scss\_core.scss" />
+    <Content Include="Assets\font-awesome\scss\_extras.scss" />
+    <Content Include="Assets\font-awesome\scss\_fixed-width.scss" />
+    <Content Include="Assets\font-awesome\scss\_icons.scss" />
+    <Content Include="Assets\font-awesome\scss\_larger.scss" />
+    <Content Include="Assets\font-awesome\scss\_list.scss" />
+    <Content Include="Assets\font-awesome\scss\_mixins.scss" />
+    <Content Include="Assets\font-awesome\scss\_path.scss" />
+    <Content Include="Assets\font-awesome\scss\_rotated-flipped.scss" />
+    <Content Include="Assets\font-awesome\scss\_screen-reader.scss" />
+    <Content Include="Assets\font-awesome\scss\_spinning.scss" />
+    <Content Include="Assets\font-awesome\scss\_stacked.scss" />
+    <Content Include="Assets\font-awesome\scss\_variables.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -226,6 +284,11 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_LayoutForLogin.cshtml" />
+    <Content Include="Views\Dashboard\DashboardHome.cshtml" />
+    <Content Include="Views\Shared\_LayoutForDashboard.cshtml" />
+    <Content Include="Views\Dashboard\DashboardListItems.cshtml" />
+    <Content Include="Views\Dashboard\DashboardAddItems.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -236,6 +299,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201702061114048_Initial.resx">
+      <DependentUpon>201702061114048_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

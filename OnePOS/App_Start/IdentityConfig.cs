@@ -88,6 +88,79 @@ namespace OnePOS
         }
     }
 
+    // Configure the RoleManager used in the application. RoleManager is defined in the ASP.NET Identity core assembly
+    public class ApplicationRoleManager : RoleManager<ApplicationRole>
+    {
+        public ApplicationRoleManager(
+        IRoleStore<ApplicationRole, string> roleStore)
+            : base(roleStore)
+        {
+        }
+        public static ApplicationRoleManager Create(
+            IdentityFactoryOptions<ApplicationRoleManager> options, IOwinContext context)
+        {
+            return new ApplicationRoleManager(
+                new RoleStore<ApplicationRole>(context.Get<ApplicationDbContext>()));
+        }
+    }
+
+    //// This is useful if you do not want to tear down the database each time you run the application.
+    //// public class ApplicationDbInitializer : DropCreateDatabaseAlways<ApplicationDbContext>
+    //// This example shows you how to create a new database if the Model changes
+    public class ApplicationDbInitializer : DropCreateDatabaseIfModelChanges<ApplicationDbContext>
+    {//Create User=Admin@Admin.com with password=Admin@123456 in the Admin role     
+        protected override void Seed(ApplicationDbContext context)
+        {
+            InitializeIdentityForEF(context);
+            base.Seed(context);
+        }
+        public static void InitializeIdentityForEF(ApplicationDbContext db)
+        {
+            var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var roleManager = HttpContext.Current.GetOwinContext().Get<ApplicationRoleManager>();
+            const string name = "admin@example.com";
+            const string password = "Admin@123456";
+            const string fullname = "EdyGunawan";
+            const string phonenumber = "081977937885";
+
+            string[] roleName = new string[] { "Admin", "Store Manager", "Cashier", "Super Admin" };
+            //Create Role Admin if it does not exist
+
+            for (var i = 0; i < roleName.Length; i++)
+            {
+                var role = roleManager.FindByName(roleName[i]);
+                if (role == null)
+                {
+                    role = new ApplicationRole(roleName[i]);
+                    var roleresult = roleManager.Create(role);
+                }
+            }
+
+            var user = userManager.FindByName(name);
+            if (user == null)
+            {
+                user = new ApplicationUser { UserName = name, Email = name, FullName = fullname, PhoneNumber = phonenumber };
+                var result = userManager.Create(user, password);
+                user.CreatedBy = name;
+                user.CreatedDate = DateTime.UtcNow;
+                user.UpdatedBy = name;
+                user.UpdatedDate = user.CreatedDate;
+
+                user.EmailConfirmed = true;
+                result = userManager.SetLockoutEnabled(user.Id, false);
+            }
+
+            // Add user admin to Role Admin if not already added
+            var rolesForUser = userManager.GetRoles(user.Id);
+            if (!rolesForUser.Contains("Super Admin"))
+            {
+                var result = userManager.AddToRole(user.Id, "Super Admin");
+            }
+
+        }
+    }
+
+
     // Configure the application sign-in manager which is used in this application.
     public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
     {

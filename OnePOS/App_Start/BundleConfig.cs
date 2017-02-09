@@ -25,7 +25,10 @@ namespace OnePOS
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      //"~/Content/site.css",
+                      "~/Assets/css/metisMenu.css",
+                      "~/Assets/css/sb-admin-2.css",
+                      "~/Assets/font-awesome/css/font-awesome.min.css"));
         }
     }
 }
