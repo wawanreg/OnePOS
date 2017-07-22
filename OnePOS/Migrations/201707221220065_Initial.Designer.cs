@@ -13,7 +13,7 @@ namespace OnePOS.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201702061114048_Initial"; }
+            get { return "201707221220065_Initial"; }
         }
         
         string IMigrationMetadata.Source

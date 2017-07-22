@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
-namespace OnePOS.Models.Dashboard
+namespace OnePOS.Models.Dashboard.Vendors
 {
     public class VendorViewModels
     {
-        public string VendorId { get; set; }
+        [Key]
+        public int VendorId { get; set; }
+        public string VendorUniqueId { get; set; }
         public string VendorName { get; set; }
         public string VendorAddress { get; set; }
         public string VendorPhone { get; set; }

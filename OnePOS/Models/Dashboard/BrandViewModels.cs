@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
@@ -8,7 +9,9 @@ namespace OnePOS.Models.Dashboard
 {
     public class BrandViewModels
     {
-        public string BrandId { get; set; }
+        [Key]
+        public int BrandId { get; set; }
+        public string BrandUniqueId { get; set; }
         public string BrandName { get; set; }
         public string BrandDescription { get; set; }
         public bool Active { get; set; }

@@ -5,6 +5,9 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using OnePOS.Models.Dashboard;
+using OnePOS.Models.Dashboard.Items;
+using OnePOS.Models.Dashboard.Vendors;
 
 namespace OnePOS.Models
 {
@@ -50,16 +53,41 @@ namespace OnePOS.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Migrations.Configuration>("DefaultConnection"));
             // Set the database intializer which is run once during application start
             // This seeds the database with admin user credentials and admin role
             //Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Migrations.Configuration>("DbControl"));
             //Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            //Create The Table
+            modelBuilder.Entity<VendorViewModels>().ToTable(("Vendor"));
+            modelBuilder.Entity<ItemViewModels>().ToTable(("Item"));
+            modelBuilder.Entity<BrandViewModels>().ToTable(("Brand"));
+            modelBuilder.Entity<ManufacturerViewModels>().ToTable(("Manufacturer"));
+
+        }
+
+        static ApplicationDbContext()
+        {
+            // Set the database intializer which is run once during application start
+            // This seeds the database with admin user credentials and admin role
+            Database.SetInitializer<ApplicationDbContext>(new ApplicationDbInitializer());
+        }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
+
+        public DbSet<VendorViewModels> Vendor { get; set; }
+        public DbSet<ItemViewModels> Item { get; set; }
+        public DbSet<BrandViewModels> Brand { get; set; }
+        public DbSet<ManufacturerViewModels> Manufacturer { get; set; }
+
     }
 
     public class ApplicationRole : IdentityRole

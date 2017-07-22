@@ -15,6 +15,7 @@ namespace OnePOS.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 

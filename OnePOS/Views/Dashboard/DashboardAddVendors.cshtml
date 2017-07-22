@@ -1,0 +1,95 @@
+﻿@model OnePOS.Models.Dashboard.Vendors.AddVendorViewModels
+
+@{
+    ViewBag.Title = "DashboardAddVendors";
+    Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
+}
+
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Add Vendors</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+
+
+        <div class="row">
+            <div class="add-vendors-section">
+                @using (Html.BeginForm("DashboardAddVendors", "Dashboard", FormMethod.Post, new { @id = "AddVendorsPost", @class = "form-horizontal", role = "form" }))
+                {
+                    <div class="form-section add-vendors-manual section-header">
+                        @Html.HiddenFor(m => m.VendorName, new { @id = "VendorName" })
+                        @Html.HiddenFor(m => m.VendorAddress, new { @id = "VendorAddress" })
+                        @Html.HiddenFor(m => m.VendorPhone, new { @id = "VendorPhone" })
+                        @Html.HiddenFor(m => m.VendorEmail, new { @id = "VendorEmail" })
+                        @Html.HiddenFor(m => m.VendorOwner, new { @id = "VendorOwner" })
+
+                        <div class="vendors-group-list">
+                            <div class="panel panel-default vendors-form-container">
+                                <div class="panel-body vendors-group-form">
+                                    <div class="form-group">
+                                        <i class="fa fa-times close-vendor-button" aria-hidden="true"></i>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-6 vendor-name">
+                                            <label class="control-label">Vendor Name</label>
+                                            <input class="form-control" />
+                                        </div>
+                                        <div class="col-sm-3 vendor-phone">
+                                            <label class="control-label">Vendor Phone</label>
+                                            <input class="form-control" />
+                                        </div>
+                                        <div class="col-sm-3 vendor-owner">
+                                            <label class="control-label">Vendor Owner</label>
+                                            <input class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-6 vendor-address">
+                                            <label class="control-label">Vendor Address</label>
+                                            <textarea class="form-control" style="min-height:125px"></textarea>
+                                        </div>
+                                        <div class="col-lg-6 vendor-email">
+                                            <label class="control-label">Vendor Email</label> @Html.ValidationMessageFor(m => m.VendorEmail, "", new { @class = "text-danger" })
+                                            <input class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class=" add-new-vendor-form row">
+                        <div class="col-sm-12">
+                            <a href="#" class="add-vendor-btn"><i class="fa fa-plus" aria-hidden="true"></i> Add New Vendor</a>
+                        </div>
+                    </div>
+                    <div class="add-vendor-input-btn">
+                        <input type="submit" value="Submit New Vendors " class="btn btn-blue btn-lg submit-button" />
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+@section AdditionalJavascript {
+    <script src="~/Assets/js/Vendor/addVendors.js"></script>
+}
+
+@section PageJavascript {
+    <script>
+        functionAddFormVendor();
+    </script>
+}

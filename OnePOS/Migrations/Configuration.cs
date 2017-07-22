@@ -9,9 +9,7 @@ namespace OnePOS.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
-            ContextKey = "OnePOS.Models.ApplicationDbContext";
-            AutomaticMigrationDataLossAllowed = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(OnePOS.Models.ApplicationDbContext context)

@@ -1,4 +1,5 @@
-﻿
+﻿@model OnePOS.Models.Dashboard.Items.AddItemViewModels
+
 @{
     ViewBag.Title = "DashboardAddItems";
     Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
@@ -8,97 +9,98 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Dashboard Add Items</h1>
+                <h1 class="page-header">Add Items</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
+        
+        
         <div class="row">
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-plus fa-2x"></i>
-                            </div>
-                            <div class="col-xs-9 ">
-                                <div style="font-size: 20px">Add Item</div>
-                            </div>
-                        </div>
-                       
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-green">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-tasks fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">12</div>
-                                <div>New Tasks!</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-yellow">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-shopping-cart fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">124</div>
-                                <div>New Orders!</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-md-6">
-                <div class="panel panel-red">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <i class="fa fa-support fa-5x"></i>
-                            </div>
-                            <div class="col-xs-9 text-right">
-                                <div class="huge">13</div>
-                                <div>Support Tickets!</div>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#">
-                        <div class="panel-footer">
-                            <span class="pull-left">View Details</span>
-                            <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
-                            <div class="clearfix"></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </div>
+            <div class="add-items-section">
+                @using (Html.BeginForm("DashboardAddItems", "Dashboard", FormMethod.Post, new { @id = "AddItemsPost", @class = "form-horizontal", role = "form" }))
+                {
+                    <div class="form-section add-items-manual section-header">
+                        @Html.HiddenFor(m => m.ItemName, new { @id = "ItemName" })
+                        @Html.HiddenFor(m => m.ItemSalePrice, new { @id = "ItemSalePrice" })
+                        @Html.HiddenFor(m => m.ItemBuyPrice, new { @id = "ItemBuyPrice" })
+                        @Html.HiddenFor(m => m.ItemLocation, new { @id = "ItemLocation" })
+                        @Html.HiddenFor(m => m.ItemBrandType, new { @id = "ItemBrandType" })
+                        @Html.HiddenFor(m => m.ItemQuantitiy, new { @id = "ItemQuantity" })
+                        @Html.HiddenFor(m => m.ItemVendor, new { @id = "ItemVendor" })
 
+                        <div class="items-group-list">
+                            <div class="panel panel-default items-form-container">
+                                <div class="panel-body items-group-form">
+                                    <div class="form-group">
+                                        <i class="fa fa-times close-item-button" aria-hidden="true"></i>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <div class="col-sm-6 item-name">
+                                            <label class="control-label">Items Name</label>
+                                            <input class="form-control" />
+                                        </div>
+                                        <div class="col-sm-3 item-sale-price">
+                                            <label class="control-label">Sale Price</label>
+                                            <input class="form-control" onchange="changeInputNumber(this)" />
+                                        </div>
+                                        <div class="col-sm-3 item-buy-price">
+                                            <label class="control-label">Buy Price</label>
+                                            <input class="form-control" onchange="changeInputNumber(this)" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-3 item-location">
+                                            <label class="control-label">Item Location</label>
+                                            <input class="form-control" />
+                                        </div>
+                                        <div class="col-lg-3 item-brand-type">
+                                            <label class="control-label">Brand Type</label>
+                                            <input class="form-control" />
+                                        </div>
+                                        <div class="col-lg-3 item-quantity">
+                                            <label class="control-label">Quantity</label>
+                                            <input class="form-control" onchange="changeInputNumber(this)" />
+                                        </div>
+                                        <div class="col-lg-3 item-vendor">
+                                            <label class="control-label">Vendor</label>
+                                            <input class="form-control" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+
+                    <div class=" add-new-item-form row">
+                        <div class="col-sm-12">
+                            <a href="#" class="add-item-btn"><i class="fa fa-plus" aria-hidden="true"></i> Add New Item</a>
+                        </div>
+                    </div>
+                    <div class="add-item-input-btn">
+                        <input type="submit" value="Submit New Items " class="btn btn-blue btn-lg submit-button" />
+                    </div>
+                    
+                }
+
+            </div>
+
+        </div>
+     
 
     </div>
 
     <!-- /#page-wrapper -->
 </div>
 <!-- /#wrapper -->
+
+@section AdditionalJavascript {
+    <script src="~/Assets/js/Items/addItems.js"></script>
+}
+
+@section PageJavascript {
+    <script>
+        functionAddFormItem();
+    </script>
+}

@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Loyalti.Helpers
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,11 +7,15 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @*<link rel="stylesheet" href="/Assets/css/metisMenu.css" />
-    <link rel="stylesheet" href="/Assets/css/sb-admin-2.min.css" />
-    <link rel="stylesheet" href="/Assets/font-awesome/css/font-awesome.min.css" />*@
+    
+    <style type="text/css">
+        [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+            display: none !important;
+        }
+    </style>
+
 </head>
-<body>
+<body class="dashboard-page">
     <!-- Navigation -->
     <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -68,22 +73,33 @@
                     </li>*@
 
                     <li>
-                        <a href="@Url.Action("DashboardHome", "Dashboard")"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="@Url.Action("DashboardHome", "Dashboard")"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i>&nbsp; Dashboard</a>
                     </li>
                     
                     <li>
-                        <a href="#"><i class="fa fa-file fa-fw"></i>Items<span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-file fa-fw" aria-hidden="true"></i>&nbsp; Items<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="@Url.Action("DashboardListItems", "Dashboard")"><i class="fa fa-list fa-fw"></i>List Items</a>
+                                <a href="@Url.Action("DashboardListItems", "Dashboard")"><i class="fa fa-list fa-fw" aria-hidden="true"></i>&nbsp; List Items</a>
                             </li>
                             
                             <li>
-                                <a href="@Url.Action("DashboardAddItems", "Dashboard")"><i class="fa fa-plus fa-fw"></i>Add Items</a>
+                                <a href="@Url.Action("DashboardAddItems", "Dashboard")"><i class="fa fa-plus fa-fw" aria-hidden="true"></i>&nbsp; Add Items</a>
                             </li>
                         </ul>    
                     </li>
-                    
+                    <li>
+                        <a href="#"><i class="fa fa-book fa-fw" aria-hidden="true"></i>&nbsp; Vendor<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="@Url.Action("DashboardListVendors", "Dashboard")"><i class="fa fa-list fa-fw" aria-hidden="true"></i>&nbsp; List Vendors</a>
+                            </li>
+
+                            <li>
+                                <a href="@Url.Action("DashboardAddVendors", "Dashboard")"><i class="fa fa-plus fa-fw" aria-hidden="true"></i>&nbsp; Add Vendors</a>
+                            </li>
+                        </ul>
+                    </li>
                     @*<li>
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -178,10 +194,37 @@
     @RenderBody()
         
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")*@
+    
+    <script src="/Scripts/jquery-1.10.2.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>
+
     <script src="/Assets/js/metisMenu.js"></script>
     <script src="/Assets/js/sb-admin-2.js"></script>
+
+    <script src="/Assets/js/moment.min.js"></script>
+    <script src="/Assets/js/numbro.min.js"></script>
+    <script src="/Assets/js/application.js"></script>
+    
+    <script src="/Assets/js/angular.min.js"></script>
+    <script src="/Assets/js/angular-resource.js"></script>
+
+    <script src="/Assets/js/dirPagination.js"></script>
+    
+
+    @if (IsSectionDefined("AdditionalJavascript"))
+    {
+        @RenderSection("AdditionalJavascript");
+    }
+
     @RenderSection("scripts", required: false)
+    @if (IsSectionDefined("PageJavascript"))
+    {
+        @RenderSection("PageJavascript");
+    }
+
+    @RenderSection("divImageControl", false)
+    @Html.PageScripts()
 </body>
 </html>

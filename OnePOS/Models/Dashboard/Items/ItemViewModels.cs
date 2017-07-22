@@ -1,18 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
+using OnePOS.Models.Dashboard.Vendors;
 
-namespace OnePOS.Models.Dashboard
+namespace OnePOS.Models.Dashboard.Items
 {
     public class ItemViewModels
     {
-        public string ItemId { get; set; }
+        [Key]
+        public int ItemId { get; set; }
+        public string ItemUniqueId { get; set; }
         public string ItemName { get; set; }
         public decimal SalePrice { get; set; }
-        public decimal NewPrice { get; set; }
+        public decimal BuyPrice { get; set; }
         public decimal OldPrice { get; set; }
+        public decimal Stock { get; set; }
         public string ItemLocation { get; set; }
         public string ItemPicture { get; set; }
         public bool Active { get; set; }
