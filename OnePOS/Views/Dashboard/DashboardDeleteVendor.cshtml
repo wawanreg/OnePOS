@@ -1,7 +1,7 @@
 ﻿@model OnePOS.Models.Dashboard.Vendors.VendorViewModels
 
 @{
-    ViewBag.Title = "EditVendor";
+    ViewBag.Title = "DeleteVendor";
     Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
 }
 
@@ -9,7 +9,7 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Edit Vendor</h1>
+                <h1 class="page-header">Delete Vendor</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
@@ -17,14 +17,14 @@
 
         <div class="row">
             <div class="edit-vendors-section">
-                @using (Html.BeginForm("DashboardEditVendor", "Dashboard", FormMethod.Post, new { @id = "EditVendorsPost", @class = "form-horizontal", role = "form" }))
+                @using (Html.BeginForm("DashboardDeleteVendor", "Dashboard", FormMethod.Post, new { @id = "DeleteVendorsPost", @class = "form-horizontal", role = "form" }))
                 {
                     <div class="form-section edit-vendors-manual section-header">
-                       
+
                         <div class="vendors-group-list">
                             <div class="panel panel-default vendors-form-container">
                                 <div class="panel-body vendors-group-form">
-                                    
+
                                     <div class="form-group">
                                         <div class="col-sm-6 vendor-name">
                                             <label class="control-label">Vendor Name</label>
@@ -55,8 +55,8 @@
                         </div>
                     </div>
 
-                    <div class="edit-vendor-input-btn">
-                        <input type="submit" value="Edit Vendor " class="btn btn-blue btn-lg submit-button" />
+                    <div class="delete-vendor-input-btn">
+                        <input type="submit" value="Delete Vendor " class="btn btn-red btn-lg submit-button" />
                     </div>
 
                 }
@@ -70,11 +70,3 @@
 
     <!-- /#page-wrapper -->
 </div>
-<!-- /#wrapper -->
-@section AdditionalJavascript {
-    
-}
-
-@section PageJavascript {
-    
-}

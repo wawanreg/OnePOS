@@ -318,6 +318,8 @@
     <Content Include="Views\Dashboard\DashboardListVendors.cshtml" />
     <Content Include="Views\Dashboard\DashboardEditVendor.cshtml" />
     <Content Include="Views\ApiVendor\Index.cshtml" />
+    <Content Include="Views\Shared\_DeleteDialog.cshtml" />
+    <Content Include="Views\Dashboard\DashboardDeleteVendor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

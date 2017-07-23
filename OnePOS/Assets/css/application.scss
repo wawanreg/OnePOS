@@ -51,6 +51,25 @@ body img {max-width:100%;}
 	&:hover{background:#005ac6; color:#fff;}
 }
 
+.btn.btn-red {background:#e50000; color:#fff;
+	&:hover{background:#ce0000; color:#fff;}
+}
+.btn.btn-white-blue {background:#fff; border-color:#0273fc;color: #0273fc;
+	&:hover {background:#0273fc; color:#fff;}
+}
+.btn.btn-white-blue.active{background: #0273fc;
+	color: #fff;-webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+	box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+	}
+
+.popup-delete-dialog{
+    width: 500px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
 .text-ok{
     font-size: 13px;
     padding: 0.2em 0.6em 0.3em;

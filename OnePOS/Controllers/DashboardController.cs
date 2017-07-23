@@ -66,8 +66,6 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardAddItems()
         {
-            //DashboardFunction.StarDashboardIndex();
-
             return View();
         }
         [HttpPost]
@@ -75,7 +73,8 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardAddItems(AddItemViewModels itemsData)
         {
-            DashboardFunction.AddItemsToDb(itemsData);
+            var currentUserName = User.Identity.GetUserName();
+            DashboardFunction.AddItemsToDb(db,itemsData, currentUserName);
 
             return View();
         }
@@ -84,35 +83,41 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardListVendors()
         {
-            List<VendorViewModels> mVendor = db.Vendor.ToList();
-            List<ListVendorViewModels> mListVendor = new List<ListVendorViewModels>();
-            foreach (var vendorViewModelse in mVendor)
-            {
-                mListVendor.Add(new ListVendorViewModels()
-                {
-                    VendorId = vendorViewModelse.VendorId,
-                    VendorAddress = vendorViewModelse.VendorAddress,
-                    VendorEmail = vendorViewModelse.VendorEmail,
-                    VendorPhone = vendorViewModelse.VendorPhone,
-                    VendorOwner = vendorViewModelse.VendorOwner,
-                    VendorName = vendorViewModelse.VendorName,
-                    PaginationNumber = mListVendor.Count
-                });
-
-            }
-            return View(mListVendor);
-            //return View(db.Vendor.ToList());
+            return View();
         }
-        public JsonResult StarDashboardIndex()
-        {
-            return Json(new { @datajson = "" }, JsonRequestBehavior.AllowGet);
-        }
+        
         [Route("Dashboard/EditVendor/{idVendor}")]
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardEditVendor(int idVendor)
         {
-
             return View(DashboardFunction.GetVendorViewModels(db, idVendor));
+        }
+        [HttpPost]
+        [Route("Dashboard/EditVendor/{idVendor}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardEditVendor(int idVendor, VendorViewModels mVendor)
+        {
+            var currentUserName = User.Identity.GetUserName();
+            DashboardFunction.EditVendorViewModels(db, currentUserName, mVendor, idVendor);
+
+            return RedirectToAction("ListVendors");
+        }
+
+        
+        [Route("Dashboard/DeleteVendor/{idVendor}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardDeleteVendor(int idVendor)
+        {
+            return View(DashboardFunction.GetVendorViewModels(db, idVendor));
+        }
+
+        [HttpPost]
+        [Route("Dashboard/DeleteVendor/{idVendor}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardDeleteVendor(int idVendor, VendorViewModels mVendor)
+        {
+            DashboardFunction.DeleteVendorViewModels(db,mVendor, idVendor);
+            return RedirectToAction("ListVendors");
         }
 
         [Route("Dashboard/AddVendors")]
@@ -128,10 +133,7 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardAddVendors(AddVendorViewModels vendorsData)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    return View(vendorsData);
-            //}
+            
             var currentUserName = User.Identity.GetUserName();
 
             var catchFlag = DashboardFunction.AddVendorsToDb(db, vendorsData, currentUserName);

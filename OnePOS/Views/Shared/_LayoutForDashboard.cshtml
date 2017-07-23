@@ -100,6 +100,18 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="#"><i class="fa fa-copyright fa-fw" aria-hidden="true"></i>&nbsp; Brand<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="@Url.Action("", "Dashboard")"><i class="fa fa-list fa-fw" aria-hidden="true"></i>&nbsp; List Brands</a>
+                            </li>
+
+                            <li>
+                                <a href="@Url.Action("", "Dashboard")"><i class="fa fa-plus fa-fw" aria-hidden="true"></i>&nbsp; Add Brands</a>
+                            </li>
+                        </ul>
+                    </li>
                     @*<li>
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -190,15 +202,15 @@
         </div>
         <!-- /.navbar-static-side -->
     </nav>
-
+    
     @RenderBody()
         
 
-    @*@Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")*@
-    
-    <script src="/Scripts/jquery-1.10.2.js"></script>
-    <script src="/Scripts/bootstrap.min.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @*<script src="/Scripts/jquery-1.10.2.js"></script>
+    <script src="/Scripts/bootstrap.min.js"></script>*@
 
     <script src="/Assets/js/metisMenu.js"></script>
     <script src="/Assets/js/sb-admin-2.js"></script>

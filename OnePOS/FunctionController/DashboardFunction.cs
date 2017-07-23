@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
@@ -18,15 +19,41 @@ namespace OnePOS.FunctionController
         {
            
         }
-        public static void AddItemsToDb(AddItemViewModels mItemsList)
+        public static void AddItemsToDb(ApplicationDbContext db, AddItemViewModels mItemsList, string userName)
         {
-            var arrBranchName = mItemsList.ItemName.Split('|');
-            var arrBranchAddress = mItemsList.ItemSalePrice.Split('|');
-            var arrBranchCity = mItemsList.ItemBuyPrice.Split('|');
-            var arrBranchProvince = mItemsList.ItemLocation.Split('|');
-            var arrBranchState = mItemsList.ItemBrandType.Split('|');
-            var arrBranchPostalcode = mItemsList.ItemQuantitiy.Split('|');
-            var arrBranchPhone = mItemsList.ItemVendor.Split('|');
+            var arrItemName = mItemsList.ItemName.Split('|');
+            var arrItemSalePrice = mItemsList.ItemSalePrice.Split('|');
+            var arrItemBuyPrice = mItemsList.ItemBuyPrice.Split('|');
+            var arrItemLocation = mItemsList.ItemLocation.Split('|');
+            var arrItemBrandType = mItemsList.ItemBrandType.Split('|');
+            var arrItemQuantitiy = mItemsList.ItemQuantitiy.Split('|');
+            var arrItemVendor = mItemsList.ItemVendor.Split('|');
+
+            
+
+            for (var i = 0; i < arrItemName.Length; i++)
+            {
+                VendorViewModels mVendor = db.Vendor.Single(x => x.VendorName == arrItemVendor[i]);
+                BrandViewModels mBrand = db.Brand.Single(x => x.BrandName == arrItemBrandType[i]);
+                ItemViewModels mItemViewModels = new ItemViewModels
+                {
+                    ItemName = arrItemName[i],
+                    SalePrice = int.Parse(arrItemSalePrice[i]),
+                    BuyPrice = int.Parse(arrItemBuyPrice[i]),
+                    ItemLocation = arrItemLocation[i],
+                    Brand = mBrand,
+                    Stock = int.Parse(arrItemQuantitiy[i]),
+                    Vendor = mVendor,
+                    CreatedBy = userName,
+                    CreatedDate = DateTime.UtcNow,
+                    UpdatedBy = userName,
+                    UpdatedDate = DateTime.UtcNow
+                    
+                };
+                db.Item.Add(mItemViewModels);
+                db.SaveChanges();
+            }
+
         }
 
         public static bool AddVendorsToDb(ApplicationDbContext db, AddVendorViewModels mVendorsList, string userName)
@@ -68,6 +95,33 @@ namespace OnePOS.FunctionController
             VendorViewModels mVendor = db.Vendor.Find(vendorId);
             
             return mVendor;
+        }
+
+        public static bool EditVendorViewModels(ApplicationDbContext db, string currentUserName, VendorViewModels mEditVendor, int idVendor)
+        {
+            VendorViewModels mVendor = db.Vendor.Find(idVendor);
+
+            mVendor.VendorName = mEditVendor.VendorName;
+            mVendor.VendorAddress = mEditVendor.VendorAddress;
+            mVendor.VendorEmail = mEditVendor.VendorEmail;
+            mVendor.VendorOwner = mEditVendor.VendorOwner;
+            mVendor.VendorPhone = mEditVendor.VendorPhone;
+
+            mVendor.UpdatedBy = currentUserName;
+            mVendor.UpdatedDate = DateTime.UtcNow;
+
+
+            db.Entry(mVendor).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return true;
+        }
+
+        public static void DeleteVendorViewModels(ApplicationDbContext db, VendorViewModels mDeleteVendor, int idVendor)
+        {
+            VendorViewModels mVendor = db.Vendor.Find(idVendor);
+            db.Vendor.Remove(mVendor);
+            db.SaveChanges();
         }
     }
 }

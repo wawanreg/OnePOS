@@ -1,0 +1,39 @@
+<div class="modal popup-delete-vendor" tabindex="-1" aria-hidden="true" role="dialog" aria-labelledby="myLargeModalLabel">
+    <div class="popup-delete-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <i class="fa fa-trash fa-4x" aria-hidden="true" style="float:left;padding:10px"></i>
+                    </div>
+                    <div class="col-sm-10">
+                        <h4 style="text-align:left;">Are You Sure Want To Delete This ?</h4>
+                        <h5 style="text-align:left;">Once you click "Delete", this it will be deleted from your system.</h5>
+                        
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-6 text-left">
+                            <a href="@HttpUtility.UrlDecode(Url.Action("DeleteVendor", "Dashboard", new { id = "{{vendorList.vendorId}}" }))" type="button" class="btn btn-red btn-lg submit-button">Delete</a>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <a class="btn btn-white-blue btn-lg" data-dismiss="modal">Cancel</a>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    
+    function test(tangkap) {
+        console.log($(tangkap).attr('value'));
+        
+    }
+    
+</script>
