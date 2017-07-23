@@ -64,7 +64,8 @@
                                         </div>
                                         <div class="col-lg-3 item-vendor">
                                             <label class="control-label">Vendor</label>
-                                            <input class="form-control" />
+                                            @*<input class="form-control" />*@
+                                            @Html.DropDownListFor(m => m.VendorDropdownLists, Model.VendorDropdownLists, "Select Vendor", new { @class = "form-control" })
                                         </div>
                                     </div>
                                 </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
@@ -66,7 +67,12 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardAddItems()
         {
-            return View();
+            AddItemViewModels test = new AddItemViewModels();
+            test.VendorDropdownLists = new SelectList(db.Vendor.Where(x => x.Active).ToList(), "VendorId", "VendorName");
+
+            //ViewBag.RoleId = new SelectList(db.Vendor.Where(x=> x.Active).ToList(), "VendorId", "VendorName");
+
+            return View(test);
         }
         [HttpPost]
         [Route("Dashboard/AddItems")]

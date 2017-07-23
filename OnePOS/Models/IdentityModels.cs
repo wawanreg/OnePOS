@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using OnePOS.Models.Dashboard;
+using OnePOS.Models.Dashboard.Brand;
 using OnePOS.Models.Dashboard.Items;
 using OnePOS.Models.Dashboard.Vendors;
 
@@ -53,6 +54,7 @@ namespace OnePOS.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<ApplicationDbContext, Migrations.Configuration>("DefaultConnection"));
             // Set the database intializer which is run once during application start
             // This seeds the database with admin user credentials and admin role
@@ -68,6 +70,7 @@ namespace OnePOS.Models
             modelBuilder.Entity<ItemViewModels>().ToTable(("Item"));
             modelBuilder.Entity<BrandViewModels>().ToTable(("Brand"));
             modelBuilder.Entity<ManufacturerViewModels>().ToTable(("Manufacturer"));
+            modelBuilder.Entity<BrandCategoryModels>().ToTable(("BrandCategory"));
 
         }
 
@@ -87,6 +90,7 @@ namespace OnePOS.Models
         public DbSet<ItemViewModels> Item { get; set; }
         public DbSet<BrandViewModels> Brand { get; set; }
         public DbSet<ManufacturerViewModels> Manufacturer { get; set; }
+        public DbSet<BrandCategoryModels> BrandCategory { get; set; }
 
     }
 

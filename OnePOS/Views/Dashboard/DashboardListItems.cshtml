@@ -1,19 +1,80 @@
-﻿
+﻿@using Loyalti.Helpers
+@using Microsoft.Ajax.Utilities
+
 @{
     ViewBag.Title = "ListItems";
     Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
 }
-
 <div id="wrapper">
     <div id="page-wrapper">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-sm-12">
                 <h1 class="page-header">List Items</h1>
+                <span id="messageLoader" class="text-problem col-sm-1" style="display:none; ">No Data</span>
+                <div class="loader"></div>
             </div>
             <!-- /.col-lg-12 -->
         </div>
-        <div class="row">
-            
+        <div class="row" style="padding-top: 10px;">
+            <section class="panel panel-default item-list-section" ng-app="app" ng-controller="controller" ng-init="init()">
+                <header></header>
+                <section class=" table-responsive">
+                    <table id="itemTable" class="table table-hover list-table ng-cloak">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>
+                                    Item Name
+                                </th>
+                                <th>
+                                    Buy Price
+                                </th>
+                                <th>
+                                    Sale Price
+                                </th>
+                                <th>
+                                    Quantitiy
+                                </th>
+                                <th>
+                                    Location
+                                </th>
+                                <th>
+                                    Vendor Name
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="fadeout">
+
+                            <tr dir-paginate="itemList in jsonLists | itemsPerPage: pageSize " total-items="totalItem" current-page="currentPage">
+
+                                <td class="item-number-row">{{currentNumber+$index}}</td>
+                                <td class="item-name">{{itemList.itemName}}</td>
+                                <td class="item-buy-price">{{itemList.itemBuyPrice}}</td>
+                                <td class="item-sale-price">{{itemList.itemSalePrice}}</td>
+                                <td class="item-quantitiy">{{itemList.itemQuantitiy}}</td>
+                                <td class="item-location">{{itemList.itemLocation}}</td>
+                                <td class="item-vendor-name">{{itemList.itemVendorName}}</td>
+                                <td class="item-action">
+                                    <nav class="btn-group pull-right" role="group" aria-label="...">
+                                        <a href='@HttpUtility.UrlDecode(Url.Action("EditItem", "Dashboard", new { id = "{{itemList.itemId}}" }))' type="button" class="btn btn-default btn-blue">
+                                            <i class="fa fa-pencil" aria-hidden="true" style=""></i>
+                                        </a>
+                                        <a href='@HttpUtility.UrlDecode(Url.Action("DeleteItem", "Dashboard", new { id = "{{itemList.itemId}}" }))' type="button" class="btn btn-default btn-red ">
+                                            <i class="fa fa-trash" aria-hidden="true" style=""></i>
+                                        </a>
+                                    </nav>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </section>
+                <div class="text-center">
+                    <dir-pagination-controls boundary-links="true" on-page-change="" template-url="~/Assets/js/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </section>
         </div>
 
 
@@ -21,4 +82,24 @@
 
     <!-- /#page-wrapper -->
 </div>
-<!-- /#wrapper -->
+
+@*@Html.Partial("_DeleteDialog")*@
+
+
+
+@section AdditionalJavascript {
+
+}
+
+@using (Html.BeginScripts())
+{
+    <script src="~/Assets/js/global-tabling-json.js"></script>
+    <script>
+        globalTablingJson(
+            '#itemTable tbody',
+            ".item-list-section",
+            '/ApiCollection/GetItemList',
+            '//',
+            true);
+    </script>
+}

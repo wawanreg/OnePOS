@@ -33,8 +33,11 @@ namespace OnePOS.FunctionController
 
             for (var i = 0; i < arrItemName.Length; i++)
             {
-                VendorViewModels mVendor = db.Vendor.Single(x => x.VendorName == arrItemVendor[i]);
-                BrandViewModels mBrand = db.Brand.Single(x => x.BrandName == arrItemBrandType[i]);
+                var tempItemVendor = arrItemVendor[i];
+                var tempBrandType = arrItemBrandType[i];
+                VendorViewModels mVendor = db.Vendor.SingleOrDefault(x => x.VendorName == tempItemVendor);
+                BrandViewModels mBrand = db.Brand.SingleOrDefault(x => x.BrandName == tempBrandType);
+
                 ItemViewModels mItemViewModels = new ItemViewModels
                 {
                     ItemName = arrItemName[i],

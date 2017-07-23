@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace OnePOS.Models.Dashboard.Items
 {
@@ -16,5 +17,7 @@ namespace OnePOS.Models.Dashboard.Items
         public string ItemBrandType { get; set; }
         public string ItemQuantitiy { get; set; }
         public string ItemVendor { get; set; }
+        public IEnumerable<SelectListItem> VendorDropdownLists { get; set; }
+        public IEnumerable<SelectListItem> BranchDropdownLists { get; set; }
     }
 }

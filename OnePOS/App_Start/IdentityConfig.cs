@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using OnePOS.Models;
+using OnePOS.Models.Dashboard.Brand;
 
 namespace OnePOS
 {
@@ -111,6 +112,61 @@ namespace OnePOS
     {//Create User=Admin@Admin.com with password=Admin@123456 in the Admin role     
         protected override void Seed(ApplicationDbContext context)
         {
+            var brandCategory = new List<BrandCategoryModels>
+            {
+               new BrandCategoryModels{
+                   BrandCategoryId = 1,
+                   BrandCategoryName  = "Body Parts"
+               },
+               new BrandCategoryModels{
+                   BrandCategoryId = 2,
+                   BrandCategoryName  = "Brakes"
+               },
+               new BrandCategoryModels{
+                   BrandCategoryId = 3,
+                   BrandCategoryName  = "Controls"
+               },
+               new BrandCategoryModels{
+                   BrandCategoryId = 4,
+                   BrandCategoryName  = "Covers"
+               },
+               new BrandCategoryModels{
+                   BrandCategoryId = 5,
+                   BrandCategoryName  = "Dash and Gauges"
+               },
+               new BrandCategoryModels{
+                   BrandCategoryId = 6,
+                   BrandCategoryName  = "Drive"
+               },
+               new BrandCategoryModels{
+                   BrandCategoryId = 7,
+                   BrandCategoryName  = "Engine Parts and Accessories"
+               },
+               new BrandCategoryModels{
+                   BrandCategoryId = 8,
+                   BrandCategoryName  = "Exhaust"
+               },
+               new BrandCategoryModels{
+                   BrandCategoryId = 9,
+                   BrandCategoryName  = "Fuel and Air"
+               },
+               new BrandCategoryModels{
+                   BrandCategoryId = 10,
+                   BrandCategoryName  = "Light and Electrial"
+               },
+               new BrandCategoryModels{
+                   BrandCategoryId = 11,
+                   BrandCategoryName  = "Suspension"
+               },
+               new BrandCategoryModels{
+                   BrandCategoryId = 12,
+                   BrandCategoryName  = "Tire and Wheels"
+               }
+            };
+            brandCategory.ForEach(x => context.BrandCategory.Add(x));
+            context.SaveChanges();
+
+            ///////////////////////////////////////////
             InitializeIdentityForEF(context);
             base.Seed(context);
         }
