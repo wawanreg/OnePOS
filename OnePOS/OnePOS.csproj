@@ -181,9 +181,14 @@
     <Compile Include="Migrations\201707231811566_BranchCategory.Designer.cs">
       <DependentUpon>201707231811566_BranchCategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201707232251537_ChangeFewDb.cs" />
+    <Compile Include="Migrations\201707232251537_ChangeFewDb.Designer.cs">
+      <DependentUpon>201707232251537_ChangeFewDb.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Dashboard\Brand\BrandCategoryModels.cs" />
+    <Compile Include="Models\Dashboard\Brand\AddBrandViewModels.cs" />
     <Compile Include="Models\Dashboard\Items\AddItemViewModels.cs" />
     <Compile Include="Models\Dashboard\Items\ListItemViewModels.cs" />
     <Compile Include="Models\Dashboard\Vendors\ListVendorViewModels.cs" />
@@ -210,6 +215,7 @@
     </Content>
     <Content Include="Assets\css\sb-admin-2.css" />
     <Content Include="Assets\css\sb-admin-2.min.css" />
+    <Content Include="Assets\js\Brand\addBrands.js" />
     <Content Include="Assets\js\dirPagination.js" />
     <Content Include="Assets\font-awesome\css\font-awesome.css" />
     <Content Include="Assets\font-awesome\css\font-awesome.min.css" />
@@ -328,6 +334,7 @@
     <Content Include="Views\ApiCollection\Index.cshtml" />
     <Content Include="Views\Shared\_DeleteDialog.cshtml" />
     <Content Include="Views\Dashboard\DashboardDeleteVendor.cshtml" />
+    <Content Include="Views\Dashboard\DashboardAddBrands.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -345,6 +352,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707231811566_BranchCategory.resx">
       <DependentUpon>201707231811566_BranchCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201707232251537_ChangeFewDb.resx">
+      <DependentUpon>201707232251537_ChangeFewDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

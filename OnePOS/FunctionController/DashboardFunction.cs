@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using OnePOS.Models;
 using OnePOS.Models.Dashboard;
+using OnePOS.Models.Dashboard.Brand;
 using OnePOS.Models.Dashboard.Items;
 using OnePOS.Models.Dashboard.Vendors;
 using ModelState = System.Web.WebPages.Html.ModelState;
@@ -93,6 +94,32 @@ namespace OnePOS.FunctionController
             return checkerFlag;
         }
 
+        public static void AddBrandsToDb(ApplicationDbContext db, AddBrandViewModels mBrandList, string userName)
+        {
+
+            var arrBrandName = mBrandList.BrandName.Split('|');
+            var arrBrandCategory = mBrandList.BrandCategoryId.Split('|');
+            var arrBrandDescription = mBrandList.BrandDescription.Split('|');
+
+            for (var i = 0; i < arrBrandName.Length; i++)
+            {
+                int brandCategoryId = int.Parse(arrBrandCategory[i]);
+                BrandViewModels mBrandViewModels = new BrandViewModels
+                {
+                    BrandName = arrBrandName[i],
+                    BrandDescription = arrBrandDescription[i],
+                    BrandCategory = db.BrandCategory.Find(brandCategoryId),
+                    CreatedBy = userName,
+                    CreatedDate = DateTime.UtcNow,
+                    UpdatedBy = userName,
+                    UpdatedDate = DateTime.UtcNow
+                };
+
+                db.Brand.Add(mBrandViewModels);
+                db.SaveChanges();
+            }
+
+        }
         public static VendorViewModels GetVendorViewModels(ApplicationDbContext db, int? vendorId)
         {
             VendorViewModels mVendor = db.Vendor.Find(vendorId);

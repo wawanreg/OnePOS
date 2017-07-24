@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity.Owin;
 using OnePOS.FunctionController;
 using OnePOS.Models;
 using OnePOS.Models.Dashboard;
+using OnePOS.Models.Dashboard.Brand;
 using OnePOS.Models.Dashboard.Items;
 using OnePOS.Models.Dashboard.Vendors;
 
@@ -82,7 +83,7 @@ namespace OnePOS.Controllers
             var currentUserName = User.Identity.GetUserName();
             DashboardFunction.AddItemsToDb(db,itemsData, currentUserName);
 
-            return View();
+            return RedirectToAction("AddItems");
         }
 
         [Route("Dashboard/ListVendors")]
@@ -146,6 +147,30 @@ namespace OnePOS.Controllers
             
             return View();
         }
+
+        [Route("Dashboard/AddBrands")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardAddBrands()
+        {
+            //DashboardFunction.StarDashboardIndex();
+            AddBrandViewModels test = new AddBrandViewModels();
+            test.BrandCategoryDropdownLists = new SelectList(db.BrandCategory.ToList(), "BrandCategoryId", "BrandCategoryName");
+
+            return View(test);
+        }
+        [HttpPost]
+        [Route("Dashboard/AddBrands")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardAddBrands(AddBrandViewModels brandData)
+        {
+
+            var currentUserName = User.Identity.GetUserName();
+
+            DashboardFunction.AddBrandsToDb(db, brandData, currentUserName);
+
+            return RedirectToAction("AddBrands");
+        }
+
 
         protected override void Dispose(bool disposing)
         {

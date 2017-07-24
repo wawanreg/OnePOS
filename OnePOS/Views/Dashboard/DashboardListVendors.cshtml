@@ -47,17 +47,17 @@
                             <tr dir-paginate="vendorList in jsonLists | itemsPerPage: pageSize " total-items="totalItem" current-page="currentPage">
                                 
                                 <td class="vendor-number-row">{{currentNumber+$index}}</td>
-                                <td class="vendor-name">{{vendorList.vendorName}}</td>
-                                <td class="vendor-address">{{vendorList.vendorAddress}}</td>
-                                <td class="vendor-email">{{vendorList.vendorEmail}}</td>
-                                <td class="vendor-phone">{{vendorList.vendorPhone}}</td>
-                                <td class="vendor-owner">{{vendorList.vendorOwner}}</td>
+                                <td class="vendor-name">{{vendorList.VendorName}}</td>
+                                <td class="vendor-address">{{vendorList.VendorAddress}}</td>
+                                <td class="vendor-email">{{vendorList.VendorEmail}}</td>
+                                <td class="vendor-phone">{{vendorList.VendorPhone}}</td>
+                                <td class="vendor-owner">{{vendorList.VendorOwner}}</td>
                                 <td class="vendor-action">
                                     <nav class="btn-group pull-right" role="group" aria-label="...">
-                                        <a href='@HttpUtility.UrlDecode(Url.Action("EditVendor", "Dashboard", new { id = "{{vendorList.vendorId}}" }))' type="button" class="btn btn-default btn-blue">
+                                        <a href='@HttpUtility.UrlDecode(Url.Action("EditVendor", "Dashboard", new { id = "{{vendorList.VendorId}}" }))' type="button" class="btn btn-default btn-blue">
                                             <i class="fa fa-pencil" aria-hidden="true" style=""></i>
                                         </a>
-                                        <a href='@HttpUtility.UrlDecode(Url.Action("DeleteVendor", "Dashboard", new { id = "{{vendorList.vendorId}}" }))' type="button" class="btn btn-default btn-red ">
+                                        <a href='@HttpUtility.UrlDecode(Url.Action("DeleteVendor", "Dashboard", new { id = "{{vendorList.VendorId}}" }))' type="button" class="btn btn-default btn-red ">
                                             <i class="fa fa-trash" aria-hidden="true" style=""></i>
                                         </a>
                                     </nav>

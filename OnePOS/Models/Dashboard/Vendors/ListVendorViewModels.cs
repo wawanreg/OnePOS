@@ -15,7 +15,6 @@ namespace OnePOS.Models.Dashboard.Vendors
         public string VendorPhone   { get; set; }
         public string VendorEmail { get; set; }
         public string VendorOwner { get; set; }
-        public int PaginationNumber { get; set; }
         public int VendorId { get; set; }
     }
 }

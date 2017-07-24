@@ -50,18 +50,18 @@
                             <tr dir-paginate="itemList in jsonLists | itemsPerPage: pageSize " total-items="totalItem" current-page="currentPage">
 
                                 <td class="item-number-row">{{currentNumber+$index}}</td>
-                                <td class="item-name">{{itemList.itemName}}</td>
-                                <td class="item-buy-price">{{itemList.itemBuyPrice}}</td>
-                                <td class="item-sale-price">{{itemList.itemSalePrice}}</td>
-                                <td class="item-quantitiy">{{itemList.itemQuantitiy}}</td>
-                                <td class="item-location">{{itemList.itemLocation}}</td>
-                                <td class="item-vendor-name">{{itemList.itemVendorName}}</td>
+                                <td class="item-name">{{itemList.ItemName}}</td>
+                                <td class="item-buy-price">{{itemList.ItemBuyPrice}}</td>
+                                <td class="item-sale-price">{{itemList.ItemSalePrice}}</td>
+                                <td class="item-quantitiy">{{itemList.ItemQuantitiy}}</td>
+                                <td class="item-location">{{itemList.ItemLocation}}</td>
+                                <td class="item-vendor-name">{{itemList.ItemVendorName}}</td>
                                 <td class="item-action">
                                     <nav class="btn-group pull-right" role="group" aria-label="...">
-                                        <a href='@HttpUtility.UrlDecode(Url.Action("EditItem", "Dashboard", new { id = "{{itemList.itemId}}" }))' type="button" class="btn btn-default btn-blue">
+                                        <a href='@HttpUtility.UrlDecode(Url.Action("EditItem", "Dashboard", new { id = "{{itemList.ItemId}}" }))' type="button" class="btn btn-default btn-blue">
                                             <i class="fa fa-pencil" aria-hidden="true" style=""></i>
                                         </a>
-                                        <a href='@HttpUtility.UrlDecode(Url.Action("DeleteItem", "Dashboard", new { id = "{{itemList.itemId}}" }))' type="button" class="btn btn-default btn-red ">
+                                        <a href='@HttpUtility.UrlDecode(Url.Action("DeleteItem", "Dashboard", new { id = "{{itemList.ItemId}}" }))' type="button" class="btn btn-default btn-red ">
                                             <i class="fa fa-trash" aria-hidden="true" style=""></i>
                                         </a>
                                     </nav>

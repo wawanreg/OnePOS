@@ -240,3 +240,36 @@ body img {
   .dashboard-page .add-vendors-section .add-vendor-input-btn {
     padding-top: 15px;
     padding-bottom: 15px; }
+  .dashboard-page .add-brands-section .add-brands-manual .brands-group-list .brands-group-form .form-group:first-child {
+    margin-top: 0px; }
+  .dashboard-page .add-brands-section .add-brands-manual .brands-group-list .brands-group-form .form-group {
+    margin-bottom: 0px; }
+    .dashboard-page .add-brands-section .add-brands-manual .brands-group-list .brands-group-form .form-group .control-label {
+      font-weight: bold; }
+  .dashboard-page .add-brands-section .add-brands-manual .brands-group-list .brands-group-form .form-control {
+    margin-bottom: 0px; }
+  .dashboard-page .add-brands-section .add-brands-manual .brands-group-list .brands-group-form .close-brand-button {
+    cursor: pointer;
+    float: right;
+    margin-right: 18px;
+    color: red;
+    font-size: 20px; }
+  .dashboard-page .add-brands-section .add-new-brand-form {
+    padding-top: 15px; }
+    .dashboard-page .add-brands-section .add-new-brand-form .add-brand-btn {
+      background-color: white;
+      padding: 13px 15px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      border-color: #dddddd;
+      position: relative;
+      text-align: center;
+      display: block;
+      font-size: 18px;
+      height: 52px;
+      margin-bottom: 20px; }
+      .dashboard-page .add-brands-section .add-new-brand-form .add-brand-btn img {
+        margin-top: -3px; }
+  .dashboard-page .add-brands-section .add-brand-input-btn {
+    padding-top: 15px;
+    padding-bottom: 15px; }

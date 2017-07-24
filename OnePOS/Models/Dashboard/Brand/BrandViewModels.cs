@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
-namespace OnePOS.Models.Dashboard
+namespace OnePOS.Models.Dashboard.Brand
 {
     public class BrandViewModels
     {
@@ -24,6 +25,7 @@ namespace OnePOS.Models.Dashboard
         [Column(TypeName = "DateTime2")]
         public DateTime UpdatedDate { get; set; }
         public string UpadtedAgent { get; set; }
+        public virtual BrandCategoryModels BrandCategory { get; set; }
 
     }
 }

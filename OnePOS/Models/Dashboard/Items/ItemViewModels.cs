@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using OnePOS.Models.Dashboard.Brand;
 using OnePOS.Models.Dashboard.Vendors;
 
 namespace OnePOS.Models.Dashboard.Items
