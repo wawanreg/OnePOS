@@ -52,7 +52,7 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
         }
     }
     
-    var app = angular.module('app', ['ngResource', 'angularUtils.directives.dirPagination', 'ngNumbro']);
+    var app = angular.module('app', ['ngResource', 'angularUtils.directives.dirPagination']);
 	
 	app.factory('service', [
 		'$resource', function ($resource) {

@@ -201,7 +201,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\css\application.scss" />
-    <Content Include="Assets\js\angular-numbro.min.js" />
     <Content Include="Assets\js\angular-resource.js" />
     <Content Include="Assets\js\angular.min.js" />
     <Content Include="Assets\css\application.css">
@@ -212,7 +211,6 @@
     </Content>
     <Content Include="Assets\css\sb-admin-2.css" />
     <Content Include="Assets\css\sb-admin-2.min.css" />
-    <Content Include="Assets\js\Brand\editBrands.js" />
     <Content Include="Assets\js\Brand\addBrands.js" />
     <Content Include="Assets\js\dirPagination.js" />
     <Content Include="Assets\font-awesome\css\font-awesome.css" />
