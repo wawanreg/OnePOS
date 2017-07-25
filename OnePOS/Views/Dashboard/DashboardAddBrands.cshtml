@@ -1,4 +1,4 @@
-﻿@model OnePOS.Models.Dashboard.Brand.AddBrandViewModels
+﻿@model OnePOS.Models.Dashboard.Brand.ActionBrandViewModels
 
 @{
     ViewBag.Title = "AddBrands";
@@ -22,7 +22,6 @@
                     <div class="form-section add-brands-manual section-header">
                         @Html.HiddenFor(m => m.BrandName, new { @id = "BrandName" })
                         @Html.HiddenFor(m => m.BrandDescription, new { @id = "BrandDescription" })
-                        @Html.HiddenFor(m => m.BrandCategoryId, new { @id = "BrandCategoryId" })
 
                         <div class="brands-group-list">
                             <div class="panel panel-default brands-form-container">
@@ -32,15 +31,15 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <div class="col-sm-9 brand-name">
+                                        <div class="col-sm-12 brand-name">
                                             <label class="control-label">Brand Name</label>
                                             <input class="form-control" />
                                         </div>
                                         
-                                        <div class="col-sm-3 brand-category">
+                                        @*<div class="col-sm-3 brand-category">
                                             <label class="control-label">Brand Category</label>
                                             @Html.DropDownListFor(m => m.BrandCategoryDropdownLists, Model.BrandCategoryDropdownLists, "Select Category", new { @class = "form-control" })
-                                        </div>
+                                        </div>*@
                                     </div>
                                     <div class="form-group">
                                         

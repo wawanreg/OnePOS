@@ -16,7 +16,7 @@
 
 
         <div class="row">
-            <div class="edit-vendors-section">
+            <div class="delete-vendors-section">
                 @using (Html.BeginForm("DashboardDeleteVendor", "Dashboard", FormMethod.Post, new { @id = "DeleteVendorsPost", @class = "form-horizontal", role = "form" }))
                 {
                     <div class="form-section edit-vendors-manual section-header">
@@ -28,25 +28,25 @@
                                     <div class="form-group">
                                         <div class="col-sm-6 vendor-name">
                                             <label class="control-label">Vendor Name</label>
-                                            @Html.TextBoxFor(m => m.VendorName, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.VendorName, new { @class = "form-control", @readonly = "readonly" })
                                         </div>
                                         <div class="col-sm-3 vendor-phone">
                                             <label class="control-label">Vendor Phone</label>
-                                            @Html.TextBoxFor(m => m.VendorPhone, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.VendorPhone, new { @class = "form-control", @readonly = "readonly" })
                                         </div>
                                         <div class="col-sm-3 vendor-owner">
                                             <label class="control-label">Vendor Owner</label>
-                                            @Html.TextBoxFor(m => m.VendorOwner, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.VendorOwner, new { @class = "form-control", @readonly = "readonly" })
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="col-lg-6 vendor-address">
                                             <label class="control-label">Vendor Address</label>
-                                            @Html.TextAreaFor(m => m.VendorAddress, new { @class = "form-control" })
+                                            @Html.TextAreaFor(m => m.VendorAddress, new { @class = "form-control", @readonly = "readonly" })
                                         </div>
                                         <div class="col-lg-6 vendor-email">
                                             <label class="control-label">Vendor Email</label> @Html.ValidationMessageFor(m => m.VendorEmail, "", new { @class = "text-danger" })
-                                            @Html.TextBoxFor(m => m.VendorEmail, new { @class = "form-control" })
+                                            @Html.TextBoxFor(m => m.VendorEmail, new { @class = "form-control", @readonly = "readonly" })
                                         </div>
                                     </div>
                                 </div>

@@ -9,7 +9,7 @@ var itemsData = {
     itemBuyPrice: {
         value: ""
     },
-    itemLocation: {
+    itemStorage: {
         value: ""
     },
     itemBrandType: {
@@ -19,6 +19,9 @@ var itemsData = {
         value: ""
     },
     itemVendor: {
+        value: ""
+    },
+    itemBrandCategory: {
         value: ""
     }
 };
@@ -72,17 +75,17 @@ function functionAddFormItem() {
             }
         });
 
-        itemsData.itemLocation.value = [];
-        $('.items-form-container .item-location input').each(function () {
+        itemsData.itemStorage.value = [];
+        $('.items-form-container .item-storage select').each(function () {
             if ($(this).val().length > 0) {
-                itemsData.itemLocation.value.push($(this).val());
+                itemsData.itemStorage.value.push($(this).val());
             } else {
-                itemsData.itemLocation.value.push(" ");
+                itemsData.itemStorage.value.push(" ");
             }
         });
 
         itemsData.itemBrandType.value = [];
-        $('.items-form-container .item-brand-type input').each(function () {
+        $('.items-form-container .item-brand-type select').each(function () {
             if ($(this).val().length > 0) {
                 itemsData.itemBrandType.value.push($(this).val());
             } else {
@@ -100,7 +103,7 @@ function functionAddFormItem() {
         });
 
         itemsData.itemVendor.value = [];
-        $('.items-form-container .item-vendor input').each(function () {
+        $('.items-form-container .item-vendor select').each(function () {
             if ($(this).val().length > 0) {
                 itemsData.itemVendor.value.push($(this).val());
             } else {
@@ -108,13 +111,24 @@ function functionAddFormItem() {
             }
         });
 
+        itemsData.itemBrandCategory.value = [];
+        $('.items-form-container .item-brand-category select').each(function () {
+            if ($(this).val().length > 0) {
+                itemsData.itemBrandCategory.value.push($(this).val());
+            } else {
+                itemsData.itemBrandCategory.value.push(" ");
+            }
+        });
+
+
         document.getElementById("ItemName").value = itemsData.itemName.value.join('|');
         document.getElementById("ItemSalePrice").value = itemsData.itemSalePrice.value.join('|');
         document.getElementById("ItemBuyPrice").value = itemsData.itemBuyPrice.value.join('|');
-        document.getElementById("ItemLocation").value = itemsData.itemLocation.value.join('|');
+        document.getElementById("ItemStorage").value = itemsData.itemStorage.value.join('|');
         document.getElementById("ItemBrandType").value = itemsData.itemBrandType.value.join('|');
         document.getElementById("ItemQuantity").value = itemsData.itemQuantity.value.join('|');
         document.getElementById("ItemVendor").value = itemsData.itemVendor.value.join('|');
+        document.getElementById("ItemBrandCategory").value = itemsData.itemBrandCategory.value.join('|');
 
         $('#AddItemsPost').submit();
         

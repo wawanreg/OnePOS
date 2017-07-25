@@ -240,5 +240,27 @@ body img {max-width:100%;}
 		} 
         .add-brand-input-btn{padding-top: 15px; padding-bottom: 15px;}
     }
+    .add-storages-section{
+        .add-storages-manual{
+            .storages-group-list{ 
+                .storages-group-form{
+                    .form-group:first-child{margin-top:0px; }
+                    .form-group{    margin-bottom: 0px;
+                        .control-label{    font-weight: bold;}
+                    }
+				    .form-control { margin-bottom:0px;}
+                    .close-storage-button{ cursor: pointer; float: right;margin-right: 18px; color: red; font-size: 20px;}
+                    .storage-name{}
+                    .storage-description{}
+                }
+            }
+        }
+        .add-new-storage-form{padding-top: 15px;
+			.add-storage-btn{    background-color: white;padding: 13px 15px;border: 1px solid transparent;border-radius: 4px;border-color: #dddddd;position: relative;text-align: center;display: block;font-size: 18px;height: 52px;margin-bottom: 20px;
+				img{margin-top:-3px;}
+			}
+		} 
+        .add-storage-input-btn{padding-top: 15px; padding-bottom: 15px;}
+    }
 }
 

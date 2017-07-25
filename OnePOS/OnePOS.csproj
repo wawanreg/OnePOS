@@ -173,24 +173,20 @@
     </Compile>
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
-    <Compile Include="Migrations\201707221220065_Initial.cs" />
-    <Compile Include="Migrations\201707221220065_Initial.Designer.cs">
-      <DependentUpon>201707221220065_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201707231811566_BranchCategory.cs" />
-    <Compile Include="Migrations\201707231811566_BranchCategory.Designer.cs">
-      <DependentUpon>201707231811566_BranchCategory.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201707232251537_ChangeFewDb.cs" />
-    <Compile Include="Migrations\201707232251537_ChangeFewDb.Designer.cs">
-      <DependentUpon>201707232251537_ChangeFewDb.cs</DependentUpon>
+    <Compile Include="Migrations\201707251512171_Initial.cs" />
+    <Compile Include="Migrations\201707251512171_Initial.Designer.cs">
+      <DependentUpon>201707251512171_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Dashboard\Brand\BrandCategoryModels.cs" />
-    <Compile Include="Models\Dashboard\Brand\AddBrandViewModels.cs" />
-    <Compile Include="Models\Dashboard\Items\AddItemViewModels.cs" />
+    <Compile Include="Models\Dashboard\Brand\ActionBrandViewModels.cs" />
+    <Compile Include="Models\Dashboard\Brand\ListBrandViewModels.cs" />
+    <Compile Include="Models\Dashboard\Items\ActionItemViewModels.cs" />
     <Compile Include="Models\Dashboard\Items\ListItemViewModels.cs" />
+    <Compile Include="Models\Dashboard\Storage\ListStorageViewModels.cs" />
+    <Compile Include="Models\Dashboard\Storage\ActionStorageViewModels.cs" />
+    <Compile Include="Models\Dashboard\Storage\StorageViewModels.cs" />
     <Compile Include="Models\Dashboard\Vendors\ListVendorViewModels.cs" />
     <Compile Include="Models\Dashboard\Vendors\AddVendorViewModels.cs" />
     <Compile Include="Models\Dashboard\Vendors\VendorViewModels.cs" />
@@ -205,6 +201,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\css\application.scss" />
+    <Content Include="Assets\js\angular-numbro.min.js" />
     <Content Include="Assets\js\angular-resource.js" />
     <Content Include="Assets\js\angular.min.js" />
     <Content Include="Assets\css\application.css">
@@ -215,6 +212,7 @@
     </Content>
     <Content Include="Assets\css\sb-admin-2.css" />
     <Content Include="Assets\css\sb-admin-2.min.css" />
+    <Content Include="Assets\js\Brand\editBrands.js" />
     <Content Include="Assets\js\Brand\addBrands.js" />
     <Content Include="Assets\js\dirPagination.js" />
     <Content Include="Assets\font-awesome\css\font-awesome.css" />
@@ -222,12 +220,14 @@
     <Content Include="Assets\font-awesome\fonts\fontawesome-webfont.svg" />
     <Content Include="Assets\js\dirPagination.tpl.html" />
     <Content Include="Assets\js\global-tabling-json.js" />
+    <Content Include="Assets\js\Items\editItem.js" />
     <Content Include="Assets\js\Items\addItems.js" />
     <Content Include="Assets\js\application.js" />
     <Content Include="Assets\js\metisMenu.js" />
     <Content Include="Assets\js\moment.min.js" />
     <Content Include="Assets\js\numbro.min.js" />
     <Content Include="Assets\js\sb-admin-2.js" />
+    <Content Include="Assets\js\Storage\addStorages.js" />
     <Content Include="Assets\js\Vendor\addVendors.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -335,6 +335,15 @@
     <Content Include="Views\Shared\_DeleteDialog.cshtml" />
     <Content Include="Views\Dashboard\DashboardDeleteVendor.cshtml" />
     <Content Include="Views\Dashboard\DashboardAddBrands.cshtml" />
+    <Content Include="Views\Dashboard\DashboardListBrands.cshtml" />
+    <Content Include="Views\Dashboard\DashboardEditBrand.cshtml" />
+    <Content Include="Views\Dashboard\DashboardDeleteBrand.cshtml" />
+    <Content Include="Views\Dashboard\DashboardAddStorages.cshtml" />
+    <Content Include="Views\Dashboard\DashboardListStorages.cshtml" />
+    <Content Include="Views\Dashboard\DashboardEditStorage.cshtml" />
+    <Content Include="Views\Dashboard\DashboardDeleteStorage.cshtml" />
+    <Content Include="Views\Dashboard\DashboardEditItem.cshtml" />
+    <Content Include="Views\Dashboard\DashboardDeleteItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -347,14 +356,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707221220065_Initial.resx">
-      <DependentUpon>201707221220065_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707231811566_BranchCategory.resx">
-      <DependentUpon>201707231811566_BranchCategory.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707232251537_ChangeFewDb.resx">
-      <DependentUpon>201707232251537_ChangeFewDb.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707251512171_Initial.resx">
+      <DependentUpon>201707251512171_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

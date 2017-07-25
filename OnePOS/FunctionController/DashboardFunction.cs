@@ -9,6 +9,7 @@ using OnePOS.Models;
 using OnePOS.Models.Dashboard;
 using OnePOS.Models.Dashboard.Brand;
 using OnePOS.Models.Dashboard.Items;
+using OnePOS.Models.Dashboard.Storage;
 using OnePOS.Models.Dashboard.Vendors;
 using ModelState = System.Web.WebPages.Html.ModelState;
 
@@ -20,44 +21,92 @@ namespace OnePOS.FunctionController
         {
            
         }
-        public static void AddItemsToDb(ApplicationDbContext db, AddItemViewModels mItemsList, string userName)
+        public static void AddItemsToDb(ApplicationDbContext db, ActionItemViewModels mItemsList, string userName)
         {
             var arrItemName = mItemsList.ItemName.Split('|');
             var arrItemSalePrice = mItemsList.ItemSalePrice.Split('|');
             var arrItemBuyPrice = mItemsList.ItemBuyPrice.Split('|');
-            var arrItemLocation = mItemsList.ItemLocation.Split('|');
+            var arrItemStorage = mItemsList.ItemStorage.Split('|');
             var arrItemBrandType = mItemsList.ItemBrandType.Split('|');
             var arrItemQuantitiy = mItemsList.ItemQuantitiy.Split('|');
             var arrItemVendor = mItemsList.ItemVendor.Split('|');
+            var arrItemBrandCategory = mItemsList.ItemBrandCategory.Split('|');
 
             
 
             for (var i = 0; i < arrItemName.Length; i++)
             {
-                var tempItemVendor = arrItemVendor[i];
-                var tempBrandType = arrItemBrandType[i];
-                VendorViewModels mVendor = db.Vendor.SingleOrDefault(x => x.VendorName == tempItemVendor);
-                BrandViewModels mBrand = db.Brand.SingleOrDefault(x => x.BrandName == tempBrandType);
+                var tempItemVendor = int.Parse(arrItemVendor[i]);
+                var tempBrandType = int.Parse(arrItemBrandType[i]);
+                var tempBrandCategory = int.Parse(arrItemBrandCategory[i]);
+                var tempStorage = int.Parse(arrItemStorage[i]);
+                
 
+                VendorViewModels mVendor = db.Vendor.SingleOrDefault(x => x.VendorId == tempItemVendor);
+                BrandViewModels mBrand = db.Brand.SingleOrDefault(x => x.BrandId == tempBrandType);
+                BrandCategoryModels mBrandCategory =
+                    db.BrandCategory.SingleOrDefault(x => x.BrandCategoryId == tempBrandCategory);
+                StorageViewModels mStorage = db.Storage.SingleOrDefault(x => x.StorageId == tempStorage);
                 ItemViewModels mItemViewModels = new ItemViewModels
                 {
                     ItemName = arrItemName[i],
                     SalePrice = int.Parse(arrItemSalePrice[i]),
                     BuyPrice = int.Parse(arrItemBuyPrice[i]),
-                    ItemLocation = arrItemLocation[i],
+                    Storage = mStorage,
                     Brand = mBrand,
                     Stock = int.Parse(arrItemQuantitiy[i]),
                     Vendor = mVendor,
+                    BrandCategory = mBrandCategory,
                     CreatedBy = userName,
                     CreatedDate = DateTime.UtcNow,
                     UpdatedBy = userName,
-                    UpdatedDate = DateTime.UtcNow
+                    UpdatedDate = DateTime.UtcNow,
+                    Active = true
                     
                 };
                 db.Item.Add(mItemViewModels);
                 db.SaveChanges();
             }
 
+        }
+
+        public static bool EditItemViewModels(ApplicationDbContext db, string currentUserName, ActionItemViewModels mEditItem, int idItem)
+        {
+            ItemViewModels mItem = db.Item.Find(idItem);
+
+            int valVendorId = int.Parse(mEditItem.ItemVendor);
+            int valBrandId = int.Parse(mEditItem.ItemBrandType);
+            int valBrandCategoryId = int.Parse(mEditItem.ItemBrandCategory);
+            int valStorageId = int.Parse(mEditItem.ItemStorage);
+
+            VendorViewModels mVendor = db.Vendor.SingleOrDefault(x => x.VendorId == valVendorId);
+            BrandViewModels mBrand = db.Brand.SingleOrDefault(x => x.BrandId == valBrandId);
+            BrandCategoryModels mBrandCategory = db.BrandCategory.SingleOrDefault(x => x.BrandCategoryId == valBrandCategoryId);
+            StorageViewModels mStorage = db.Storage.SingleOrDefault(x => x.StorageId == valStorageId);
+
+            mItem.ItemName = mEditItem.ItemName;
+            mItem.Stock = decimal.Parse(mEditItem.ItemQuantitiy);
+            mItem.BuyPrice = decimal.Parse(mEditItem.ItemBuyPrice);
+            mItem.SalePrice = decimal.Parse(mEditItem.ItemSalePrice);
+            mItem.Vendor = mVendor;
+            mItem.Brand = mBrand;
+            mItem.BrandCategory = mBrandCategory;
+            mItem.Storage = mStorage;
+            mItem.UpdatedBy = currentUserName;
+            mItem.UpdatedDate = DateTime.UtcNow;
+
+
+            db.Entry(mItem).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return true;
+        }
+
+        public static void DeleteItemViewModels(ApplicationDbContext db, ItemViewModels mDeleteItem, int idItem)
+        {
+            ItemViewModels mItem = db.Item.Find(idItem);
+            db.Item.Remove(mItem);
+            db.SaveChanges();
         }
 
         public static bool AddVendorsToDb(ApplicationDbContext db, AddVendorViewModels mVendorsList, string userName)
@@ -94,25 +143,26 @@ namespace OnePOS.FunctionController
             return checkerFlag;
         }
 
-        public static void AddBrandsToDb(ApplicationDbContext db, AddBrandViewModels mBrandList, string userName)
+        public static void AddBrandsToDb(ApplicationDbContext db, ActionBrandViewModels mBrandList, string userName)
         {
 
             var arrBrandName = mBrandList.BrandName.Split('|');
-            var arrBrandCategory = mBrandList.BrandCategoryId.Split('|');
+            //var arrBrandCategory = mBrandList.BrandCategoryId.Split('|');
             var arrBrandDescription = mBrandList.BrandDescription.Split('|');
 
             for (var i = 0; i < arrBrandName.Length; i++)
             {
-                int brandCategoryId = int.Parse(arrBrandCategory[i]);
+                //int brandCategoryId = int.Parse(arrBrandCategory[i]);
                 BrandViewModels mBrandViewModels = new BrandViewModels
                 {
                     BrandName = arrBrandName[i],
                     BrandDescription = arrBrandDescription[i],
-                    BrandCategory = db.BrandCategory.Find(brandCategoryId),
+                    //BrandCategory = db.BrandCategory.Find(brandCategoryId),
                     CreatedBy = userName,
                     CreatedDate = DateTime.UtcNow,
                     UpdatedBy = userName,
-                    UpdatedDate = DateTime.UtcNow
+                    UpdatedDate = DateTime.UtcNow,
+                    Active = true
                 };
 
                 db.Brand.Add(mBrandViewModels);
@@ -151,6 +201,139 @@ namespace OnePOS.FunctionController
         {
             VendorViewModels mVendor = db.Vendor.Find(idVendor);
             db.Vendor.Remove(mVendor);
+            db.SaveChanges();
+        }
+
+        public static SelectList GetDropdownBrandCategory(ApplicationDbContext db, string selectedVal)
+        {
+            return new SelectList(db.BrandCategory.ToList(), "BrandCategoryId", "BrandCategoryName", selectedVal);
+        }
+
+        public static SelectList GetDropdownVendor(ApplicationDbContext db, string selectedVal)
+        {
+            return new SelectList(db.Vendor.Where(x => x.Active).ToList(), "VendorId", "VendorName", selectedVal);
+        }
+
+        public static SelectList GetDropdownBrand(ApplicationDbContext db, string selectedVal)
+        {
+            return new SelectList(db.Brand.Where(x => x.Active).ToList(), "BrandId", "BrandName", selectedVal);
+        }
+        public static SelectList GetDropdownStorage(ApplicationDbContext db, string selectedVal)
+        {
+            return new SelectList(db.Storage.Where(x => x.Active).ToList(), "StorageId", "StorageName", selectedVal);
+        }
+
+        public static ActionItemViewModels GetActionItemViewModels(ApplicationDbContext db, int? itemId)
+        {
+            ItemViewModels mItem = db.Item.Find(itemId);
+
+            ActionItemViewModels actionItemModels = new ActionItemViewModels();
+
+            actionItemModels.ItemName = mItem.ItemName;
+            actionItemModels.ItemBuyPrice = mItem.BuyPrice.ToString();
+            actionItemModels.ItemSalePrice = mItem.SalePrice.ToString();
+            actionItemModels.ItemQuantitiy = mItem.Stock.ToString();
+            
+            actionItemModels.BranchCategoryDropdownLists = GetDropdownBrandCategory(db,
+                mItem.BrandCategory.BrandCategoryId.ToString());
+            actionItemModels.BranchDropdownLists = GetDropdownBrand(db, mItem.Brand.BrandId.ToString());
+            actionItemModels.StorageDropdownLists = GetDropdownStorage(db, mItem.Storage.StorageId.ToString());
+            actionItemModels.VendorDropdownLists = GetDropdownVendor(db, mItem.Vendor.VendorId.ToString());
+            
+            actionItemModels.ItemStorage = mItem.Storage.StorageId.ToString();
+            actionItemModels.ItemVendor = mItem.Vendor.VendorId.ToString();
+            actionItemModels.ItemBrandType = mItem.Brand.BrandId.ToString();
+            actionItemModels.ItemBrandCategory = mItem.BrandCategory.BrandCategoryId.ToString();
+
+
+            return actionItemModels;
+        }
+        public static ItemViewModels GetItemViewModels(ApplicationDbContext db, int? itemId)
+        {
+            ItemViewModels mItem = db.Item.Find(itemId);
+
+            return mItem;
+        }
+        public static BrandViewModels GetBrandViewModels(ApplicationDbContext db, int? brandId)
+        {
+            BrandViewModels mBrand = db.Brand.Find(brandId);
+
+            return mBrand;
+        }
+        
+        public static bool EditBrandViewModels(ApplicationDbContext db, string currentUserName, ActionBrandViewModels mEditBrand, int idBrand)
+        {
+            BrandViewModels mBrand = db.Brand.Find(idBrand);
+
+
+            mBrand.BrandName = mEditBrand.BrandName;
+            mBrand.BrandDescription = mEditBrand.BrandDescription;
+            mBrand.UpdatedBy = currentUserName;
+            mBrand.UpdatedDate = DateTime.UtcNow;
+
+
+            db.Entry(mBrand).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return true;
+        }
+        public static void DeleteBrandViewModels(ApplicationDbContext db, BrandViewModels mDeleteBrand, int idBrand)
+        {
+            BrandViewModels mBrand = db.Brand.Find(idBrand);
+            db.Brand.Remove(mBrand);
+            db.SaveChanges();
+        }
+
+        public static void AddStoragesToDb(ApplicationDbContext db, ActionStorageViewModels mStorage, string userName)
+        {
+
+            var arrStorageName = mStorage.StorageName.Split('|');
+            var arrStorageDescription = mStorage.StorageDescription.Split('|');
+
+            for (var i = 0; i < arrStorageName.Length; i++)
+            {
+                StorageViewModels mStorageViewModels = new StorageViewModels
+                {
+                    StorageName = arrStorageName[i],
+                    StorageDescription = arrStorageDescription[i],
+                    CreatedBy = userName,
+                    CreatedDate = DateTime.UtcNow,
+                    UpdatedBy = userName,
+                    UpdatedDate = DateTime.UtcNow,
+                    Active = true
+                };
+
+                db.Storage.Add(mStorageViewModels);
+                db.SaveChanges();
+            }
+        }
+
+        public static StorageViewModels GetStorageViewModels(ApplicationDbContext db, int? storageId)
+        {
+            StorageViewModels mStorage = db.Storage.Find(storageId);
+
+            return mStorage;
+        }
+        public static bool EditStorageViewModels(ApplicationDbContext db, string currentUserName, ActionStorageViewModels mEditStorage, int idStorage)
+        {
+            StorageViewModels mStorage = db.Storage.Find(idStorage);
+
+
+            mStorage.StorageName = mEditStorage.StorageName;
+            mStorage.StorageDescription = mEditStorage.StorageDescription;
+            mStorage.UpdatedBy = currentUserName;
+            mStorage.UpdatedDate = DateTime.UtcNow;
+
+            db.Entry(mStorage).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return true;
+        }
+
+        public static void DeleteStorageViewModels(ApplicationDbContext db, StorageViewModels mDeleteStorage, int idStorage)
+        {
+            StorageViewModels mStorage = db.Storage.Find(idStorage);
+            db.Storage.Remove(mStorage);
             db.SaveChanges();
         }
     }

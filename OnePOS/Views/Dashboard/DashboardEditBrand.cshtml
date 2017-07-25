@@ -1,0 +1,65 @@
+﻿@model OnePOS.Models.Dashboard.Brand.BrandViewModels
+
+@{
+    ViewBag.Title = "EditBrand";
+    Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
+}
+
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Edit Brand</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+
+
+        <div class="row">
+            <div class="edit-brands-section">
+                @using (Html.BeginForm("DashboardEditBrand", "Dashboard", FormMethod.Post, new { @id = "EditBrandPost", @class = "form-horizontal", role = "form" }))
+                {
+                    <div class="form-section edit-brands-manual section-header">
+
+                        <div class="brands-group-list">
+                            <div class="panel panel-default brands-form-container">
+                                <div class="panel-body brands-group-form">
+
+                                    <div class="form-group">
+                                        <div class="col-sm-12 brand-name">
+                                            <label class="control-label">Brand Name</label>
+                                            @Html.TextBoxFor(m => m.BrandName, new { @class = "form-control" })
+                                        </div>
+                                        @*<div class="col-sm-3 brand-category">
+                                            <label class="control-label">Brand Category</label>
+                                            @Html.DropDownListFor(m => m.BrandCategoryId, Model.BrandCategoryDropdownLists, "Select Category", new { @class = "form-control" })
+                                        </div>*@
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-12 brand-description">
+                                            <label class="control-label">Brand Description</label>
+                                            @Html.TextAreaFor(m => m.BrandDescription, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="edit-brand-input-btn">
+                        <input type="submit" value="Edit Vendor " class="btn btn-blue btn-lg submit-button" />
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->

@@ -8,6 +8,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using OnePOS.Models.Dashboard;
 using OnePOS.Models.Dashboard.Brand;
 using OnePOS.Models.Dashboard.Items;
+using OnePOS.Models.Dashboard.Storage;
 using OnePOS.Models.Dashboard.Vendors;
 
 namespace OnePOS.Models
@@ -71,7 +72,7 @@ namespace OnePOS.Models
             modelBuilder.Entity<BrandViewModels>().ToTable(("Brand"));
             modelBuilder.Entity<ManufacturerViewModels>().ToTable(("Manufacturer"));
             modelBuilder.Entity<BrandCategoryModels>().ToTable(("BrandCategory"));
-
+            modelBuilder.Entity<StorageViewModels>().ToTable(("Storage"));
         }
 
         static ApplicationDbContext()
@@ -91,6 +92,7 @@ namespace OnePOS.Models
         public DbSet<BrandViewModels> Brand { get; set; }
         public DbSet<ManufacturerViewModels> Manufacturer { get; set; }
         public DbSet<BrandCategoryModels> BrandCategory { get; set; }
+        public DbSet<StorageViewModels> Storage { get; set; }
 
     }
 

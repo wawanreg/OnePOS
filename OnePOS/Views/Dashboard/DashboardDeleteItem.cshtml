@@ -1,0 +1,88 @@
+﻿@model OnePOS.Models.Dashboard.Items.ItemViewModels
+
+@{
+    ViewBag.Title = "DeleteItem";
+    Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
+}
+
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Delete Item</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        
+        
+        <div class="row">
+            <div class="delete-items-section">
+                @using (Html.BeginForm("DashboardDeleteItem", "Dashboard", FormMethod.Post, new { @id = "DeleteItemPost", @class = "form-horizontal", role = "form" }))
+                {
+                    <div class="form-section delete-items-manual section-header">
+                        
+
+                        <div class="items-group-list">
+                            <div class="panel panel-default items-form-container">
+                                <div class="panel-body items-group-form">
+                                    
+                                    <div class="form-group">
+                                        <div class="col-sm-3 item-name">
+                                            <label class="control-label">Items Name</label>
+                                            @Html.TextBoxFor(x => x.ItemName, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                        <div class="col-sm-3 item-sale-price">
+                                            <label class="control-label">Sale Price</label>
+                                            @Html.TextBoxFor(x => x.SalePrice, new { @class = "form-control", @readonly = "readonly" }) 
+                                        </div>
+                                        <div class="col-sm-3 item-buy-price">
+                                            <label class="control-label">Buy Price</label>
+                                            @Html.TextBoxFor(x => x.BuyPrice, new { @class = "form-control", @readonly = "readonly" }) 
+                                        </div>
+                                        <div class="col-lg-3 item-quantity">
+                                            <label class="control-label">Stock</label>
+                                            @Html.TextBoxFor(x => x.Stock, new { @class = "form-control", @readonly = "readonly" }) 
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-lg-3 item-storage">
+                                            <label class="control-label">Item Location</label>
+                                            @Html.TextBoxFor(m => m.Storage.StorageName, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                        <div class="col-lg-3 item-brand-type">
+                                            <label class="control-label">Brand</label>
+                                            @Html.TextBoxFor(m => m.Brand.BrandName, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                        <div class="col-lg-3 item-vendor">
+                                            <label class="control-label">Vendor</label>
+                                            @*<input class="form-control" />*@
+                                            @Html.TextBoxFor(m => m.Vendor.VendorName, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                        <div class="col-lg-3 item-brand-category">
+                                            <label class="control-label">Brand Category</label>
+                                            @Html.TextBoxFor(m => m.BrandCategory.BrandCategoryName, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+
+                    <div class="delete-item-input-btn">
+                        <input type="submit" value="Delete Item" class="btn btn-blue btn-lg submit-button" />
+                    </div>
+                    
+                }
+
+            </div>
+
+        </div>
+     
+
+    </div>
+
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->

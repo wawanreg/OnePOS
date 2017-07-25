@@ -11,6 +11,7 @@ using OnePOS.Models;
 using OnePOS.Models.Dashboard;
 using OnePOS.Models.Dashboard.Brand;
 using OnePOS.Models.Dashboard.Items;
+using OnePOS.Models.Dashboard.Storage;
 using OnePOS.Models.Dashboard.Vendors;
 
 namespace OnePOS.Controllers
@@ -68,17 +69,18 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardAddItems()
         {
-            AddItemViewModels test = new AddItemViewModels();
-            test.VendorDropdownLists = new SelectList(db.Vendor.Where(x => x.Active).ToList(), "VendorId", "VendorName");
+            ActionItemViewModels addItemModels = new ActionItemViewModels();
+            addItemModels.VendorDropdownLists = DashboardFunction.GetDropdownVendor(db,"");
+            addItemModels.BranchCategoryDropdownLists = DashboardFunction.GetDropdownBrandCategory(db, "");
+            addItemModels.StorageDropdownLists = DashboardFunction.GetDropdownStorage(db, "");
+            addItemModels.BranchDropdownLists = DashboardFunction.GetDropdownBrand(db, "");
 
-            //ViewBag.RoleId = new SelectList(db.Vendor.Where(x=> x.Active).ToList(), "VendorId", "VendorName");
-
-            return View(test);
+            return View(addItemModels);
         }
         [HttpPost]
         [Route("Dashboard/AddItems")]
         [Authorize(Roles = "Super Admin,Admin")]
-        public ActionResult DashboardAddItems(AddItemViewModels itemsData)
+        public ActionResult DashboardAddItems(ActionItemViewModels itemsData)
         {
             var currentUserName = User.Identity.GetUserName();
             DashboardFunction.AddItemsToDb(db,itemsData, currentUserName);
@@ -86,6 +88,41 @@ namespace OnePOS.Controllers
             return RedirectToAction("AddItems");
         }
 
+        [Route("Dashboard/EditItem/{idItem}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardEditItem(int idItem)
+        {
+            return View(DashboardFunction.GetActionItemViewModels(db, idItem));
+        }
+
+        [HttpPost]
+        [Route("Dashboard/EditItem/{idItem}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardEditItem(int idItem, ActionItemViewModels mItem)
+        {
+            var currentUserName = User.Identity.GetUserName();
+            DashboardFunction.EditItemViewModels(db, currentUserName, mItem, idItem);
+
+            return RedirectToAction("ListItems");
+        }
+
+        [Route("Dashboard/DeleteItem/{idItem}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardDeleteItem(int idItem)
+        {
+            return View(DashboardFunction.GetItemViewModels(db, idItem));
+        }
+
+        [HttpPost]
+        [Route("Dashboard/DeleteItem/{idItem}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardDeleteItem(int idItem, ItemViewModels mItem)
+        {
+            DashboardFunction.DeleteItemViewModels(db, mItem, idItem);
+            return RedirectToAction("ListItems");
+        }
+
+        
         [Route("Dashboard/ListVendors")]
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardListVendors()
@@ -152,16 +189,13 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardAddBrands()
         {
-            //DashboardFunction.StarDashboardIndex();
-            AddBrandViewModels test = new AddBrandViewModels();
-            test.BrandCategoryDropdownLists = new SelectList(db.BrandCategory.ToList(), "BrandCategoryId", "BrandCategoryName");
-
-            return View(test);
+            return View();
         }
+        
         [HttpPost]
         [Route("Dashboard/AddBrands")]
         [Authorize(Roles = "Super Admin,Admin")]
-        public ActionResult DashboardAddBrands(AddBrandViewModels brandData)
+        public ActionResult DashboardAddBrands(ActionBrandViewModels brandData)
         {
 
             var currentUserName = User.Identity.GetUserName();
@@ -171,6 +205,106 @@ namespace OnePOS.Controllers
             return RedirectToAction("AddBrands");
         }
 
+        [Route("Dashboard/ListBrands")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardListBrands()
+        {
+            return View();
+        }
+
+        [Route("Dashboard/EditBrand/{idBrand}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardEditBrand(int idBrand)
+        {
+            return View(DashboardFunction.GetBrandViewModels(db, idBrand));
+        }
+
+        [HttpPost]
+        [Route("Dashboard/EditBrand/{idBrand}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardEditBrand(int idBrand, ActionBrandViewModels mBrand)
+        {
+            var currentUserName = User.Identity.GetUserName();
+            DashboardFunction.EditBrandViewModels(db, currentUserName, mBrand, idBrand);
+
+            return RedirectToAction("ListBrands");
+        }
+
+        [Route("Dashboard/DeleteBrand/{idBrand}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardDeleteBrand(int idBrand)
+        {
+            return View(DashboardFunction.GetBrandViewModels(db, idBrand));
+        }
+
+        [HttpPost]
+        [Route("Dashboard/DeleteBrand/{idBrand}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardDeleteBrand(int idBrand, BrandViewModels mBrand)
+        {
+            DashboardFunction.DeleteBrandViewModels(db, mBrand, idBrand);
+            return RedirectToAction("ListBrands");
+        }
+
+        [Route("Dashboard/AddStorages")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardAddStorages()
+        {
+            return View();
+        }
+        [HttpPost]
+        [Route("Dashboard/AddStorages")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardAddStorages(ActionStorageViewModels storageData)
+        {
+
+            var currentUserName = User.Identity.GetUserName();
+
+            DashboardFunction.AddStoragesToDb(db, storageData, currentUserName);
+
+            return RedirectToAction("AddStorages");
+        }
+
+        [Route("Dashboard/ListStorages")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardListStorages()
+        {
+            return View();
+        }
+
+        [Route("Dashboard/EditStorage/{idStorage}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardEditStorage(int idStorage)
+        {
+            return View(DashboardFunction.GetStorageViewModels(db, idStorage));
+        }
+
+        [HttpPost]
+        [Route("Dashboard/EditStorage/{idStorage}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardEditStorage(int idStorage, ActionStorageViewModels mStorage)
+        {
+            var currentUserName = User.Identity.GetUserName();
+            DashboardFunction.EditStorageViewModels(db, currentUserName, mStorage, idStorage);
+
+            return RedirectToAction("ListStorages");
+        }
+
+        [Route("Dashboard/DeleteStorage/{idStorage}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardDeleteStorage(int idStorage)
+        {
+            return View(DashboardFunction.GetStorageViewModels(db, idStorage));
+        }
+
+        [HttpPost]
+        [Route("Dashboard/DeleteStorage/{idStorage}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardDeleteStorage(int idStorage, StorageViewModels mStorage)
+        {
+            DashboardFunction.DeleteStorageViewModels(db, mStorage, idStorage);
+            return RedirectToAction("ListStorages");
+        }
 
         protected override void Dispose(bool disposing)
         {

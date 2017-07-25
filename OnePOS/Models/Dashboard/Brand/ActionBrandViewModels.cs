@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace OnePOS.Models.Dashboard.Brand
 {
-    public class AddBrandViewModels
+    public class ActionBrandViewModels
     {
        
         public int BrandId { get; set; }

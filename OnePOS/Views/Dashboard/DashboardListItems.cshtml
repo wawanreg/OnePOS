@@ -51,9 +51,9 @@
 
                                 <td class="item-number-row">{{currentNumber+$index}}</td>
                                 <td class="item-name">{{itemList.ItemName}}</td>
-                                <td class="item-buy-price">{{itemList.ItemBuyPrice}}</td>
-                                <td class="item-sale-price">{{itemList.ItemSalePrice}}</td>
-                                <td class="item-quantitiy">{{itemList.ItemQuantitiy}}</td>
+                                <td class="item-buy-price">{{itemList.ItemBuyPrice | number : 0}}</td>
+                                <td class="item-sale-price">{{itemList.ItemSalePrice | number : 0}}</td>
+                                <td class="item-quantitiy">{{itemList.ItemQuantitiy | number : 0}}</td>
                                 <td class="item-location">{{itemList.ItemLocation}}</td>
                                 <td class="item-vendor-name">{{itemList.ItemVendorName}}</td>
                                 <td class="item-action">
@@ -87,8 +87,10 @@
 
 
 
-@section AdditionalJavascript {
-
+@section PageJavascript {
+    $(document).ready(function () {
+        
+    });
 }
 
 @using (Html.BeginScripts())

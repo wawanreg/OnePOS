@@ -1,7 +1,7 @@
 ﻿@model OnePOS.Models.Dashboard.Items.ActionItemViewModels
 
 @{
-    ViewBag.Title = "AddItems";
+    ViewBag.Title = "EditItem";
     Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
 }
 
@@ -9,69 +9,62 @@
     <div id="page-wrapper">
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Add Items</h1>
+                <h1 class="page-header">Edit Item</h1>
             </div>
             <!-- /.col-lg-12 -->
         </div>
         
         
         <div class="row">
-            <div class="add-items-section">
-                @using (Html.BeginForm("DashboardAddItems", "Dashboard", FormMethod.Post, new { @id = "AddItemsPost", @class = "form-horizontal", role = "form" }))
+            <div class="edit-items-section">
+                @using (Html.BeginForm("DashboardEditItem", "Dashboard", FormMethod.Post, new { @id = "EditItemPost", @class = "form-horizontal", role = "form" }))
                 {
-                    <div class="form-section add-items-manual section-header">
-                        @Html.HiddenFor(m => m.ItemName, new { @id = "ItemName" })
-                        @Html.HiddenFor(m => m.ItemSalePrice, new { @id = "ItemSalePrice" })
-                        @Html.HiddenFor(m => m.ItemBuyPrice, new { @id = "ItemBuyPrice" })
-                        @Html.HiddenFor(m => m.ItemStorage, new { @id = "ItemStorage" })
-                        @Html.HiddenFor(m => m.ItemBrandType, new { @id = "ItemBrandType" })
-                        @Html.HiddenFor(m => m.ItemQuantitiy, new { @id = "ItemQuantity" })
+                    <div class="form-section edit-items-manual section-header">
                         @Html.HiddenFor(m => m.ItemVendor, new { @id = "ItemVendor" })
                         @Html.HiddenFor(m => m.ItemBrandCategory, new { @id = "ItemBrandCategory" })
+                        @Html.HiddenFor(m => m.ItemStorage, new { @id = "ItemStorage" })
+                        @Html.HiddenFor(m => m.ItemBrandType, new { @id = "ItemBrandType" })
 
                         <div class="items-group-list">
                             <div class="panel panel-default items-form-container">
                                 <div class="panel-body items-group-form">
-                                    <div class="form-group">
-                                        <i class="fa fa-times close-item-button" aria-hidden="true"></i>
-                                    </div>
-
+                                    
                                     <div class="form-group">
                                         <div class="col-sm-3 item-name">
                                             <label class="control-label">Items Name</label>
-                                            <input class="form-control" />
+                                            @Html.TextBoxFor(x => x.ItemName, new { @class = "form-control" })
                                         </div>
                                         <div class="col-sm-3 item-sale-price">
                                             <label class="control-label">Sale Price</label>
-                                            <input class="form-control" onchange="changeInputNumber(this)" />
+                                            @Html.TextBoxFor(x => x.ItemSalePrice, new { @class = "form-control", @onchange = "changeInputNumber(this)" }) 
                                         </div>
                                         <div class="col-sm-3 item-buy-price">
                                             <label class="control-label">Buy Price</label>
-                                            <input class="form-control" onchange="changeInputNumber(this)" />
+                                            @Html.TextBoxFor(x => x.ItemBuyPrice, new { @class = "form-control", @onchange = "changeInputNumber(this)" }) 
                                         </div>
                                         <div class="col-lg-3 item-quantity">
                                             <label class="control-label">Stock</label>
-                                            <input class="form-control" onchange="changeInputNumber(this)" />
+                                            @Html.TextBoxFor(x => x.ItemQuantitiy, new { @class = "form-control", @onchange = "changeInputNumber(this)" }) 
                                         </div>
                                         
                                     </div>
                                     <div class="form-group">
                                         <div class="col-lg-3 item-storage">
                                             <label class="control-label">Item Location</label>
-                                            @Html.DropDownListFor(m => m.StorageDropdownLists, Model.StorageDropdownLists, "Select Storage", new { @class = "form-control" })
+                                            @Html.DropDownListFor(m => m.ItemStorage, Model.StorageDropdownLists, new { @class = "form-control" })
                                         </div>
                                         <div class="col-lg-3 item-brand-type">
                                             <label class="control-label">Brand</label>
-                                            @Html.DropDownListFor(m => m.BranchDropdownLists, Model.BranchDropdownLists, "Select Brand", new { @class = "form-control" })
+                                            @Html.DropDownListFor(m => m.ItemBrandType, Model.BranchDropdownLists, new { @class = "form-control" })
                                         </div>
                                         <div class="col-lg-3 item-vendor">
                                             <label class="control-label">Vendor</label>
                                             @*<input class="form-control" />*@
-                                            @Html.DropDownListFor(m => m.VendorDropdownLists, Model.VendorDropdownLists, "Select Vendor", new { @class = "form-control" })
+                                            @Html.DropDownListFor(m => m.ItemVendor, Model.VendorDropdownLists, new { @class = "form-control" })
                                         </div>
                                         <div class="col-lg-3 item-brand-category">
                                             <label class="control-label">Brand Category</label>
-                                            @Html.DropDownListFor(m => m.BranchCategoryDropdownLists, Model.BranchCategoryDropdownLists, "Select Category", new { @class = "form-control" })
+                                            @Html.DropDownListFor(m => m.ItemBrandCategory, Model.BranchCategoryDropdownLists, new { @class = "form-control" })
                                         </div>
                                     </div>
                                 </div>
@@ -80,13 +73,8 @@
                         </div>
                     </div>
 
-                    <div class=" add-new-item-form row">
-                        <div class="col-sm-12">
-                            <a href="#" class="add-item-btn"><i class="fa fa-plus" aria-hidden="true"></i> Add New Item</a>
-                        </div>
-                    </div>
-                    <div class="add-item-input-btn">
-                        <input type="submit" value="Submit New Items " class="btn btn-blue btn-lg submit-button" />
+                    <div class="edit-item-input-btn">
+                        <input type="submit" value="Edit Item" class="btn btn-blue btn-lg submit-button" />
                     </div>
                     
                 }
@@ -103,11 +91,12 @@
 <!-- /#wrapper -->
 
 @section AdditionalJavascript {
-    <script src="~/Assets/js/Items/addItems.js"></script>
+    <script src="~/Assets/js/Items/editItem.js"></script>
+    
 }
 
 @section PageJavascript {
     <script>
-        functionAddFormItem();
+        functionEditFormItem();
     </script>
 }

@@ -112,6 +112,18 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="#"><i class="fa fa-map-marker fa-fw" aria-hidden="true"></i>&nbsp; Storage<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li>
+                                <a href="@Url.Action("DashboardListStorages", "Dashboard")"><i class="fa fa-list fa-fw" aria-hidden="true"></i>&nbsp; List Storages</a>
+                            </li>
+
+                            <li>
+                                <a href="@Url.Action("DashboardAddStorages", "Dashboard")"><i class="fa fa-plus fa-fw" aria-hidden="true"></i>&nbsp; Add Storages</a>
+                            </li>
+                        </ul>
+                    </li>
                     @*<li>
                         <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -221,6 +233,7 @@
     
     <script src="/Assets/js/angular.min.js"></script>
     <script src="/Assets/js/angular-resource.js"></script>
+    <script src="/Assets/js/angular-numbro.min.js"></script>
 
     <script src="/Assets/js/dirPagination.js"></script>
     

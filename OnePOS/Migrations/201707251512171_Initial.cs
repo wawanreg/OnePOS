@@ -7,7 +7,6 @@ namespace OnePOS.Migrations
     {
         public override void Up()
         {
-            
             CreateTable(
                 "dbo.Brand",
                 c => new
@@ -28,6 +27,15 @@ namespace OnePOS.Migrations
                 .PrimaryKey(t => t.BrandId);
             
             CreateTable(
+                "dbo.BrandCategory",
+                c => new
+                    {
+                        BrandCategoryId = c.Int(nullable: false, identity: true),
+                        BrandCategoryName = c.String(),
+                    })
+                .PrimaryKey(t => t.BrandCategoryId);
+            
+            CreateTable(
                 "dbo.Item",
                 c => new
                     {
@@ -38,7 +46,6 @@ namespace OnePOS.Migrations
                         BuyPrice = c.Decimal(nullable: false, precision: 18, scale: 2),
                         OldPrice = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Stock = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        ItemLocation = c.String(),
                         ItemPicture = c.String(),
                         Active = c.Boolean(nullable: false),
                         Deleted = c.Boolean(nullable: false),
@@ -49,15 +56,21 @@ namespace OnePOS.Migrations
                         UpdatedDate = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
                         UpadtedAgent = c.String(),
                         Brand_BrandId = c.Int(),
+                        BrandCategory_BrandCategoryId = c.Int(),
                         Manufacturer_ManufacturerId = c.Int(),
+                        Storage_StorageId = c.Int(),
                         Vendor_VendorId = c.Int(),
                     })
                 .PrimaryKey(t => t.ItemId)
                 .ForeignKey("dbo.Brand", t => t.Brand_BrandId)
+                .ForeignKey("dbo.BrandCategory", t => t.BrandCategory_BrandCategoryId)
                 .ForeignKey("dbo.Manufacturer", t => t.Manufacturer_ManufacturerId)
+                .ForeignKey("dbo.Storage", t => t.Storage_StorageId)
                 .ForeignKey("dbo.Vendor", t => t.Vendor_VendorId)
                 .Index(t => t.Brand_BrandId)
+                .Index(t => t.BrandCategory_BrandCategoryId)
                 .Index(t => t.Manufacturer_ManufacturerId)
+                .Index(t => t.Storage_StorageId)
                 .Index(t => t.Vendor_VendorId);
             
             CreateTable(
@@ -78,6 +91,25 @@ namespace OnePOS.Migrations
                         UpadtedAgent = c.String(),
                     })
                 .PrimaryKey(t => t.ManufacturerId);
+            
+            CreateTable(
+                "dbo.Storage",
+                c => new
+                    {
+                        StorageId = c.Int(nullable: false, identity: true),
+                        StorageUniqueId = c.String(),
+                        StorageName = c.String(),
+                        StorageDescription = c.String(),
+                        Active = c.Boolean(nullable: false),
+                        Deleted = c.Boolean(nullable: false),
+                        CreatedBy = c.String(),
+                        CreatedDate = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
+                        CreatedAgent = c.String(),
+                        UpdatedBy = c.String(),
+                        UpdatedDate = c.DateTime(nullable: false, precision: 7, storeType: "datetime2"),
+                        UpadtedAgent = c.String(),
+                    })
+                .PrimaryKey(t => t.StorageId);
             
             CreateTable(
                 "dbo.Vendor",
@@ -191,7 +223,9 @@ namespace OnePOS.Migrations
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Item", "Vendor_VendorId", "dbo.Vendor");
+            DropForeignKey("dbo.Item", "Storage_StorageId", "dbo.Storage");
             DropForeignKey("dbo.Item", "Manufacturer_ManufacturerId", "dbo.Manufacturer");
+            DropForeignKey("dbo.Item", "BrandCategory_BrandCategoryId", "dbo.BrandCategory");
             DropForeignKey("dbo.Item", "Brand_BrandId", "dbo.Brand");
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
@@ -200,7 +234,9 @@ namespace OnePOS.Migrations
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.Item", new[] { "Vendor_VendorId" });
+            DropIndex("dbo.Item", new[] { "Storage_StorageId" });
             DropIndex("dbo.Item", new[] { "Manufacturer_ManufacturerId" });
+            DropIndex("dbo.Item", new[] { "BrandCategory_BrandCategoryId" });
             DropIndex("dbo.Item", new[] { "Brand_BrandId" });
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
@@ -208,8 +244,10 @@ namespace OnePOS.Migrations
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.Vendor");
+            DropTable("dbo.Storage");
             DropTable("dbo.Manufacturer");
             DropTable("dbo.Item");
+            DropTable("dbo.BrandCategory");
             DropTable("dbo.Brand");
         }
     }

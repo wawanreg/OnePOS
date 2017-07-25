@@ -5,38 +5,18 @@ var brandData = {
     },
     brandDescription: {
         value: ""
+    },
+    brandCateogry: {
+        value: ""
     }
-    //,
-    //brandCateogry: {
-    //    value: ""
-    //}
 };
 
 
 //Add Branch Location
-function functionAddFormBrand() {
+function functionEditFormBrand() {
     
-    var termTemplate = '<div class="panel panel-default brands-form-container">' + $('.brands-group-list .panel-default').html() + '</div>';
-
-    // add form item
-    $('.add-brand-btn').click(function (evt) {
-        evt.preventDefault();
-        $('.brands-group-list').append(termTemplate);
-
-    });
-
-    // remove form item
-    $('.brands-group-list').on('click', '.close-brand-button', function (evt) {
-        evt.preventDefault();
-        
-        if ($('.brands-group-list .brands-form-container').siblings().length > 1) {
-            $(this).closest('.brands-form-container').remove();
-        }
-
-    });
-
     //submit data to db
-    $('.add-brand-input-btn input').click(function (evt) {
+    $('.edit-brand-input-btn input').click(function (evt) {
         evt.preventDefault();
 
         
@@ -54,12 +34,21 @@ function functionAddFormBrand() {
             }
         });
 
+        brandData.brandCateogry.value = [];
+        $('.brands-form-container .brand-category select').each(function () {
+            if ($(this).val().length > 0) {
+                brandData.brandCateogry.value.push($(this).val());
+            }
+        });
+
        
+
         document.getElementById("BrandName").value = brandData.brandName.value.join('|');
         document.getElementById("BrandDescription").value = brandData.brandDescription.value.join('|');
+        document.getElementById("BrandCategoryId").value = brandData.brandCateogry.value.join('|');
         
         
-        $('#AddBrandsPost').submit();
+        $('#EditBrandPost').submit();
         
 
         
