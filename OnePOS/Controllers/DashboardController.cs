@@ -306,6 +306,15 @@ namespace OnePOS.Controllers
             return RedirectToAction("ListStorages");
         }
 
+        [Route("Dashboard/ShoppingBasket")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardShoppingBasket()
+        {
+            //DashboardFunction.StarDashboardIndex();
+
+            return View();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

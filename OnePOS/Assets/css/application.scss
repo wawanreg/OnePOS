@@ -262,5 +262,10 @@ body img {max-width:100%;}
 		} 
         .add-storage-input-btn{padding-top: 15px; padding-bottom: 15px;}
     }
+    .shopping-basket{
+        .collection-item-select{background-color:white;
+            &:hover {background-color:whitesmoke;}
+        }
+    }
 }
 

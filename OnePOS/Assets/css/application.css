@@ -306,3 +306,7 @@ body img {
   .dashboard-page .add-storages-section .add-storage-input-btn {
     padding-top: 15px;
     padding-bottom: 15px; }
+  .dashboard-page .shopping-basket .collection-item-select {
+    background-color: white; }
+    .dashboard-page .shopping-basket .collection-item-select:hover {
+      background-color: whitesmoke; }

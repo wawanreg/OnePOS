@@ -1,0 +1,93 @@
+﻿@using Loyalti.Helpers
+@using Microsoft.Ajax.Utilities
+
+@{
+    ViewBag.Title = "ShoppingBasket";
+    Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
+}
+<div id="wrapper">
+    <div id="page-wrapper" ng-app="app" ng-controller="POSController" ng-init="init()" class="ng-cloak">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 class="page-header">Shopping Basket</h1>
+                <span id="messageLoader" class="text-danger" style="display:none; width: 9.333333%;">Empty Stock</span>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row shopping-basket ">
+            <section class="col-sm-12">
+                <div class="well">
+                    <input class="form-control" style="margin-bottom: 0;" ng-model="myValue" />
+                    <div class="panel panel-default " style="margin-bottom: 0">
+                        <div ng-if="myValue.length" ng-repeat=" theItem in itemColletions | filter: myValue" class="collection-item-select">
+                            <div style="margin-left: 10px;" ng-click="add(theItem.ItemId)">
+                                <label class="control-label" style="margin-top: 10px;">{{theItem.ItemName}}</label>
+                                <label class="control-label"> Rp.{{theItem.ItemPrice | number : 0}}</label>
+                                <label class="control-label"> -  Stock ({{theItem.TotalStock | number : 0}})</label>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+        </div>
+        <div class="row">
+            <section class="col-sm-6 order-holder">
+                <div class="well">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Order Summary</h3>
+                        </div>
+                        <div class="panel-body" style="max-height:320px; overflow:auto;">
+                            <div class="text-warning" ng-hide="order.length">
+                                Nothing ordered yet !
+                            </div>
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="item in order">
+
+                                    {{item.name}} - {{item.qty}}
+
+                                    <button class="btn btn-danger btn-xs pull-right" ng-click="deleteItem($index)">
+                                        <i class="fa fa-trash" aria-hidden="true" style=""></i>
+                                    </button>
+                                </li>
+                            </ul>
+
+                        </div>
+                        @*<div class="panel-footer" ng-show="order.length">
+                                <div class="label label-danger">Total: ${{getSum()}}</div>
+                            </div>*@
+                        @*<div class="panel-footer" ng-show="order.length">
+                                <div class="text-muted">
+                                    Do not let go of customer without taking payment !
+                                </div>
+                            </div>*@
+
+                    </div>
+                </div>
+            </section>
+
+            <section class="col-sm-6 order-summary">
+                <div class="well">
+
+                </div>
+            </section>
+        </div>
+
+
+    </div>
+
+    <!-- /#page-wrapper -->
+</div>
+
+@using (Html.BeginScripts())
+{
+    <script src="~/Assets/js/shoppingBasket.js"></script>
+    <script>
+        shoppingCollection(
+            '.shopping-basket',
+            '/ApiCollection/GetItemCollection');
+    </script>
+}

@@ -8,6 +8,7 @@ using OnePOS.Helpers;
 using OnePOS.Models;
 using OnePOS.Models.Dashboard.Brand;
 using OnePOS.Models.Dashboard.Items;
+using OnePOS.Models.Dashboard.ShoppingBasket;
 using OnePOS.Models.Dashboard.Storage;
 using OnePOS.Models.Dashboard.Vendors;
 
@@ -87,6 +88,21 @@ namespace OnePOS.FunctionController
             }).Skip(take * (page - 1)).Take(take).ToList();
 
             return Json(new { @datajson = JsonConvert.SerializeObject(mStorage), itemsPerPage = db.Storage.Count() }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "Super Admin,Admin")]
+        [Route("ApiCollection/GetItemCollection")]
+        public JsonResult ItemCollectionJson()
+        {
+            List<ShoppingBasketCollection> mItemCollections = db.Item.OrderBy(x => x.ItemId).Select(x => new ShoppingBasketCollection
+            {
+                ItemName = x.ItemName,
+                ItemPrice = x.SalePrice,
+                TotalStock = x.Stock,
+                ItemId = x.ItemId
+            }).ToList();
+
+            return Json(new { @datajson = JsonConvert.SerializeObject(mItemCollections), itemsPerPage = 0 }, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

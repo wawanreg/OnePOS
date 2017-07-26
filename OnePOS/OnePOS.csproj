@@ -184,6 +184,7 @@
     <Compile Include="Models\Dashboard\Brand\ListBrandViewModels.cs" />
     <Compile Include="Models\Dashboard\Items\ActionItemViewModels.cs" />
     <Compile Include="Models\Dashboard\Items\ListItemViewModels.cs" />
+    <Compile Include="Models\Dashboard\ShoppingBasket\ShoppingBasketCollection.cs" />
     <Compile Include="Models\Dashboard\Storage\ListStorageViewModels.cs" />
     <Compile Include="Models\Dashboard\Storage\ActionStorageViewModels.cs" />
     <Compile Include="Models\Dashboard\Storage\StorageViewModels.cs" />
@@ -225,6 +226,7 @@
     <Content Include="Assets\js\moment.min.js" />
     <Content Include="Assets\js\numbro.min.js" />
     <Content Include="Assets\js\sb-admin-2.js" />
+    <Content Include="Assets\js\shoppingBasket.js" />
     <Content Include="Assets\js\Storage\addStorages.js" />
     <Content Include="Assets\js\Vendor\addVendors.js" />
     <Content Include="Content\bootstrap.css" />
@@ -342,6 +344,7 @@
     <Content Include="Views\Dashboard\DashboardDeleteStorage.cshtml" />
     <Content Include="Views\Dashboard\DashboardEditItem.cshtml" />
     <Content Include="Views\Dashboard\DashboardDeleteItem.cshtml" />
+    <Content Include="Views\Dashboard\DashboardShoppingBasket.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
