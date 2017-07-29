@@ -244,20 +244,13 @@
     
 
     <script src="/Assets/js/dirPagination.js"></script>
-    
+    <script src="/Assets/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
 
-    @if (IsSectionDefined("AdditionalJavascript"))
-    {
-        @RenderSection("AdditionalJavascript");
-    }
-
+    @if (IsSectionDefined("AdditionalJavascript")) { @RenderSection("AdditionalJavascript") ; }
     @RenderSection("scripts", required: false)
-    @if (IsSectionDefined("PageJavascript"))
-    {
-        @RenderSection("PageJavascript");
-    }
-
+    @if (IsSectionDefined("PageJavascript")) { @RenderSection("PageJavascript") ; }
     @RenderSection("divImageControl", false)
     @Html.PageScripts()
+
 </body>
 </html>

@@ -5,6 +5,7 @@
     ViewBag.Title = "ShoppingBasket";
     Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
 }
+
 <div id="wrapper">
     <div id="page-wrapper" ng-app="app" ng-controller="POSController" ng-init="init()" class="ng-cloak">
         <div class="row">
@@ -17,9 +18,9 @@
         <div class="row shopping-basket ">
             <section class="col-sm-12">
                 <div class="well">
-                    <input class="form-control" style="margin-bottom: 0;" ng-model="myValue" />
+                    <input class="form-control" style="margin-bottom: 0;" ng-model="myValue" placeholder="Enter Item Name or Price or Stock"/>
                     <div class="panel panel-default " style="margin-bottom: 0">
-                        <div ng-if="myValue.length" ng-repeat=" theItem in itemColletions | filter: myValue" class="collection-item-select">
+                        <div ng-if="myValue.length" ng-repeat=" theItem in itemCollections | filter: myValue" class="collection-item-select">
                             <div style="margin-left: 10px;" ng-click="add(theItem.ItemId)">
                                 <label class="control-label" style="margin-top: 10px;">{{theItem.ItemName}}</label>
                                 <label class="control-label"> Rp.{{theItem.ItemPrice | number : 0}}</label>
@@ -34,48 +35,114 @@
             </section>
         </div>
         <div class="row">
-            <section class="col-sm-6 order-holder">
-                <div class="well">
+            <section class="col-sm-8 order-summary">
+                <div class="well table-responsive">
                     <div class="panel panel-primary">
                         <div class="panel-heading">
                             <h3 class="panel-title">Order Summary</h3>
                         </div>
-                        <div class="panel-body" style="max-height:320px; overflow:auto;">
+                        <div class="panel-body">
                             <div class="text-warning" ng-hide="order.length">
                                 Nothing ordered yet !
                             </div>
+                            <table class="table table-hover list-table" ng-show="order.length">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            #
+                                        </th>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Price
+                                        </th>
+                                        <th>
+                                            Quantity
+                                        </th>
+                                        <th>
+
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in order">
+                                        <td>
+                                            {{$index+1}}
+                                        </td>
+                                        <td>
+                                            <a>{{item.name}}</a>
+                                        </td>
+                                        <td>
+                                            <a>Rp. {{item.price | number : 0}}</a>
+                                        </td>
+                                        <td>
+                                            @*<input type="text" value="{{item.qty | number : 0}}" uib-popover-template="'tpl.html'" popover-trigger="'focus'" class="" style="background-color: rgba(0,0,0,0) !important; border: none !important; box-shadow: none !important;" />*@
+
+                                            <a uib-popover-template="'tpl.html'" popover-trigger="outsideClick" popover-title="Qty">{{::item.qty | number : 0}}</a>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger btn-xs pull-right" ng-click="deleteItem($index,item.id,item.qty)">
+                                                <i class="fa fa-trash" aria-hidden="true" style=""></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="col-sm-4 order-holder">
+                <div class="well">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Total Summary</h3>
+                        </div>
+                        <div class="panel-body" style="max-height:320px; overflow:auto;">
                             <ul class="list-group">
                                 <li class="list-group-item" ng-repeat="item in order">
-
-                                    {{item.name}} - {{item.qty}}
-
-                                    <button class="btn btn-danger btn-xs pull-right" ng-click="deleteItem($index)">
-                                        <i class="fa fa-trash" aria-hidden="true" style=""></i>
-                                    </button>
+                                    <div class="label label-success " style=" font-size: medium;">Rp. {{item.totalPrice | number : 0}}</div>
                                 </li>
                             </ul>
-
                         </div>
-                        @*<div class="panel-footer" ng-show="order.length">
-                                <div class="label label-danger">Total: ${{getSum()}}</div>
-                            </div>*@
-                        @*<div class="panel-footer" ng-show="order.length">
-                                <div class="text-muted">
-                                    Do not let go of customer without taking payment !
-                                </div>
-                            </div>*@
-
+                        <div class="panel-footer" ng-show="order.length">
+                            <div class="label label-danger" style=" font-size: medium;">Total: Rp. {{getSum()| number : 0}}</div>
+                        </div>
+                        <div class="pull-right" style=" margin-top: 1%;">
+                            <span class="btn btn-default" ng-click="clearOrder()" ng-disabled="!order.length">Clear</span>
+                            @*<span class="btn btn-danger" ng-click="checkout()" ng-disabled="!order.length">Checkout</span>*@
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section class="col-sm-6 order-summary">
-                <div class="well">
+            
+        </div>
+        @*<a id="ttt" title="Header" data-toggle="test"   data-placement="top" data-content="Content">123</a>*@
+        <script type="text/ng-template" id="tpl.html">
+            <div class="popover-content">
+                
+                <div class="form-group">
+                    <div class="">
+                        <input type="text" class="form-control" value="{{item.qty | number : 0}}" ng-model="item.qty" />
+                    </div>
+                    <div class="">
+                        <button tabindex="-1" type="submit" class="btn btn-primary btn-sm" ng-click="editItem(item.id,item.qty)">
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                        </button>
+                        <button tabindex="-1" type="button" class="btn btn-default btn-sm ">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </div>
 
                 </div>
-            </section>
-        </div>
+                
 
+            </div>
+        </script>
 
     </div>
 
@@ -90,4 +157,15 @@
             '.shopping-basket',
             '/ApiCollection/GetItemCollection');
     </script>
+    
+}
+
+@section PageJavascript {
+    <script>
+        $(document).ready(function() {
+            //popup
+            $('[data-toggle="test"]').popover();
+        })
+    </script>
+    
 }

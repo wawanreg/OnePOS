@@ -228,6 +228,7 @@
     <Content Include="Assets\js\sb-admin-2.js" />
     <Content Include="Assets\js\shoppingBasket.js" />
     <Content Include="Assets\js\Storage\addStorages.js" />
+    <Content Include="Assets\js\ui-bootstrap-tpls-2.5.0.min.js" />
     <Content Include="Assets\js\Vendor\addVendors.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
