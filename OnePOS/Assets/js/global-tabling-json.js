@@ -152,47 +152,6 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 			            
 			        });
 			    }
-
-			    //$scope.merchantName = merchantName;
-
-			    //if (merchantName != '') {
-				//	$scope.primaryUrl = mainJsonUrl  +$scope.merchantName;
-				//	$scope.secondaryUrl = searchJsonUrl  +$scope.merchantName;
-				//}else{
-				//	$scope.primaryUrl = mainJsonUrl;
-				//	$scope.secondaryUrl = searchJsonUrl;
-			    //}
-			    
-			    //if (autoOn) {
-			    //    standarPackage('start',0);
-
-			    //    $http({
-                //        method: "JSON",
-                //        url: $scope.primaryUrl + "?take=" + $scope.take + "&page=" + $scope.page
-                //    }).success(function (data, status) {
-                //        triggertPagging = false;
-
-                //        var collectJson = JSON.parse(data.datajson);
-
-                //        $scope.pageSize = data.itemsPerPage;
-                //        $scope.jsonLists = [];
-
-                //        $scope.totalItem = data.itemsPerPage;
-
-                //        if ($scope.pageSize > 10) {
-                //            $scope.pageSize = 10;
-                //        }
-
-                //        for (var i = 0; i < collectJson.length; i++) {
-                //            $scope.jsonLists.push(collectJson[i]);
-                //        }
-                //        standarPackage("success", collectJson.length);
-			    //        console.log($scope.jsonLists);
-			    //    }).error(function (data, status) {
-                //        triggertPagging = false;
-                //        standarPackage("error",0);
-			    //    });
-                //}
 			}
 
 			//$scope.change = function (parameterString, promoId) {

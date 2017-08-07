@@ -1,7 +1,5 @@
 var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 
-    
-
     var checkWarning = function (isWarning) {
         if (isWarning)
             $(classBelowWarning).css('margin-top', '10px');
@@ -14,7 +12,8 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	app.controller('POSController',['$scope', '$http', function ($scope,$http) {
 			$scope.itemCollections = [];
 			$scope.tempItemColls = [];
-
+	        $scope.dope = 0;
+            
 			$scope.primaryUrl = mainJsonUrl;
 			$scope.init = function() {
 			    $http({
@@ -24,19 +23,29 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 			        var collectJson = JSON.parse(data.data.datajson);
 			        for (var i = 0; i < collectJson.length; i++) {
 			            
-			            $scope.itemCollections.push(collectJson[i]);
+			            
+			            var collectOriginalJson = {
+			                ItemId: collectJson[i].ItemId,
+			                ItemPrice: collectJson[i].ItemPrice,
+			                ItemName: collectJson[i].ItemName,
+			                TotalStock: collectJson[i].TotalStock,
+			                ItemIndex : i
+			            }
+			            $scope.itemCollections.push(collectOriginalJson);
+			            
 
 			            var cloneItem = {
                             id : i+1,
 			                cloneId: collectJson[i].ItemId,
 			                clonePrice: collectJson[i].ItemPrice,
 			                cloneName: collectJson[i].ItemName,
-			                cloneStock: collectJson[i].TotalStock
+			                cloneStock: collectJson[i].TotalStock,
+                            cloneIndex : i
 			            }
 
 			            $scope.tempItemColls.push(cloneItem);
 			        }
-			        console.log($scope.tempItemColls);
+			       
 
 			    }, function error() {
 
@@ -46,111 +55,107 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	        
 	        $scope.order = [];
 
-	        $scope.add = function (itemId) {
+	        $scope.add = function (itemIndex,itemId) {
 	            var orderItem;
 	            var nihil = false;
 	            $('#messageLoader').hide();
 	            checkWarning(false);
 
-	            for (var i = 0; i < $scope.itemCollections.length; i++) {
-	                if ($scope.itemCollections[i].ItemId == itemId) {
-	                    var tempItem = $scope.itemCollections[i];
+	            if ($scope.itemCollections[itemIndex].ItemId == itemId) {
+	                var tempItem = $scope.itemCollections[itemIndex];
 
-	                    if ($scope.order.length > 0) {
-	                        for (var j = 0; j < $scope.order.length; j++) {
-	                            if ($scope.order[j].id == tempItem.ItemId) {
-	                                
-	                                if (tempItem.TotalStock > 0) {
-	                                    $scope.order[j].qty += 1;
-	                                    $scope.order[j].totalPrice += tempItem.ItemPrice;
+	                if ($scope.order.length > 0) {
+	                    for (var j = 0; j < $scope.order.length; j++) {
+	                        if ($scope.order[j].id == tempItem.ItemId) {
 
-	                                    nihil = false;
-	                                    tempItem.TotalStock--;
-	                                    break;
-	                                } else {
-	                                    $('#messageLoader').show();
-	                                    checkWarning(true);
-	                                }
-	                                
-	                                
-	                            }else {
-	                                nihil = true;
-	                            }
-	                        }
-	                        if (nihil) {
 	                            if (tempItem.TotalStock > 0) {
-	                                orderItem = {
-	                                    id: tempItem.ItemId,
-	                                    name: tempItem.ItemName,
-	                                    qty: 1,
-	                                    price: tempItem.ItemPrice,
-	                                    totalPrice: tempItem.ItemPrice
-	                                };
+	                                $scope.order[j].qty += 1;
+	                                $scope.order[j].totalPrice += tempItem.ItemPrice;
+
+	                                nihil = false;
 	                                tempItem.TotalStock--;
-	                                $scope.order.push(orderItem);
+	                                break;
 	                            } else {
 	                                $('#messageLoader').show();
 	                                checkWarning(true);
 	                            }
-	                            
+
+
+	                        } else {
+	                            nihil = true;
 	                        }
-	                    } else {
-	                        orderItem = {
-	                            id: tempItem.ItemId,
-	                            name: tempItem.ItemName,
-	                            qty: 1,
-	                            price: tempItem.ItemPrice,
-	                            totalPrice: tempItem.ItemPrice
-	                        };
-	                        tempItem.TotalStock--;
-	                        console.log($scope.tempItemColls);
-	                        $scope.order.push(orderItem);
 	                    }
-                    }
-	                
+	                    if (nihil) {
+	                        if (tempItem.TotalStock > 0) {
+	                            orderItem = {
+	                                id: tempItem.ItemId,
+	                                name: tempItem.ItemName,
+	                                qty: 1,
+	                                price: tempItem.ItemPrice,
+	                                totalPrice: tempItem.ItemPrice,
+	                                isOpen: false,
+                                    collectionIndex : itemIndex
+	                            };
+	                            tempItem.TotalStock--;
+	                            $scope.order.push(orderItem);
+	                        } else {
+	                            $('#messageLoader').show();
+	                            checkWarning(true);
+	                        }
+
+	                    }
+	                } else {
+	                    orderItem = {
+	                        id: tempItem.ItemId,
+	                        name: tempItem.ItemName,
+	                        qty: 1,
+	                        price: tempItem.ItemPrice,
+	                        totalPrice: tempItem.ItemPrice,
+	                        isOpen: false,
+	                        collectionIndex: itemIndex
+	                    };
+	                    tempItem.TotalStock--;
+
+	                    $scope.order.push(orderItem);
+	                }
+	                $scope.ctrIndex++;
 	            }
 	        };
 			
-	        $scope.deleteItem = function (index,itemId,itemQty) {
+	        $scope.deleteItem = function (index, itemId, itemQty, collectionIndex) {
 	            
-	            for (var i = 0; i < $scope.itemCollections.length; i++) {
-	                if ($scope.itemCollections[i].ItemId == itemId) {
-	                    $scope.itemCollections[i].TotalStock += itemQty;
-	                }
+	            if ($scope.itemCollections[collectionIndex].ItemId == itemId) {
+	                $scope.itemCollections[collectionIndex].TotalStock = $scope.tempItemColls[collectionIndex].cloneStock;
 	            }
+	            
 	            $scope.order.splice(index, 1);
 	        };
 		
-	        $scope.editItem = function (itemId, itemQty) {
+	        $scope.editItem = function (itemId, itemQty, idx, collectionIndex) {
 	            
 
-	            for (var i = 0; i < $scope.itemCollections.length; i++) {
-	                if ($scope.itemCollections[i].ItemId == itemId) {
-	                    var tempColletion = $scope.itemCollections[i];
-	                    var tempItemCol = $scope.tempItemColls[i];
+	            if ($scope.itemCollections[collectionIndex].ItemId == itemId) {
+	                var tempColletion = $scope.itemCollections[collectionIndex];
+	                var tempItemCol = $scope.tempItemColls[collectionIndex];
 
-	                    for (var j = 0; j < $scope.order.length; j++) {
-	                        if ($scope.order[j].id == itemId) {
-	                            
+	                if ($scope.order[idx].id == itemId) {
+	                    if (tempItemCol.cloneStock >= itemQty) {
+	                        tempColletion.TotalStock = tempItemCol.cloneStock - itemQty;
+	                        $scope.order[idx].qty = itemQty;
+	                        $scope.order[idx].totalPrice = $scope.order[idx].price * itemQty;
 
-	                            if (tempColletion.TotalStock >= itemQty) {
-	                                tempColletion.TotalStock = tempItemCol.TotalStock - itemQty;
-                                    $scope.order[j].qty = itemQty;
-	                                $scope.order[j].totalPrice = $scope.order[i].price * itemQty;
+	                        $scope.order[idx].isOpen = false;
 
-	                            } else {
-	                                $scope.order[j].qty = tempColletion.TotalStock;
-	                               
-
-	                            }
-	                            
-	                        }
-
+	                        $('#exceedsStock').hide();
+	                        checkWarning(false);
+	                    } else {
+	                        $('#exceedsStock').show();
+	                        checkWarning(true);
 	                    }
-                    }
+	                }
 
-	                
-                }
+	            }
+
 	            
 
 	        };
@@ -168,16 +173,84 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 			
 	        $scope.clearOrder = function() {
 	            $scope.order = [];
-	        };	
+	            $scope.ctrIndex = 0;
+	        };
+            
+	        $scope.qtyModified = {
+
+	            open: function open(idx) {
+	                
+	                $('#exceedsStock').hide();
+	                checkWarning(false);
+	                $scope.order[idx].isOpen = true;
+	                
+	            },
+
+	            close: function close(idx) {
+	                
+	                $('#exceedsStock').hide();
+	                checkWarning(false);
+
+	                $scope.order[idx].isOpen = false;
+	                
+	            }
+	        };
+
+	
 		}
 	]);
 
-	//app.directive('bsPopover', function () {
-	//    return function (scope, element, attrs) {
-	//        console.log("trigger");
-	//        element.find("a[data-toggle=mainTest]").popover();
-	//    };
-	//});
 }
+
+var transactionData = {
+    transactionItem: {
+        value: ""
+    },
+    transactionQuantity: {
+        value: ""
+    },
+    transactionTotalPayment: {
+        value : ""
+    },
+    transactionTotal : {
+        value : ""   
+    }
+};
+
+function functionAddTransaction() {
+    //submit data to db
+
+    $('.add-transaction-btn').click(function (evt) {
+        evt.preventDefault();
+        var transactionTotal = 0;
+
+
+        transactionData.transactionItem.value = [];
+        $('#transactionTable tbody tr').each(function () {
+
+            transactionData.transactionItem.value.push($(this).find('.transaction-item-id').text());
+
+        });
+        
+        transactionData.transactionQuantity.value = [];
+        $('#transactionTable tbody tr').each(function () {
+            
+            transactionData.transactionQuantity.value.push($(this).find('.transaction-item-quantity').text());
+            transactionTotal += parseInt($(this).find('.transaction-item-quantity').text());
+        });
+        
+        document.getElementById("TransactionItem").value = transactionData.transactionItem.value.join('|');
+        document.getElementById("TransactionQuantity").value = transactionData.transactionQuantity.value.join('|');
+        document.getElementById("TransactionTotal").value = transactionTotal + "";
+        document.getElementById("TransactionTotalPayment").value = parseInt($('.transaction-price').html()) + "";
+
+
+        $('#ShoppingBasketPost').submit();
+
+
+    });
+}
+
+
 
 

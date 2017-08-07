@@ -166,6 +166,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="FunctionController\ApiCollection.cs" />
     <Compile Include="FunctionController\DashboardFunction.cs" />
+    <Compile Include="FunctionController\InvoiceFunction.cs" />
     <Compile Include="FunctionController\Json\Converter\ItemListJsonConverter.cs" />
     <Compile Include="FunctionController\Json\Converter\VendorListJsonConverter.cs" />
     <Compile Include="Global.asax.cs">
@@ -176,6 +177,14 @@
     <Compile Include="Migrations\201707251512171_Initial.cs" />
     <Compile Include="Migrations\201707251512171_Initial.Designer.cs">
       <DependentUpon>201707251512171_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708061741178_InvoiceDB.cs" />
+    <Compile Include="Migrations\201708061741178_InvoiceDB.Designer.cs">
+      <DependentUpon>201708061741178_InvoiceDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708070759088_UpdateBillingHeader.cs" />
+    <Compile Include="Migrations\201708070759088_UpdateBillingHeader.Designer.cs">
+      <DependentUpon>201708070759088_UpdateBillingHeader.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -195,6 +204,11 @@
     <Compile Include="Models\Dashboard\Brand\BrandViewModels.cs" />
     <Compile Include="Models\Dashboard\Items\ItemViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Invoice\BillingDetailModel.cs" />
+    <Compile Include="Models\Invoice\ListInvoiceModel.cs" />
+    <Compile Include="Models\Invoice\TransactionViewModels.cs" />
+    <Compile Include="Models\Invoice\BillingHeaderModel.cs" />
+    <Compile Include="Models\Invoice\BillingStatusModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Dashboard\Items\DdCollectionItemModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -346,6 +360,7 @@
     <Content Include="Views\Dashboard\DashboardEditItem.cshtml" />
     <Content Include="Views\Dashboard\DashboardDeleteItem.cshtml" />
     <Content Include="Views\Dashboard\DashboardShoppingBasket.cshtml" />
+    <Content Include="Views\Dashboard\DashboardListInvoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -360,6 +375,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201707251512171_Initial.resx">
       <DependentUpon>201707251512171_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708061741178_InvoiceDB.resx">
+      <DependentUpon>201708061741178_InvoiceDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708070759088_UpdateBillingHeader.resx">
+      <DependentUpon>201708070759088_UpdateBillingHeader.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -12,6 +12,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using OnePOS.Models;
 using OnePOS.Models.Dashboard.Brand;
+using OnePOS.Models.Invoice;
 
 namespace OnePOS
 {
@@ -164,6 +165,28 @@ namespace OnePOS
                }
             };
             brandCategory.ForEach(x => context.BrandCategory.Add(x));
+            context.SaveChanges();
+
+            var billingStatusCat = new List<BillingStatusModel>
+            {
+               new BillingStatusModel{
+                   BillingStatusId = 1,
+                   BillingName  = "Send"
+               },
+               new BillingStatusModel{
+                   BillingStatusId = 2,
+                   BillingName  = "Paid"
+               },
+               new BillingStatusModel{
+                   BillingStatusId = 3,
+                   BillingName  = "Pending"
+               },
+               new BillingStatusModel{
+                   BillingStatusId = 4,
+                   BillingName  = "Late"
+               }
+            };
+            billingStatusCat.ForEach(x => context.BillingStatus.Add(x));
             context.SaveChanges();
 
             ///////////////////////////////////////////

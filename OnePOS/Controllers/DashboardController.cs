@@ -13,6 +13,7 @@ using OnePOS.Models.Dashboard.Brand;
 using OnePOS.Models.Dashboard.Items;
 using OnePOS.Models.Dashboard.Storage;
 using OnePOS.Models.Dashboard.Vendors;
+using OnePOS.Models.Invoice;
 
 namespace OnePOS.Controllers
 {
@@ -312,6 +313,26 @@ namespace OnePOS.Controllers
         {
             //DashboardFunction.StarDashboardIndex();
 
+            return View();
+        }
+
+        [HttpPost]
+        [Route("Dashboard/ShoppingBasket")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardShoppingBasket(TransactionViewModels mTranscationModels)
+        {
+            //DashboardFunction.StarDashboardIndex();
+            var currentUserName = User.Identity.GetUserName();
+            
+            InvoiceControllerServices.GenerateInvoice(db, mTranscationModels, currentUserName);
+
+            return View();
+        }
+
+        [Route("Dashboard/ListInvoice")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardListInvoice()
+        {
             return View();
         }
 

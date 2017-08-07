@@ -10,6 +10,7 @@ using OnePOS.Models.Dashboard.Brand;
 using OnePOS.Models.Dashboard.Items;
 using OnePOS.Models.Dashboard.Storage;
 using OnePOS.Models.Dashboard.Vendors;
+using OnePOS.Models.Invoice;
 
 namespace OnePOS.Models
 {
@@ -73,6 +74,9 @@ namespace OnePOS.Models
             modelBuilder.Entity<ManufacturerViewModels>().ToTable(("Manufacturer"));
             modelBuilder.Entity<BrandCategoryModels>().ToTable(("BrandCategory"));
             modelBuilder.Entity<StorageViewModels>().ToTable(("Storage"));
+            modelBuilder.Entity<BillingHeaderModel>().ToTable(("BillingHeader"));
+            modelBuilder.Entity<BillingDetailModel>().ToTable(("BillingDetail"));
+            modelBuilder.Entity<BillingStatusModel>().ToTable(("BillingStatus"));
         }
 
         static ApplicationDbContext()
@@ -93,7 +97,10 @@ namespace OnePOS.Models
         public DbSet<ManufacturerViewModels> Manufacturer { get; set; }
         public DbSet<BrandCategoryModels> BrandCategory { get; set; }
         public DbSet<StorageViewModels> Storage { get; set; }
-
+        public DbSet<BillingHeaderModel> BillingHeader { get; set; }
+        public DbSet<BillingDetailModel> BillingDetail { get; set; }
+        public DbSet<BillingStatusModel> BillingStatus { get; set; }
+        
     }
 
     public class ApplicationRole : IdentityRole

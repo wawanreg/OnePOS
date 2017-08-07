@@ -11,6 +11,7 @@ using OnePOS.Models.Dashboard.Items;
 using OnePOS.Models.Dashboard.ShoppingBasket;
 using OnePOS.Models.Dashboard.Storage;
 using OnePOS.Models.Dashboard.Vendors;
+using OnePOS.Models.Invoice;
 
 
 namespace OnePOS.FunctionController
@@ -103,6 +104,22 @@ namespace OnePOS.FunctionController
             }).ToList();
 
             return Json(new { @datajson = JsonConvert.SerializeObject(mItemCollections), itemsPerPage = 0 }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "Super Admin,Admin")]
+        [Route("ApiCollection/GetInvoiceList")]
+        public JsonResult InvoiceListJson(int take, int page)
+        {
+            List<ListInvoiceMode> mInvoice = db.BillingHeader.OrderBy(x => x.NoBillingHeader).Select(x => new ListInvoiceMode
+            {
+                InvoiceDate = x.InvoiceDate,
+                BillingHeaderId = x.NoBillingHeader,
+                BillingStatus = x.BillingStatus.BillingName,
+                NoInvoice = x.NoInvoice,
+                TotalPayment = x.TotalPaymentAfterTax
+            }).Skip(take * (page - 1)).Take(take).ToList();
+
+            return Json(new { @datajson = JsonConvert.SerializeObject(mInvoice), itemsPerPage = db.BillingHeader.Count() }, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

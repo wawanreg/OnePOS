@@ -1,0 +1,97 @@
+﻿@using Loyalti.Helpers
+@using Microsoft.Ajax.Utilities
+
+@{
+    ViewBag.Title = "ListInvoice";
+    Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
+}
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 class="page-header">List Invoice</h1>
+                <span id="messageLoader" class="text-problem col-sm-1" style="display:none; ">No Data</span>
+                <div class="loader"></div>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+        <div class="row" style="padding-top: 10px;">
+            <section class="panel panel-default invoice-list-section" ng-app="app" ng-controller="controller" ng-init="init()">
+                <header></header>
+                <section class=" table-responsive">
+                    <table id="invoiceTable" class="table table-hover list-table ng-cloak">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>
+                                    No Invoice
+                                </th>
+                                <th>
+                                    Invoice Date
+                                </th>
+                                <th>
+                                    Total Payment
+                                </th>
+                                <th>
+                                    Billing Status
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="fadeout">
+
+                            <tr dir-paginate="invoiceList in jsonLists | itemsPerPage: pageSize " total-items="totalItem" current-page="currentPage">
+
+                                <td class="invoice-number-row">{{currentNumber+$index}}</td>
+                                <td class="invoice-no-invoice">{{invoiceList.NoInvoice}}</td>
+                                <td class="invoice-invoice-date">{{invoiceList.InvoiceDate | moment: 'DD-MM-YYYY HH:mm:ss'}}</td>
+                                <td class="invoice-total-payment">Rp. {{invoiceList.TotalPayment | number : 0}}</td>
+                                <td class="invoice-billing-status">{{invoiceList.BillingStatus}}</td>
+                                <td class="invoice-action">
+                                    <nav class="btn-group pull-right" role="group" aria-label="...">
+                                        <a href='@HttpUtility.UrlDecode(Url.Action("EditInvoice", "Dashboard", new { id = "{{invoiceList.BillingHeaderId}}" }))' type="button" class="btn btn-default btn-blue">
+                                            <i class="fa fa-pencil" aria-hidden="true" style=""></i>
+                                        </a>
+                                        <a href='@HttpUtility.UrlDecode(Url.Action("DeleteInvoice", "Dashboard", new { id = "{{invoiceList.BillingHeaderId}}" }))' type="button" class="btn btn-default btn-red ">
+                                            <i class="fa fa-trash" aria-hidden="true" style=""></i>
+                                        </a>
+                                    </nav>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                </section>
+                <div class="text-center">
+                    <dir-pagination-controls boundary-links="true" on-page-change="" template-url="~/Assets/js/dirPagination.tpl.html"></dir-pagination-controls>
+                </div>
+            </section>
+        </div>
+
+
+    </div>
+
+    <!-- /#page-wrapper -->
+</div>
+
+@*@Html.Partial("_DeleteDialog")*@
+
+
+
+@section AdditionalJavascript {
+    
+}
+
+@using (Html.BeginScripts())
+{
+    <script src="~/Assets/js/global-tabling-json.js"></script>
+    <script>
+        globalTablingJson(
+            '#invoiceTable tbody',
+            ".invoice-list-section",
+            '/ApiCollection/GetInvoiceList',
+            '//',
+            true);
+    </script>
+}
