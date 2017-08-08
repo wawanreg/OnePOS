@@ -105,18 +105,22 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 
 	                    }
 	                } else {
-	                    orderItem = {
-	                        id: tempItem.ItemId,
-	                        name: tempItem.ItemName,
-	                        qty: 1,
-	                        price: tempItem.ItemPrice,
-	                        totalPrice: tempItem.ItemPrice,
-	                        isOpen: false,
-	                        collectionIndex: itemIndex
-	                    };
-	                    tempItem.TotalStock--;
-
-	                    $scope.order.push(orderItem);
+	                    if (tempItem.TotalStock > 0) {
+	                        orderItem = {
+	                            id: tempItem.ItemId,
+	                            name: tempItem.ItemName,
+	                            qty: 1,
+	                            price: tempItem.ItemPrice,
+	                            totalPrice: tempItem.ItemPrice,
+	                            isOpen: false,
+	                            collectionIndex: itemIndex
+	                        };
+	                        tempItem.TotalStock--;
+	                        $scope.order.push(orderItem);
+	                    } else {
+	                        $('#messageLoader').show();
+	                        checkWarning(true);
+	                    }
 	                }
 	                $scope.ctrIndex++;
 	            }

@@ -50,6 +50,9 @@
                                 <td class="invoice-billing-status">{{invoiceList.BillingStatus}}</td>
                                 <td class="invoice-action">
                                     <nav class="btn-group pull-right" role="group" aria-label="...">
+                                        <a href='@HttpUtility.UrlDecode(Url.Action("DetailInvoice", "Dashboard", new { id = "{{invoiceList.BillingHeaderId}}" }))' type="button" class="btn btn-default btn-green">
+                                            <i class="fa fa-info" aria-hidden="true" style=""></i>
+                                        </a>
                                         <a href='@HttpUtility.UrlDecode(Url.Action("EditInvoice", "Dashboard", new { id = "{{invoiceList.BillingHeaderId}}" }))' type="button" class="btn btn-default btn-blue">
                                             <i class="fa fa-pencil" aria-hidden="true" style=""></i>
                                         </a>

@@ -60,6 +60,13 @@ body img {
 .roboto.thin {
   font-weight: 100; }
 
+.btn.btn-green {
+  background: #6cbf6c;
+  color: #fff; }
+  .btn.btn-green:hover {
+    background: #52a552;
+    color: #fff; }
+
 .btn.btn-blue {
   background: #0273fc;
   color: #fff; }
