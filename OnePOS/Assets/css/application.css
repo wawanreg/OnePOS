@@ -317,3 +317,106 @@ body img {
     background-color: white; }
     .dashboard-page .shopping-basket .collection-item-select:hover {
       background-color: whitesmoke; }
+  .dashboard-page .invoice-detail-form {
+    padding-top: 10px;
+    -webkit-print-color-adjust: exact;
+    color: #515151;
+    background-color: #FFFFFF;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    border-radius: 10px; }
+    .dashboard-page .invoice-detail-form .invoice-body .invoice-title-container {
+      padding-bottom: 10px;
+      padding-top: 10px; }
+      .dashboard-page .invoice-detail-form .invoice-body .invoice-title-container .title-left {
+        text-align: left; }
+        .dashboard-page .invoice-detail-form .invoice-body .invoice-title-container .title-left .title-store {
+          font-size: 35px;
+          font-weight: 300; }
+      .dashboard-page .invoice-detail-form .invoice-body .invoice-title-container .title-right {
+        text-align: right; }
+        .dashboard-page .invoice-detail-form .invoice-body .invoice-title-container .title-right .title-invoice {
+          font-size: 35px;
+          font-weight: 300;
+          color: #0076fe; }
+    .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .header-container {
+      height: 46px; }
+      .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .header-container .table-header-detail-first {
+        background-color: whitesmoke;
+        padding-left: 20px;
+        border-style: solid;
+        border-color: white;
+        border-left-width: 0px;
+        border-right-width: 1px;
+        border-bottom-width: 1px;
+        border-top-width: 0px; }
+        .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .header-container .table-header-detail-first .detail-title {
+          color: #0076fe;
+          font-size: 12px; }
+      .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .header-container .table-header-detail {
+        background-color: whitesmoke;
+        padding-left: 20px;
+        border-style: solid;
+        border-color: white;
+        border-left-width: 0px;
+        border-right-width: 0px;
+        border-bottom-width: 1px;
+        border-top-width: 0px; }
+        .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .header-container .table-header-detail .detail-title {
+          color: #0076fe;
+          font-size: 12px; }
+    .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body {
+      margin-top: 20px; }
+      .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body .body-title-container {
+        background-color: whitesmoke;
+        height: 24px; }
+        .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body .body-title-container .th-last {
+          text-align: right; }
+      .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body tbody {
+        border-bottom: solid gainsboro 1px; }
+        .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body tbody .table-item-list {
+          height: 50px; }
+          .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body tbody .table-item-list .category-number {
+            width: 30px;
+            padding-left: 10px;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px; }
+          .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body tbody .table-item-list .category-item {
+            width: 300px;
+            padding-left: 10px;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px; }
+          .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body tbody .table-item-list .category-price {
+            width: 160px;
+            padding-left: 10px;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px; }
+          .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body tbody .table-item-list .category-quantity {
+            width: 90px;
+            padding-left: 10px;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px; }
+          .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body tbody .table-item-list .category-total {
+            width: 110px;
+            padding-right: 20px;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+            text-align: right; }
+            .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body tbody .table-item-list .category-total span {
+              font-weight: 600; }
+    .dashboard-page .invoice-detail-form .invoice-body .invoice-table-footer .footer-container {
+      height: 50px; }
+      .dashboard-page .invoice-detail-form .invoice-body .invoice-table-footer .footer-container .footer-detail-title {
+        color: #0076fe;
+        font-size: 15px;
+        font-weight: 600;
+        text-align: right;
+        padding-right: 20px;
+        padding-top: 15px; }
+      .dashboard-page .invoice-detail-form .invoice-body .invoice-table-footer .footer-container .footer-detail-summary {
+        font-size: 15px;
+        font-weight: 600;
+        text-align: right;
+        border-left: solid whitesmoke 1px;
+        padding-right: 20px;
+        padding-top: 15px; }

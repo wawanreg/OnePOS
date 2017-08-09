@@ -311,8 +311,7 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardShoppingBasket()
         {
-            //DashboardFunction.StarDashboardIndex();
-
+            
             return View();
         }
 
@@ -324,9 +323,9 @@ namespace OnePOS.Controllers
             //DashboardFunction.StarDashboardIndex();
             var currentUserName = User.Identity.GetUserName();
             
-            InvoiceControllerServices.GenerateInvoice(db, mTranscationModels, currentUserName);
+            var billindNo = InvoiceControllerServices.GenerateInvoice(db, mTranscationModels, currentUserName);
 
-            return View();
+            return RedirectToAction("InvoiceDetail", new { id = billindNo });
         }
 
         [Route("Dashboard/ListInvoice")]
@@ -334,6 +333,14 @@ namespace OnePOS.Controllers
         public ActionResult DashboardListInvoice()
         {
             return View();
+        }
+
+        [Route("Dashboard/InvoiceDetail/{billingId}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardInvoiceDetail(int billingId)
+        {
+
+            return View(db.BillingHeader.Single(x => x.NoBillingHeader == billingId));
         }
 
         protected override void Dispose(bool disposing)

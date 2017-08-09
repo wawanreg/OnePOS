@@ -8,7 +8,7 @@
 <div id="wrapper">
     <div id="page-wrapper">
         <div class="row">
-            <div class="col-sm-12">
+            <div class="col-sm-12 ">
                 <h1 class="page-header">List Invoice</h1>
                 <span id="messageLoader" class="text-problem col-sm-1" style="display:none; ">No Data</span>
                 <div class="loader"></div>
@@ -50,7 +50,7 @@
                                 <td class="invoice-billing-status">{{invoiceList.BillingStatus}}</td>
                                 <td class="invoice-action">
                                     <nav class="btn-group pull-right" role="group" aria-label="...">
-                                        <a href='@HttpUtility.UrlDecode(Url.Action("DetailInvoice", "Dashboard", new { id = "{{invoiceList.BillingHeaderId}}" }))' type="button" class="btn btn-default btn-green">
+                                        <a href='@HttpUtility.UrlDecode(Url.Action("InvoiceDetail", "Dashboard", new { id = "{{invoiceList.BillingHeaderId}}" }))' type="button" class="btn btn-default btn-green">
                                             <i class="fa fa-info" aria-hidden="true" style=""></i>
                                         </a>
                                         <a href='@HttpUtility.UrlDecode(Url.Action("EditInvoice", "Dashboard", new { id = "{{invoiceList.BillingHeaderId}}" }))' type="button" class="btn btn-default btn-blue">

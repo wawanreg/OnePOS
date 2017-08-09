@@ -46,5 +46,7 @@ namespace OnePOS.Models.Invoice
         public virtual VendorViewModels Vendor { get; set; }
         public virtual BillingStatusModel BillingStatus { get; set; }
         public virtual ICollection<BillingDetailModel> BillingDetails { get; set; } 
+
+
     }
 }

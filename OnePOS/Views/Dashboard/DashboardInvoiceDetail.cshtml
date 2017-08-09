@@ -1,0 +1,198 @@
+﻿@using Loyalti.Helpers
+@using Microsoft.Ajax.Utilities
+@model OnePOS.Models.Invoice.BillingHeaderModel
+
+
+@{
+    ViewBag.Title = "InvoiceDetail";
+    Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
+}
+
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="invoice-detail-form">
+                
+                <div class="col-sm-12" style="text-align: right;">
+                    <a href="" type="button" class="btn">
+                        <i class="fa fa-print fa-2x invoice-print" aria-hidden="true"></i>
+                    </a>
+    
+                </div>
+                <div class="clearfix">
+                    
+                </div>
+                
+                <form id="invoice-container" class="form-horizontal table-responsive" role="form" style="">
+                    <div class="invoice-body panel panel-default">
+                        <div class="col-sm-12 invoice-title-container">
+                            
+                            <div class="col-sm-6 title-left" >
+                                <span class="title-store">OnePOS</span>
+                            </div>
+                            <div class="col-sm-6 title-right">
+                                <span class="title-invoice">INVOICE</span>
+                            </div>
+                        </div>
+                            
+                        
+                        <table class="invoice-table-header table">
+                            <thead>
+                                <tr class="header-container" >
+                                    <th class="col-sm-6 table-header-detail-first" style="">
+                                        <span class="detail-title">
+                                            <span>Invoice Date</span>
+                                        </span>
+                                        <br>
+                                        <span>@Model.InvoiceDate.ToString("dd/MM/yyyy")</span>
+                                    </th>
+                                    <th class="col-sm-6 table-header-detail">
+                                        <span class="detail-title">
+                                            <span>Invoice No</span>
+                                        </span>
+                                        <br>
+                                        <span>@Model.NoInvoice</span>
+                                    </th>
+                                </tr>
+                                <tr class="header-container">
+                                    <th class="col-sm-6 table-header-detail-first">
+                                        <span class="detail-title">
+                                            <span>Total</span>
+                                        </span>
+                                        <br>
+                                        <span>@Model.TotalPaymentAfterTax</span>
+                                    </th>
+                                    <th class="col-sm-6 table-header-detail">
+                                        <span class="detail-title">
+                                            <span>Status</span>
+                                        </span>
+                                        <br>
+                                        <span>@Model.BillingStatus.BillingName</span>
+                                    </th>
+                                </tr>
+
+                            </thead>
+                        </table>
+                        <table class="invoice-table-body table">
+                            <thead>
+                                <tr class="body-title-container" style="">
+                                    <th>
+                                        <span>#</span> 
+                                    </th>
+                                    <th>
+                                        <span>ITEM</span>
+                                    </th>
+                                    <th>
+                                        <span>PRICE</span>
+                                    </th>
+                                    <th>
+                                        <span>QUANTITY</span>
+                                    </th>
+                                    <th class="th-last">
+                                        <span>TOTAL (Rp)</span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var i = 0;
+                                    
+                                    foreach (var mDetail in Model.BillingDetails)
+                                    {
+                                        <tr class="table-item-list">
+                                            <td class="category-number">
+                                                <span style="">@(i+1)</span>
+                                            </td>
+                                            <td class="category-item">
+                                                <span style="">@mDetail.Item.ItemName</span>
+                                            </td>
+                                            <td class="category-price">
+                                                <span>@mDetail.Item.SalePrice.ToString("#,##0")</span>
+                                            </td>
+                                            <td class="category-quantity">
+                                                <span>@mDetail.Quantity.ToString("#,##0")</span>
+                                            </td>
+                                            <td class="category-total">
+                                                <span>@((mDetail.Item.SalePrice * mDetail.Quantity).ToString("#,##0"))</span>
+                                            </td>
+                                        </tr>
+                                        
+                                        i++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                        <table class="invoice-table-footer table">
+                            <tbody>
+                                <tr class="footer-container">
+
+                                    <td class="col-sm-10 footer-detail-title">
+                                        PPN
+                                    </td>
+                                    <td class="col-sm-2 footer-detail-summary">
+                                        @Model.PaymentTax.ToString("#,##0")
+                                    </td>
+                                </tr>
+                                <tr class="footer-container">
+
+                                    <td class="col-sm-10 footer-detail-title">
+                                        TOTAL
+                                    </td>
+                                    <td class="col-sm-2 footer-detail-summary">
+                                        @Model.TotalPaymentAfterTax.ToString("#,##0")
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+
+            
+        </div>
+    </div>
+</div>
+
+        
+
+@section AdditionalJavascript {
+
+}
+
+@using (Html.BeginScripts())
+{
+    <script>
+       
+
+        $('.invoice-print').on('click', function (evt) {
+            evt.preventDefault();
+            
+
+            var contents = $("#invoice-container").html();
+            var frame1 = $('<iframe />');
+            frame1[0].name = "frame1";
+            frame1.css({ "position": "absolute", "top": "-1000000px" });
+            $("body").append(frame1);
+            var frameDoc = frame1[0].contentWindow ? frame1[0].contentWindow : frame1[0].contentDocument.document ? frame1[0].contentDocument.document : frame1[0].contentDocument;
+            frameDoc.document.open();
+            //Create a new HTML document.
+            frameDoc.document.write('<html><head>');
+            frameDoc.document.write('</head><body>');
+            //Append the external CSS file. <link href="/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+            frameDoc.document.write(' <link href="/Assets/css/invoice-detail.css" rel="stylesheet" type="text/css" />  ');
+            //Append the DIV contents.
+            frameDoc.document.write(contents);
+            frameDoc.document.write('</body></html>');
+            frameDoc.document.close();
+            setTimeout(function () {
+                window.frames["frame1"].focus();
+                window.frames["frame1"].print();
+                frame1.remove();
+            }, 500);
+
+        });
+
+    </script>
+
+}

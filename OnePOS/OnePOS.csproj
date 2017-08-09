@@ -216,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\css\application.scss" />
+    <Content Include="Assets\css\invoice-detail.css" />
     <Content Include="Assets\js\angular-resource.js" />
     <Content Include="Assets\js\angular.min.js" />
     <Content Include="Assets\css\application.css">
@@ -361,6 +362,7 @@
     <Content Include="Views\Dashboard\DashboardDeleteItem.cshtml" />
     <Content Include="Views\Dashboard\DashboardShoppingBasket.cshtml" />
     <Content Include="Views\Dashboard\DashboardListInvoice.cshtml" />
+    <Content Include="Views\Dashboard\DashboardInvoiceDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

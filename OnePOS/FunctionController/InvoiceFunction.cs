@@ -28,7 +28,7 @@ namespace OnePOS.FunctionController
             return romanNumeral;
         }
 
-        public static void GenerateInvoice(ApplicationDbContext db, TransactionViewModels mTransaction, string userName)
+        public static int GenerateInvoice(ApplicationDbContext db, TransactionViewModels mTransaction, string userName)
         {
 
             var arrTransactionItemId = mTransaction.ItemId.Split('|');
@@ -97,6 +97,9 @@ namespace OnePOS.FunctionController
                 DashboardFunction.EditItemViewModels(db, userName, actionItemView, tempId);
 
             }
+
+            if (billingData != null) return billingData.NoBillingHeader;
+            return 0;
         }
 
         //public static void SendInvoice(ApplicationDbContext db, int? invoiceEmailId, int noBilling)

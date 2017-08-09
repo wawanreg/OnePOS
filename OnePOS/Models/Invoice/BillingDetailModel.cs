@@ -27,5 +27,8 @@ namespace OnePOS.Models.Invoice
         [Column(TypeName = "DateTime2")]
         public DateTime UpdatedDate { get; set; }
         public string UpdatedAgent { get; set; }
+        
+        //[NotMapped]
+        //public decimal TotalCalulated { get { return Quantity * Item.SalePrice; } }
     }
 }
