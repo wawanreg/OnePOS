@@ -205,6 +205,7 @@
     <Compile Include="Models\Dashboard\Items\ItemViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Invoice\BillingDetailModel.cs" />
+    <Compile Include="Models\Invoice\BillingCollectionModel.cs" />
     <Compile Include="Models\Invoice\ListInvoiceModel.cs" />
     <Compile Include="Models\Invoice\TransactionViewModels.cs" />
     <Compile Include="Models\Invoice\BillingHeaderModel.cs" />
@@ -363,6 +364,7 @@
     <Content Include="Views\Dashboard\DashboardShoppingBasket.cshtml" />
     <Content Include="Views\Dashboard\DashboardListInvoice.cshtml" />
     <Content Include="Views\Dashboard\DashboardInvoiceDetail.cshtml" />
+    <Content Include="Views\Dashboard\DashboardEditInvoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

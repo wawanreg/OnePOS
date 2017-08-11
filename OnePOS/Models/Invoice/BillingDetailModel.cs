@@ -16,6 +16,7 @@ namespace OnePOS.Models.Invoice
         public int NoBillingDetail { get; set; }
         public virtual BillingHeaderModel BillingHeader { get; set; }
         public virtual ItemViewModels Item { get; set; }
+        [DisplayFormat(DataFormatString = "{0:n0}", ApplyFormatInEditMode = true)]
         public decimal Quantity { get; set; }
         public bool Active { get; set; }
         public bool Deleted { get; set; }

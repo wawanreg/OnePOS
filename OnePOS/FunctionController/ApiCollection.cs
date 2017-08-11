@@ -30,7 +30,7 @@ namespace OnePOS.FunctionController
         [Route("ApiCollection/GetVendorList")]
         public JsonResult VendorListJson(int take, int page)
         {
-            List<ListVendorViewModels> mVendor = db.Vendor.OrderBy(x=> x.VendorId).Select(x=> new ListVendorViewModels
+            List<ListVendorViewModels> mVendor = db.Vendor.Where(x => !x.Deleted).OrderBy(x => x.VendorId).Select(x => new ListVendorViewModels
             {
                 VendorId = x.VendorId,
                 VendorAddress = x.VendorAddress,
@@ -48,8 +48,8 @@ namespace OnePOS.FunctionController
         [Route("ApiCollection/GetItemList")]
         public JsonResult ItemListJson(int take, int page)
         {
-            
-            List<ListItemViewModels> mItem = db.Item.OrderBy(x => x.ItemId).Select(x=> new ListItemViewModels
+
+            List<ListItemViewModels> mItem = db.Item.Where(x => !x.Deleted).OrderBy(x => x.ItemId).Select(x => new ListItemViewModels
             {
                 ItemName = x.ItemName, 
                 ItemBuyPrice = x.BuyPrice,
@@ -67,7 +67,7 @@ namespace OnePOS.FunctionController
         [Route("ApiCollection/GetBrandList")]
         public JsonResult BrandListJson(int take, int page)
         {
-            List<ListBrandViewModels> mBrand = db.Brand.OrderBy(x => x.BrandId).Select(x => new ListBrandViewModels
+            List<ListBrandViewModels> mBrand = db.Brand.Where(x => !x.Deleted).OrderBy(x => x.BrandId).Select(x => new ListBrandViewModels
             {
                 BrandName = x.BrandName,
                 BrandDescription = x.BrandDescription,
@@ -81,7 +81,7 @@ namespace OnePOS.FunctionController
         [Route("ApiCollection/GetStorageList")]
         public JsonResult StorageListJson(int take, int page)
         {
-            List<ListStorageViewModels> mStorage = db.Storage.OrderBy(x => x.StorageId).Select(x => new ListStorageViewModels
+            List<ListStorageViewModels> mStorage = db.Storage.Where(x => !x.Deleted).OrderBy(x => x.StorageId).Select(x => new ListStorageViewModels
             {
                 StorageName = x.StorageName,
                 StorageDescription = x.StorageDescription,
@@ -95,7 +95,7 @@ namespace OnePOS.FunctionController
         [Route("ApiCollection/GetItemCollection")]
         public JsonResult ItemCollectionJson()
         {
-            List<ShoppingBasketCollection> mItemCollections = db.Item.OrderBy(x => x.ItemId).Select(x => new ShoppingBasketCollection
+            List<ShoppingBasketCollection> mItemCollections = db.Item.Where(x => !x.Deleted).OrderBy(x => x.ItemId).Where(x => !x.Deleted).Select(x => new ShoppingBasketCollection
             {
                 ItemName = x.ItemName,
                 ItemPrice = x.SalePrice,
@@ -110,7 +110,7 @@ namespace OnePOS.FunctionController
         [Route("ApiCollection/GetInvoiceList")]
         public JsonResult InvoiceListJson(int take, int page)
         {
-            List<ListInvoiceMode> mInvoice = db.BillingHeader.OrderBy(x => x.NoBillingHeader).Select(x => new ListInvoiceMode
+            List<ListInvoiceMode> mInvoice = db.BillingHeader.Where(x => !x.Deleted).OrderBy(x => x.NoBillingHeader).Select(x => new ListInvoiceMode
             {
                 InvoiceDate = x.InvoiceDate,
                 BillingHeaderId = x.NoBillingHeader,

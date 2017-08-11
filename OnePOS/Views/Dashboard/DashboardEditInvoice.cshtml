@@ -1,0 +1,94 @@
+﻿@using Microsoft.Ajax.Utilities
+@model OnePOS.Models.Invoice.BillingCollectionModel
+
+@{
+    ViewBag.Title = "EditInvoice";
+    Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
+}
+
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Edit Invoice</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+
+
+        <div class="row">
+            <div class="edit-invoice-section">
+                @using (Html.BeginForm("DashboardEditInvoice", "Dashboard", FormMethod.Post, new { @id = "EditInvoicePost", @class = "form-horizontal", role = "form" }))
+                {
+                    <div class="form-section edit-invoice-manual section-header">
+                       
+                        <div class="vendors-group-list">
+                            <div class="panel panel-default invoice-form-container">
+                                <div class="panel-body vendors-group-form">
+                                    @*@Html.HiddenFor(m => m.BillingStatus.BillingStatusId)*@
+
+                                    <div class="col-sm-12 form-group">
+                                        <h2>Invoice Header</h2>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-sm-3 item-name">
+                                            <label class="control-label">Invoice No</label>
+                                            @Html.TextBoxFor(m => m.NoInvoice, new { @class = "form-control", @readonly = true })
+                                        </div>
+                                        <div class="col-sm-6 invoice-status">
+                                            <label class="control-label">Billing Status</label>
+                                            @Html.DropDownListFor(m => m.BillingStatus.BillingStatusId  , Model.BillStatusDropdownLists, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    
+                                    <div style="border: black solid 1px; width: 100%;"></div>
+
+                                    <div class="col-sm-12 form-group">
+                                        <h2>Invoice Detail</h2>
+                                    </div>
+                                    @for (var i = 0; i < Model.BillingDetails.Count; i++)
+                                    {
+                                        @Html.HiddenFor(m=> m.BillingDetails[i].NoBillingDetail)
+                                        @Html.HiddenFor(m => m.BillingDetails[i].Item.ItemId)
+                                        <div class="form-group">
+                                            <div class="col-sm-6 item-name">
+                                                <label class="control-label">Item Name</label>
+                                                @Html.TextBoxFor(m => m.BillingDetails[i].Item.ItemName, new { @class = "form-control", @readonly = true })
+
+                                            </div>
+                                            <div class="col-sm-6 item-quantity">
+                                                <label class="control-label">Quantity</label>
+                                                @Html.EditorFor(m => m.BillingDetails[i].Quantity, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+                                    }
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="edit-invoice-input-btn" style="padding-bottom: 10px;">
+                        <input type="submit" value="Edit Invoice " class="btn btn-blue btn-lg submit-button" />
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <!-- /#page-wrapper -->
+</div>
+<!-- /#wrapper -->
+@section AdditionalJavascript {
+    
+}
+
+@section PageJavascript {
+    
+}

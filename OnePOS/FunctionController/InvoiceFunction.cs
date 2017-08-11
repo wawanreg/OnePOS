@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Web.Mvc;
 using OnePOS.Models;
 using OnePOS.Models.Dashboard.Items;
 using OnePOS.Models.Invoice;
@@ -100,6 +101,72 @@ namespace OnePOS.FunctionController
 
             if (billingData != null) return billingData.NoBillingHeader;
             return 0;
+        }
+        public static BillingCollectionModel SetBillingCollection(ApplicationDbContext db, int billingId)
+        {
+            var mBillingHeader = db.BillingHeader.Single(x => x.NoBillingHeader == billingId);
+
+            BillingCollectionModel mBillCollectionModel = new BillingCollectionModel
+            {
+                BillingDetails = mBillingHeader.BillingDetails.Where(x=> !x.Deleted).ToList(),
+                NoInvoice = mBillingHeader.NoInvoice,
+                NoBillingHeader = mBillingHeader.NoBillingHeader,
+                BillingStatus = mBillingHeader.BillingStatus,
+                InvoiceDate = mBillingHeader.InvoiceDate,
+                TotalItem = mBillingHeader.TotalItem,
+                TotalPayment = mBillingHeader.TotalPaymentAfterTax,
+                BillStatusDropdownLists = new SelectList(db.BillingStatus.ToList(), "BillingStatusId", "BillingName", mBillingHeader.BillingStatus.BillingStatusId),
+                IsDeleted = mBillingHeader.Deleted
+            };
+            return mBillCollectionModel;
+        }
+        public static void EditInvoice(ApplicationDbContext db, string currentUserName, int billingId, BillingCollectionModel mBillingCollectionModel)
+        {
+            var mBillingHeader = db.BillingHeader.Single(x => x.NoBillingHeader == billingId);
+            
+            if (mBillingCollectionModel.BillingStatus != null)
+            {
+                var mBillingStatus = db.BillingStatus.Find(mBillingCollectionModel.BillingStatus.BillingStatusId);
+                mBillingHeader.BillingStatus = mBillingStatus;    
+            }
+
+            
+            mBillingHeader.UpdatedBy = currentUserName;
+            mBillingHeader.UpdatedDate = DateTime.UtcNow;
+
+            //check for billing detail
+            for (var i = 0; i < mBillingCollectionModel.BillingDetails.Count; i++)
+            {
+                var curretBillingDetail = mBillingCollectionModel.BillingDetails[i];
+                if (curretBillingDetail.Quantity == 0)
+                {
+
+                    BillingDetailModel mBillingDetail =
+                        db.BillingDetail.Single(x => x.NoBillingDetail == curretBillingDetail.NoBillingDetail);
+
+                    mBillingDetail.Deleted = true;
+                    mBillingDetail.UpdatedBy = currentUserName;
+                    mBillingDetail.UpdatedDate = DateTime.UtcNow;
+
+                    db.Entry(mBillingDetail).State = EntityState.Modified;
+                    db.SaveChanges();
+
+
+                    ItemViewModels mItem = db.Item.Single(x => !x.Deleted && x.ItemId == curretBillingDetail.Item.ItemId);
+                    mItem.Stock += mBillingDetail.Quantity;
+                    mItem.UpdatedBy = currentUserName;
+                    mItem.UpdatedDate = DateTime.UtcNow;
+
+                    db.Entry(mItem).State = EntityState.Modified;
+                    db.SaveChanges();
+
+
+                }
+            }
+
+
+            db.Entry(mBillingHeader).State = EntityState.Modified;
+            db.SaveChanges();
         }
 
         //public static void SendInvoice(ApplicationDbContext db, int? invoiceEmailId, int noBilling)
