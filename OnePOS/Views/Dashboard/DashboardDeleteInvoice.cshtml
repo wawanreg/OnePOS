@@ -1,0 +1,58 @@
+﻿@model OnePOS.Models.Invoice.BillingHeaderModel
+@{
+    ViewBag.Title = "DeleteInvoice";
+    Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
+}
+
+<div id="wrapper">
+    <div id="page-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Delete Invoice</h1>
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+
+
+        <div class="row">
+            <div class="delete-invoice-section">
+                @using (Html.BeginForm("DashboardDeleteInvoice", "Dashboard", FormMethod.Post, new { @id = "DeleteInvoicePost", @class = "form-horizontal", role = "form" }))
+                {
+                    <div class="form-section delete-invoice-manual section-header">
+
+                        <div class="invoice-group-list">
+                            <div class="panel panel-default invoice-form-container">
+                                <div class="panel-body vendors-group-form">
+
+                                    <div class="form-group">
+                                        <div class="col-sm-3 invoice-number">
+                                            <label class="control-label">No Invoice</label>
+                                            @Html.TextBoxFor(m => m.NoInvoice, new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                        <div class="col-sm-3 vendor-phone">
+                                            <label class="control-label">Invoice Date</label>
+                                            @Html.TextBoxFor(m => m.InvoiceDate, "{0:yyyy-MM-dd}", new { @class = "form-control", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="delete-invoice-input-btn">
+                        <input type="submit" value="Delete Invoice" class="btn btn-red btn-lg submit-button" />
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <!-- /#page-wrapper -->
+</div>

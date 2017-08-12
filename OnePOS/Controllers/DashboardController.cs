@@ -359,6 +359,23 @@ namespace OnePOS.Controllers
             return RedirectToAction("ListInvoice");
         }
 
+        [Route("Dashboard/DeleteInvoice/{billingId}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardDeleteInvoice(int billingId)
+        {
+            return View(InvoiceControllerServices.GetBillingHeader(db,billingId));
+        }
+
+        [HttpPost]
+        [Route("Dashboard/DeleteInvoice/{billingId}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult DashboardDeleteInvoice(int billingId, BillingHeaderModel mBillingHeaderModel)
+        {
+            InvoiceControllerServices.DeleteInvoice(db, SendCurrentUser(), billingId, mBillingHeaderModel);
+
+            return RedirectToAction("ListInvoice");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

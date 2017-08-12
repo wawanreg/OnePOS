@@ -28,7 +28,10 @@ namespace OnePOS.FunctionController
             }
             return romanNumeral;
         }
-
+        public static BillingHeaderModel GetBillingHeader(ApplicationDbContext db, int billingId)
+        {
+            return db.BillingHeader.Single(x=> !x.Deleted && x.NoBillingHeader == billingId);
+        }
         public static int GenerateInvoice(ApplicationDbContext db, TransactionViewModels mTransaction, string userName)
         {
 
@@ -104,7 +107,7 @@ namespace OnePOS.FunctionController
         }
         public static BillingCollectionModel SetBillingCollection(ApplicationDbContext db, int billingId)
         {
-            var mBillingHeader = db.BillingHeader.Single(x => x.NoBillingHeader == billingId);
+            BillingHeaderModel mBillingHeader = GetBillingHeader(db, billingId);
 
             BillingCollectionModel mBillCollectionModel = new BillingCollectionModel
             {
@@ -122,7 +125,7 @@ namespace OnePOS.FunctionController
         }
         public static void EditInvoice(ApplicationDbContext db, string currentUserName, int billingId, BillingCollectionModel mBillingCollectionModel)
         {
-            var mBillingHeader = db.BillingHeader.Single(x => x.NoBillingHeader == billingId);
+            BillingHeaderModel mBillingHeader =  GetBillingHeader(db, billingId);
             
             if (mBillingCollectionModel.BillingStatus != null)
             {
@@ -168,7 +171,16 @@ namespace OnePOS.FunctionController
             db.Entry(mBillingHeader).State = EntityState.Modified;
             db.SaveChanges();
         }
-
+        public static void DeleteInvoice(ApplicationDbContext db, string currentUserName, int billingId,
+            BillingHeaderModel mBillingHeaderModel)
+        {
+            BillingHeaderModel mBillingHeader = GetBillingHeader(db, billingId);
+            mBillingHeader.Deleted = true;
+            mBillingHeader.UpdatedBy = currentUserName;
+            mBillingHeader.UpdatedDate = DateTime.UtcNow;
+            db.Entry(mBillingHeader).State = EntityState.Modified;
+            db.SaveChanges();
+        }
         //public static void SendInvoice(ApplicationDbContext db, int? invoiceEmailId, int noBilling)
         //{
         //    var mBilling = db.BillingHeader.Single(x => x.NoBillingHeader == noBilling);

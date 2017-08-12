@@ -365,6 +365,7 @@
     <Content Include="Views\Dashboard\DashboardListInvoice.cshtml" />
     <Content Include="Views\Dashboard\DashboardInvoiceDetail.cshtml" />
     <Content Include="Views\Dashboard\DashboardEditInvoice.cshtml" />
+    <Content Include="Views\Dashboard\DashboardDeleteInvoice.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
