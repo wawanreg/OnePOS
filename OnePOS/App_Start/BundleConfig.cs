@@ -28,8 +28,8 @@ namespace OnePOS
                       //"~/Content/site.css",
                       "~/Assets/css/metisMenu.css",
                       "~/Assets/css/sb-admin-2.css",
-                      "~/Assets/css/application.css",
-                      "~/Assets/font-awesome/css/font-awesome.min.css"));
+                      "~/Assets/css/application.css"
+                      ));
         }
     }
 }

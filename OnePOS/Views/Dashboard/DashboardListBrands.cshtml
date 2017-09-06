@@ -79,10 +79,17 @@
 {
     <script src="~/Assets/js/global-tabling-json.js"></script>
     <script>
+        var webroot = "@Url.Content("~/")";
+
+        var sendUrl = '/ApiCollection/GetBrandList';
+
+        if (webroot != "/")
+            sendUrl = webroot + sendUrl;
+
         globalTablingJson(
             '#brandTable tbody',
             ".brand-list-section",
-            '/ApiCollection/GetBrandList',
+            sendUrl,
             '//',
             true);
     </script>
