@@ -216,6 +216,9 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\css\application.css.map">
+      <DependentUpon>application.css</DependentUpon>
+    </Content>
     <None Include="Assets\css\application.scss" />
     <Content Include="Assets\css\font-awesome.css" />
     <Content Include="Assets\css\invoice-detail.css" />

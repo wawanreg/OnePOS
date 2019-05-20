@@ -32,8 +32,9 @@
 
                                     <div class="form-group">
                                         <div class="col-sm-12 brand-name">
-                                            <label class="control-label">Brand Name</label>
-                                            <input class="form-control" />
+                                            <label class="control-label">Brand Name</label><span class="field-warning text-danger">Please fill the brand name</span>
+                                            <input class="brand-name-input form-control" onchange="checkWarning(this)"/>
+                                            
                                         </div>
                                         
                                         @*<div class="col-sm-3 brand-category">
@@ -83,5 +84,6 @@
 @section PageJavascript {
     <script>
         functionAddFormBrand();
+        
     </script>
 }

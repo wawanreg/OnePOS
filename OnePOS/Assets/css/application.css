@@ -181,6 +181,9 @@ body img {
     border-bottom: 1px solid #eee; }
   .dashboard-page .list-table tr td {
     border: none; }
+  .dashboard-page .field-warning {
+    margin-left: 1%;
+    display: none; }
   .dashboard-page .add-items-section .add-items-manual .items-group-list .items-group-form .form-group:first-child {
     margin-top: 0px; }
   .dashboard-page .add-items-section .add-items-manual .items-group-list .items-group-form .form-group {

@@ -12,7 +12,7 @@ namespace OnePOS.Models.Dashboard.Brand
     {
        
         public int BrandId { get; set; }
-       
+        [Required(ErrorMessage = "Please fill the brand name")]
         public string BrandName { get; set; }
         public string BrandDescription { get; set; }
         

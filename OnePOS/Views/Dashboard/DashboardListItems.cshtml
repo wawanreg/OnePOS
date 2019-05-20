@@ -72,7 +72,7 @@
 
                 </section>
                 <div class="text-center">
-                    <dir-pagination-controls boundary-links="true" on-page-change="" template-url="~/Assets/js/dirPagination.tpl.html"></dir-pagination-controls>
+                    <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="~/Assets/js/dirPagination.tpl.html"></dir-pagination-controls>
                 </div>
             </section>
         </div>
@@ -83,15 +83,6 @@
     <!-- /#page-wrapper -->
 </div>
 
-@*@Html.Partial("_DeleteDialog")*@
-
-
-
-@section PageJavascript {
-    $(document).ready(function () {
-        
-    });
-}
 
 @using (Html.BeginScripts())
 {

@@ -38,26 +38,26 @@
 
                                     <div class="form-group">
                                         <div class="col-sm-3 item-name">
-                                            <label class="control-label">Items Name</label>
-                                            <input class="form-control" />
+                                            <label class="control-label">Items Name</label><span class="field-warning text-danger">Fill this field</span>
+                                            <input class="form-control" onchange="checkWarning(this)"/>
                                         </div>
                                         <div class="col-sm-3 item-sale-price">
-                                            <label class="control-label">Sale Price</label>
-                                            <input class="form-control" onchange="changeInputNumber(this)" />
+                                            <label class="control-label">Sale Price</label><span class="field-warning text-danger">Fill this field</span>
+                                            <input class="form-control" oninput="changeInputNumber(this)" onchange="checkWarning(this)" />
                                         </div>
                                         <div class="col-sm-3 item-buy-price">
-                                            <label class="control-label">Buy Price</label>
-                                            <input class="form-control" onchange="changeInputNumber(this)" />
+                                            <label class="control-label">Buy Price</label><span class="field-warning text-danger">Fill this field</span>
+                                            <input class="form-control" oninput="changeInputNumber(this)" onchange="checkWarning(this)" />
                                         </div>
-                                        <div class="col-lg-3 item-quantity">
-                                            <label class="control-label">Stock</label>
-                                            <input class="form-control" onchange="changeInputNumber(this)" />
+                                        <div class="col-lg-3 item-stock">
+                                            <label class="control-label">Stock</label><span class="field-warning text-danger">Fill this field</span>
+                                            <input class="form-control" oninput="changeInputNumber(this)" onchange="checkWarning(this)"/>
                                         </div>
                                         
                                     </div>
                                     <div class="form-group">
                                         <div class="col-lg-3 item-storage">
-                                            <label class="control-label">Item Location</label>
+                                            <label class="control-label">Item Storage</label>
                                             @Html.DropDownListFor(m => m.StorageDropdownLists, Model.StorageDropdownLists, "Select Storage", new { @class = "form-control" })
                                         </div>
                                         <div class="col-lg-3 item-brand-type">

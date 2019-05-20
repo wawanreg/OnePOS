@@ -164,6 +164,7 @@ body img {max-width:100%;}
 			td{border:none;}
 		}
 	}
+    .field-warning{margin-left:1%;display:none;}
     //DashboardAddItem
     .add-items-section{
         .add-items-manual{
@@ -175,12 +176,13 @@ body img {max-width:100%;}
                     }
 				    .form-control { margin-bottom:0px;}
                     .close-item-button{ cursor: pointer; float: right;margin-right: 18px; color: red; font-size: 20px;}
+                    
                     .item-name{}
                     .item-sale-price{}
                     .item-buy-price{}
                     .item-location{}
                     .item-brand-type{}
-                    .item-quantity{}
+                    .item-stock{}
                     .item-vendor{}
                 }
             }

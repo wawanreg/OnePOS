@@ -165,7 +165,7 @@ namespace OnePOS.FunctionController
         public static VendorViewModels GetVendorViewModels(ApplicationDbContext db, int? vendorId)
         {
             VendorViewModels mVendor = db.Vendor.Single(x=> !x.Deleted && x.VendorId == vendorId);
-
+            
             return mVendor;
         }
         public static bool AddVendorsToDb(ApplicationDbContext db, AddVendorViewModels mVendorsList, string userName)
@@ -234,11 +234,16 @@ namespace OnePOS.FunctionController
         }
 
 
-        public static BrandViewModels GetBrandViewModels(ApplicationDbContext db, int? brandId)
+        public static ActionBrandViewModels GetBrandViewModels(ApplicationDbContext db, int? brandId)
         {
             BrandViewModels mBrand = db.Brand.Single(x=>!x.Deleted && x.BrandId == brandId);
+            ActionBrandViewModels testBrand = new ActionBrandViewModels
+            {
+                BrandName = mBrand.BrandName,
+                BrandDescription = mBrand.BrandDescription
+            };
 
-            return mBrand;
+            return testBrand;
         }
         public static void AddBrandsToDb(ApplicationDbContext db, ActionBrandViewModels mBrandList, string userName)
         {
@@ -269,6 +274,7 @@ namespace OnePOS.FunctionController
         }
         public static bool EditBrandViewModels(ApplicationDbContext db, string currentUserName, ActionBrandViewModels mEditBrand, int idBrand)
         {
+            
             BrandViewModels mBrand = db.Brand.Find(idBrand);
 
 

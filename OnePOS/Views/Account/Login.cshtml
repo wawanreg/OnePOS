@@ -28,8 +28,8 @@
                                 @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password" })
                                 @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                             </div>
-                            <div class="checkbox">
-                                @Html.CheckBoxFor(m => m.RememberMe)
+                            <div class="form-group checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe, new {@style="margin-left:0;"})
                                 @Html.LabelFor(m => m.RememberMe)
                             </div>
                             @*<a href="index.html" class="btn btn-lg btn-success btn-block">Login</a>*@
