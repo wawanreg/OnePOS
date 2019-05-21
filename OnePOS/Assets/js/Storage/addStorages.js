@@ -1,10 +1,14 @@
 
 var storageData = {
     storageName: {
-        value: ""
+        value: "",
+        status: "",
+        flag: false
     },
     storageDescription: {
-        value: ""
+        value: "",
+        status: "",
+        flag: false
     }
 };
 
@@ -37,9 +41,21 @@ function functionAddFormStorage() {
 
         
         storageData.storageName.value = [];
+        storageData.storageName.status = [];
         $('.storages-form-container .storage-name input').each(function () {
             if ($(this).val().length > 0) {
                 storageData.storageName.value.push($(this).val());
+                $(this).siblings(".field-warning").hide();
+
+                //if every brandNames is fill set the flag to true
+
+                storageData.storageName.status.push(true);
+                storageData.storageName.flag = true;
+            } else {
+                $(this).siblings(".field-warning").show();
+
+                storageData.storageName.status.push(false);
+                storageData.storageName.flag = false;
             }
         });
 
@@ -47,17 +63,26 @@ function functionAddFormStorage() {
         $('.storages-form-container .storage-description textarea').each(function () {
             if ($(this).val().length > 0) {
                 storageData.storageDescription.value.push($(this).val());
+            } else {
+                storageData.storageDescription.value.push(" ");
             }
         });
+        
+        var maxLength = $('.storages-form-container .storage-name input').length;
+        for (var i = maxLength - 1; i >= 0; i--) {
+            if (storageData.storageName.status[i] && storageData.storageName.flag) {
+                storageData.storageName.flag = true;
+            } else {
+                storageData.storageName.flag = false;
+            }
+        }
 
-       
-        document.getElementById("StorageName").value = storageData.storageName.value.join('|');
-        document.getElementById("StorageDescription").value = storageData.storageDescription.value.join('|');
+        if (storageData.storageName.flag) {
+            document.getElementById("StorageName").value = storageData.storageName.value.join('|');
+            document.getElementById("StorageDescription").value = storageData.storageDescription.value.join('|');
         
-        
-        $('#AddStoragesPost').submit();
-        
-
+            $('#AddStoragesPost').submit();            
+        }
         
     });
 }

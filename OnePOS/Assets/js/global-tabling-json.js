@@ -52,6 +52,8 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
         }
     }
     
+    
+
     var app = angular.module('app', ['ngResource', 'angularUtils.directives.dirPagination']);
 	
 	app.factory('service', [
@@ -112,15 +114,36 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 		    //for backenduser
 			$scope.isFlagSet = false;
 
-			var triggertPagging = false;
+			var triggerPagging = false;
 			var searchOn = false;
 			
 			$scope.primaryUrl = '';
-			$scope.secondaryUrl = '';
+			$scope.searchUrl = '';
 			
+			var dataListing = function (data) {
+			    
+			    var collectJson = JSON.parse(data.datajson);
+			    $scope.pageSize = data.itemsPerPage;
+			    $scope.jsonLists = [];
+
+			    $scope.totalItem = data.itemsPerPage;
+
+			    if ($scope.pageSize > 10) {
+			        $scope.pageSize = 10;
+			    }
+
+			    for (var i = 0; i < collectJson.length; i++) {
+			        $scope.jsonLists.push(collectJson[i]);
+			    }
+			    standarPackage("success", collectJson.length);
+			    //console.log($scope.jsonLists);
+			}
+
+
 			$scope.init = function () {
 			    $scope.primaryUrl = mainJsonUrl;
-			    $scope.secondaryUrl = searchJsonUrl;
+                //Set the url into searchUrl
+			    $scope.searchUrl = searchJsonUrl;
 
 			    if (autoOn) {
 			        
@@ -129,31 +152,66 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 			        $http({
 			            method: "GET",
 			            url: $scope.primaryUrl + "?take=" + $scope.take + "&page=" + $scope.page
-			        }).then(function (data, status) {
-			            triggertPagging = false;
-
-			            var collectJson = JSON.parse(data.data.datajson);
-			            $scope.pageSize = data.data.itemsPerPage;
-			            $scope.jsonLists = [];
-
-			            $scope.totalItem = data.data.itemsPerPage;
-
-			            if ($scope.pageSize > 10) {
-			                $scope.pageSize = 10;
-			            }
+			        }).then(function onSuccess(response) {
+			            triggerPagging = false;
 			            
-			            for (var i = 0; i < collectJson.length; i++) {
-			                $scope.jsonLists.push(collectJson[i]);
-			            }
-			            standarPackage("success", collectJson.length);
-			            console.log($scope.jsonLists);
-
-			        },function error() {
+			            dataListing(response.data);
 			            
+			            
+
+			        }).catch(function onError(response) {
+			            console.log(response.statusText);
+			            standarPackage("error", 0);
 			        });
 			    }
 			}
 
+            $scope.pageChangeHandler = function (num) {
+                
+				if (triggerPagging) {
+				    standarPackage("start", 0);
+
+				    //var theUrl;
+
+				    //if (searchOn) {
+				    //    if (parameter == '') {
+				    //        theUrl = $scope.searchUrl + "?take=" + $scope.take + "&page=" + num + "&target=" + $('#searchValue').val() + "&promoid=" + $scope.keepPromoId;
+				    //    }else {
+				    //        theUrl = $scope.searchUrl + "?take=" + $scope.take + "&page=" + num + "&target=" + $('#searchValue').val() + parameter;
+				    //    }   
+				    //} else {
+				    //    if (parameter == '') {
+				    //        theUrl = $scope.primaryUrl + "?take=" + $scope.take + "&page=" + num + "&promoid=" + $scope.keepPromoId;
+				    //    } else {
+				    //        theUrl = $scope.primaryUrl + "?take=" + $scope.take + "&page=" + num + parameter;
+				    //    }
+				        
+				    //}
+
+					
+					$http({
+						method: "GET",
+						url: $scope.primaryUrl + "?take=" + $scope.take + "&page=" + num
+					}).then(function onSuccess(response) {
+					    
+						//var collectJson = JSON.parse(data.datajson);
+						//$scope.pageSize = data.itemsPerPage;
+						//$scope.jsonLists = [];
+
+					    $scope.currentPage = num;
+						$scope.currentNumber = (num * 10) - 9;
+						$scope.totalItem = response.data.itemsPerPage;
+
+					    dataListing(response.data);
+
+					    
+					}).catch(function onError(response) {
+						triggerPagging = false;
+					    standarPackage("error",0);
+					});
+				};
+				triggerPagging = true;
+			}
 			//$scope.change = function (parameterString, promoId) {
 
 		    //    $scope.keepPromoId = promoId;
@@ -166,7 +224,7 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 		    //            method: "JSON",
 		    //            url: $scope.primaryUrl + "?take=" + $scope.take + "&page=" + $scope.page + parameterString
 		    //        }).success(function (data, status) {
-		    //            triggertPagging = false;
+		    //            triggerPagging = false;
 		    //            searchOn = false;
 		    //            var collectJson = JSON.parse(data.datajson);
 
@@ -193,11 +251,11 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 
 
 		    //        }).error(function (data, status) {
-		    //            triggertPagging = false;
+		    //            triggerPagging = false;
 		    //            standarPackage("error",0);
 		    //        });
 		    //    } else {
-		    //        triggertPagging = false;
+		    //        triggerPagging = false;
 		    //        $scope.transactionLists = [];
 		    //        standarPackage("error", 0);
 		    //    }
@@ -217,9 +275,9 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 
 			//		$http({
 			//			method: "JSON",
-			//			url: $scope.secondaryUrl + "?take=" + $scope.take + "&page=" + $scope.page + parameterString
+			//			url: $scope.searchUrl + "?take=" + $scope.take + "&page=" + $scope.page + parameterString
 			//		}).success(function (data, status) {
-			//		    triggertPagging = false;
+			//		    triggerPagging = false;
 			//			searchOn = true;
 			//			$scope.currentPage = 1;
 			//			$scope.currentNumber = 1;
@@ -239,7 +297,7 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 
 			//			standarPackage("success", collectJson.length);
 			//		}).error(function (data, status) {
-			//			triggertPagging = false;
+			//			triggerPagging = false;
 			//		    standarPackage("error",0);
 			//		});
 			//	}
@@ -253,7 +311,7 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 	        //        method: "JSON",
 	        //        url: $scope.primaryUrl + "?take=" + $scope.take + "&page=" + $scope.page + parameter
 	        //    }).success(function (data, status) {
-	        //        triggertPagging = false;
+	        //        triggerPagging = false;
 	        //        searchOn = false;
 	        //        $scope.currentPage = 1;
 	        //        $scope.currentNumber = 1;
@@ -278,23 +336,23 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 	        //        standarPackage("success", collectJson.length);
 
 	        //    }).error(function (data, status) {
-	        //        triggertPagging = false;
+	        //        triggerPagging = false;
 	        //        standarPackage("error", 0);
 	        //    });
 			//};
             
 			//$scope.pageChangeHandler = function (num, parameter) {
                 
-			//	if (triggertPagging) {
+			//	if (triggerPagging) {
 			//	    standarPackage("start", 0);
 
 			//	    var theUrl;
 
 			//	    if (searchOn) {
 			//	        if (parameter == '') {
-			//	            theUrl = $scope.secondaryUrl + "?take=" + $scope.take + "&page=" + num + "&target=" + $('#searchValue').val() + "&promoid=" + $scope.keepPromoId;
+			//	            theUrl = $scope.searchUrl + "?take=" + $scope.take + "&page=" + num + "&target=" + $('#searchValue').val() + "&promoid=" + $scope.keepPromoId;
 			//	        }else {
-			//	            theUrl = $scope.secondaryUrl + "?take=" + $scope.take + "&page=" + num + "&target=" + $('#searchValue').val() + parameter;
+			//	            theUrl = $scope.searchUrl + "?take=" + $scope.take + "&page=" + num + "&target=" + $('#searchValue').val() + parameter;
 			//	        }   
 			//	    } else {
 			//	        if (parameter == '') {
@@ -333,11 +391,11 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 
 			//		    standarPackage("success",collectJson.length);
 			//		}).error(function (data, status) {
-			//			triggertPagging = false;
+			//			triggerPagging = false;
 			//		    standarPackage("error",0);
 			//		});
 			//	};
-			//	triggertPagging = true;
+			//	triggerPagging = true;
 			//}
 	        
 	    }

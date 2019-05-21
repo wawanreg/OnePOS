@@ -78,14 +78,18 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardAddItems()
         {
-            ActionItemViewModels addItemModels = new ActionItemViewModels();
-            addItemModels.VendorDropdownLists = DashboardFunction.GetDropdownVendor(db,"");
-            addItemModels.BranchCategoryDropdownLists = DashboardFunction.GetDropdownBrandCategory(db, "");
-            addItemModels.StorageDropdownLists = DashboardFunction.GetDropdownStorage(db, "");
-            addItemModels.BranchDropdownLists = DashboardFunction.GetDropdownBrand(db, "");
+            ActionItemViewModels addItemModels = new ActionItemViewModels
+            {
+                VendorDropdownLists = DashboardFunction.GetDropdownVendor(db, ""),
+                BranchCategoryDropdownLists = DashboardFunction.GetDropdownBrandCategory(db, ""),
+                StorageDropdownLists = DashboardFunction.GetDropdownStorage(db, ""),
+                BranchDropdownLists = DashboardFunction.GetDropdownBrand(db, "")
+            };
+            
 
             return View(addItemModels);
         }
+        
         [HttpPost]
         [Route("Dashboard/AddItems")]
         [Authorize(Roles = "Super Admin,Admin")]
@@ -109,10 +113,14 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardEditItem(int idItem, ActionItemViewModels mItem)
         {
-            
-            DashboardFunction.EditItemViewModels(db, SendCurrentUser(), mItem, idItem);
+            if (ModelState.IsValid)
+            {
+                DashboardFunction.EditItemViewModels(db, SendCurrentUser(), mItem, idItem);
 
-            return RedirectToAction("ListItems");
+                return RedirectToAction("ListItems");    
+            }
+
+            return View(mItem);
         }
 
         [Route("Dashboard/DeleteItem/{idItem}")]
@@ -151,9 +159,14 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardEditVendor(int idVendor, VendorViewModels mVendor)
         {
-            DashboardFunction.EditVendorViewModels(db, SendCurrentUser(), mVendor, idVendor);
+            if (ModelState.IsValid)
+            {
+                DashboardFunction.EditVendorViewModels(db, SendCurrentUser(), mVendor, idVendor);
 
-            return RedirectToAction("ListVendors");
+                return RedirectToAction("ListVendors");    
+            }
+
+            return View(mVendor);
         }
 
         
@@ -188,8 +201,8 @@ namespace OnePOS.Controllers
         public ActionResult DashboardAddVendors(AddVendorViewModels vendorsData)
         {
             var catchFlag = DashboardFunction.AddVendorsToDb(db, vendorsData, SendCurrentUser());
-            
-            return View();
+
+            return RedirectToAction("AddVendors");
         }
 
         [Route("Dashboard/AddBrands")]
@@ -205,7 +218,7 @@ namespace OnePOS.Controllers
         public ActionResult DashboardAddBrands(ActionBrandViewModels brandData)
         {
             DashboardFunction.AddBrandsToDb(db, brandData, SendCurrentUser());
-
+            
             return RedirectToAction("AddBrands");
         }
 
@@ -228,10 +241,15 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardEditBrand(int idBrand, ActionBrandViewModels mBrand)
         {
+            
+            if (ModelState.IsValid)
+            {
+                DashboardFunction.EditBrandViewModels(db, SendCurrentUser(), mBrand, idBrand);
+                return RedirectToAction("ListBrands");
+            }
 
-            DashboardFunction.EditBrandViewModels(db, SendCurrentUser(), mBrand, idBrand);
 
-            return RedirectToAction("ListBrands");
+            return View(mBrand); //RedirectToAction("DashboardEditBrand"); //RedirectToAction("ListBrands");
         }
 
         [Route("Dashboard/DeleteBrand/{idBrand}")]

@@ -68,7 +68,7 @@
                     
                 </section>
                 <div class="text-center">
-                    <dir-pagination-controls boundary-links="true" on-page-change="" template-url="~/Assets/js/dirPagination.tpl.html"></dir-pagination-controls>
+                    <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="~/Assets/js/dirPagination.tpl.html"></dir-pagination-controls>
                 </div>
             </section>
         </div>
@@ -79,22 +79,20 @@
     <!-- /#page-wrapper -->
 </div>
 
-@*@Html.Partial("_DeleteDialog")*@
-
-
-
-@section AdditionalJavascript {
-    
-}
-
 @using (Html.BeginScripts())
 {
     <script src="~/Assets/js/global-tabling-json.js"></script>
     <script>
+        var webroot = "@Url.Content("~/")";
+        var sendUrl = '/ApiCollection/GetVendorList';
+
+        if (webroot != "/")
+            sendUrl = webroot + sendUrl;
+
         globalTablingJson(
             '#vendorTable tbody',
             ".vendor-list-section",
-            '/ApiCollection/GetVendorList',
+            sendUrl,
             '//',
             true);
     </script>

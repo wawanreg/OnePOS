@@ -10,6 +10,17 @@ function unNumbro(number) {
     return realNumber = numbro().unformat(number);
 }
 
+
+function checkWarning(m) {
+
+    if ($(m).val().length > 0) {
+        $(m).siblings(".field-warning").hide();
+    } else {
+        $(m).siblings(".field-warning").show();
+    }
+}
+
+
 function checkerEmailValid(eInput) {
     var pattern = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     return pattern.test($(eInput).val());

@@ -176,9 +176,15 @@
 {
     <script src="~/Assets/js/shoppingBasket.js"></script>
     <script>
+        var webroot = "@Url.Content("~/")";
+        var sendUrl = '/ApiCollection/GetItemCollection';
+
+        if (webroot != "/")
+            sendUrl = webroot + sendUrl;
+
         shoppingCollection(
             '.shopping-basket',
-            '/ApiCollection/GetItemCollection');
+            sendUrl);
         functionAddTransaction();
     </script>
     
