@@ -26,11 +26,14 @@ namespace OnePOS.Models.Invoice
         public DateTime EndTransactionDate { get; set; }
         [Column(TypeName = "DateTime2")]
         public DateTime InvoiceDate { get; set; }
-        public decimal TotalPaymentBeforeTax { get; set; }
+        public decimal TotalBeforeTax { get; set; }
         public decimal TotalTransaction { get; set; }
         public decimal TotalItem { get; set; }
-        public decimal TotalPaymentAfterTax { get; set; }
+        public decimal TotalAfterTax { get; set; }
         public decimal PaymentTax { get; set; }
+        public decimal TotalBeforeDiscount { get; set; }
+        public decimal TotalPayment { get; set; }
+        public int DiscontTransaction { get; set; }
         public int Tax { get; set; }
         public string MerchantEmail { get; set; }
         public bool Active { get; set; }

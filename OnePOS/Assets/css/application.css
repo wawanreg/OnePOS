@@ -316,29 +316,73 @@ body img {
   .dashboard-page .add-storages-section .add-storage-input-btn {
     padding-top: 15px;
     padding-bottom: 15px; }
-  .dashboard-page .shopping-basket .collection-item-select {
-    background-color: white; }
-    .dashboard-page .shopping-basket .collection-item-select:hover {
-      background-color: whitesmoke; }
+  .dashboard-page .shopping-basket-form .shopping-stock-empty, .dashboard-page .shopping-basket-form .shopping-exceed-stock {
+    display: none;
+    width: 9.333333%; }
+  .dashboard-page .shopping-basket-form .shopping-basket .basket-main-input {
+    margin-bottom: 0; }
+  .dashboard-page .shopping-basket-form .shopping-basket .collection-item-form {
+    margin-bottom: 0; }
+    .dashboard-page .shopping-basket-form .shopping-basket .collection-item-form .collection-item-select {
+      background-color: white; }
+      .dashboard-page .shopping-basket-form .shopping-basket .collection-item-form .collection-item-select .collection-items {
+        margin-left: 10px; }
+        .dashboard-page .shopping-basket-form .shopping-basket .collection-item-form .collection-item-select .collection-items .control-label:first-child {
+          margin-top: 10px; }
+      .dashboard-page .shopping-basket-form .shopping-basket .collection-item-form .collection-item-select:hover {
+        background-color: whitesmoke; }
+  .dashboard-page .shopping-basket-form .order-collection .order-summary .order-collection-list {
+    cursor: default; }
+    .dashboard-page .shopping-basket-form .order-collection .order-summary .order-collection-list .transaction-item-quantity {
+      cursor: pointer; }
+    .dashboard-page .shopping-basket-form .order-collection .order-summary .order-collection-list .transaction-item-discount {
+      cursor: pointer; }
+  .dashboard-page .shopping-basket-form .order-collection .order-holder .panel-primary {
+    margin-bottom: 10%; }
+  .dashboard-page .shopping-basket-form .order-collection .order-holder .order-holder-body {
+    max-height: 320px;
+    overflow: auto;
+    text-align: right; }
+    .dashboard-page .shopping-basket-form .order-collection .order-holder .order-holder-body .order-holder-item {
+      font-size: medium; }
+    .dashboard-page .shopping-basket-form .order-collection .order-holder .order-holder-body .order-transaction-dsc {
+      margin-bottom: 0; }
+      .dashboard-page .shopping-basket-form .order-collection .order-holder .order-holder-body .order-transaction-dsc .order-lbl-dsc {
+        margin-right: 5%;
+        color: #8a6d3b; }
+      .dashboard-page .shopping-basket-form .order-collection .order-holder .order-holder-body .order-transaction-dsc .dsc-total-transaction {
+        display: initial;
+        width: 30%;
+        text-align: right;
+        margin: 0; }
+  .dashboard-page .shopping-basket-form .order-collection .order-holder .order-holder-footer {
+    text-align: right;
+    padding-right: 11%; }
+    .dashboard-page .shopping-basket-form .order-collection .order-holder .order-holder-footer .transaction-sum {
+      font-size: medium;
+      margin-right: 7%; }
+  .dashboard-page .shopping-basket-form .order-collection .order-holder .order-action-form {
+    margin-top: 3%; }
   .dashboard-page .invoice-detail-form {
     padding-top: 10px;
-    -webkit-print-color-adjust: exact;
     color: #515151;
     background-color: #FFFFFF;
     padding-bottom: 10px;
     padding-top: 10px;
     border-radius: 10px; }
-    .dashboard-page .invoice-detail-form .invoice-body .invoice-title-container {
+    .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .invoice-title-container {
       padding-bottom: 10px;
       padding-top: 10px; }
-      .dashboard-page .invoice-detail-form .invoice-body .invoice-title-container .title-left {
-        text-align: left; }
-        .dashboard-page .invoice-detail-form .invoice-body .invoice-title-container .title-left .title-store {
+      .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .invoice-title-container .title-left {
+        text-align: left;
+        padding-left: 2%; }
+        .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .invoice-title-container .title-left .title-store {
           font-size: 35px;
           font-weight: 300; }
-      .dashboard-page .invoice-detail-form .invoice-body .invoice-title-container .title-right {
-        text-align: right; }
-        .dashboard-page .invoice-detail-form .invoice-body .invoice-title-container .title-right .title-invoice {
+      .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .invoice-title-container .title-right {
+        text-align: right;
+        padding-right: 2%; }
+        .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .invoice-title-container .title-right .title-invoice {
           font-size: 35px;
           font-weight: 300;
           color: #0076fe; }
@@ -346,7 +390,7 @@ body img {
       height: 46px; }
       .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .header-container .table-header-detail-first {
         background-color: whitesmoke;
-        padding-left: 20px;
+        padding-left: 2%;
         border-style: solid;
         border-color: white;
         border-left-width: 0px;
@@ -358,7 +402,7 @@ body img {
           font-size: 12px; }
       .dashboard-page .invoice-detail-form .invoice-body .invoice-table-header .header-container .table-header-detail {
         background-color: whitesmoke;
-        padding-left: 20px;
+        padding-left: 2%;
         border-style: solid;
         border-color: white;
         border-left-width: 0px;
@@ -395,6 +439,11 @@ body img {
             border-top-left-radius: 3px;
             border-bottom-left-radius: 3px; }
           .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body tbody .table-item-list .category-quantity {
+            width: 90px;
+            padding-left: 10px;
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px; }
+          .dashboard-page .invoice-detail-form .invoice-body .invoice-table-body tbody .table-item-list .category-discount-item {
             width: 90px;
             padding-left: 10px;
             border-top-left-radius: 3px;

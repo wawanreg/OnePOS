@@ -5,171 +5,162 @@
     ViewBag.Title = "ShoppingBasket";
     Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
 }
+<div class="shopping-basket-form">
+    @using (Html.BeginForm("DashboardShoppingBasket", "Dashboard", FormMethod.Post, new { @id = "ShoppingBasketPost", @class = "form-horizontal", role = "form" }))
+    {
+        @Html.HiddenFor(m => m.ItemId, new { @id = "TransactionItem" })
+        @Html.HiddenFor(m => m.Quantity, new { @id = "TransactionQuantity" })
+        @Html.HiddenFor(m => m.TotalPayment, new { @id = "TransactionTotalPayment" })
+        @Html.HiddenFor(m => m.TotalTransaction, new { @id = "TransactionTotal" })
+        @Html.HiddenFor(m => m.DiscountPerItems, new { @id = "DiscountPerItems" })
+        @Html.HiddenFor(m => m.DiscountTotalTransaction, new { @id = "DiscountTotalTransaction" })
 
-@using (Html.BeginForm("DashboardShoppingBasket", "Dashboard", FormMethod.Post, new { @id = "ShoppingBasketPost", @class = "form-horizontal", role = "form" }))
-{
-    @Html.HiddenFor(m => m.ItemId, new { @id = "TransactionItem" })
-    @Html.HiddenFor(m => m.Quantity, new { @id = "TransactionQuantity" })
-    @Html.HiddenFor(m => m.TotalPayment, new { @id = "TransactionTotalPayment" })
-    @Html.HiddenFor(m => m.TotalTransaction, new { @id = "TransactionTotal" })
-
-
-    <div id="wrapper">
-        <div id="page-wrapper" ng-app="app" ng-controller="POSController" ng-init="init()" class="ng-cloak">
-            <div class="row">
-                <div class="col-sm-12">
-                    <h1 class="page-header">Shopping Basket</h1>
-                    <span id="messageLoader" class="text-danger" style="display:none; width: 9.333333%;">Empty Stock</span>
-                    <span id="exceedsStock" class="text-danger" style="display:none; width: 9.333333%;">Exceeds stock</span>
-
+        <div id="wrapper">
+            <div id="page-wrapper" ng-app="app" ng-controller="POSController" ng-init="init()" class="ng-cloak">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h1 class="page-header shopping-title">Shopping Basket</h1>
+                        <span id="messageLoader" class="text-danger shopping-stock-empty">Empty Stock</span>
+                        <span id="exceedsStock" class="text-danger shopping-exceed-stock">Exceeds stock</span>
+                    </div>
+                    <!-- /.col-lg-12 -->
                 </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <div class="row shopping-basket ">
-                <section class="col-sm-12">
-                    <div class="well">
-                        <input class="form-control" style="margin-bottom: 0;" ng-model="myValue" placeholder="Enter Item Name or Price or Stock" />
-                        <div class="panel panel-default " style="margin-bottom: 0">
-                            <div ng-if="myValue.length" ng-repeat=" theItem in itemCollections | filter: myValue" class="collection-item-select">
-                                <div style="margin-left: 10px;" ng-click="add(theItem.ItemIndex,theItem.ItemId)">
-                                    <label class="control-label" style="margin-top: 10px;">{{theItem.ItemName}}</label>
-                                    <label class="control-label"> Rp.{{theItem.ItemPrice | number : 0}}</label>
-                                    <label class="control-label"> -  Stock ({{theItem.TotalStock | number : 0}})</label>
+                <div class="row shopping-basket ">
+                    <section class="col-sm-12">
+                        <div class="well">
+                            <input class="form-control basket-main-input" ng-model="myValue" placeholder="Enter Item Name or Price or Stock" />
+                            <div class="panel panel-default collection-item-form">
+                                <div ng-if="myValue.length" ng-repeat=" theItem in itemCollections | filter: myValue" class="collection-item-select">
+                                    <div ng-click="add(theItem.ItemIndex,theItem.ItemId)" class="collection-items">
+                                        <label class="control-label">{{theItem.ItemName}}</label>
+                                        <label class="control-label"> Rp.{{theItem.ItemPrice | number : 0}}</label>
+                                        <label class="control-label"> -  Stock ({{theItem.TotalStock | number : 0}})</label>
+                                    </div>
+
                                 </div>
 
                             </div>
-
                         </div>
-                    </div>
 
-                </section>
-            </div>
-            <div class="row">
-                <section class="col-sm-8 order-summary">
-                    <div class="well table-responsive">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Order Summary</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div class="text-warning" ng-hide="order.length">
-                                    Nothing ordered yet !
+                    </section>
+                </div>
+                <div class="row order-collection">
+                    <section class="col-sm-8 order-summary">
+                        <div class="well table-responsive">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Order Summary</h3>
                                 </div>
-                                <table id="transactionTable" class="table table-hover list-table" ng-show="order.length">
-                                    <thead>
-                                        <tr>
-                                            <th>
-                                                #
-                                            </th>
-                                            <th>
-                                                Name
-                                            </th>
-                                            <th>
-                                                Price
-                                            </th>
-                                            <th>
-                                                Quantity
-                                            </th>
-                                            <th>
+                                <div class="panel-body">
+                                    <div class="text-warning" ng-hide="order.length">
+                                        Nothing ordered yet !
+                                    </div>
+                                    <table id="transactionTable" class="table table-hover list-table order-collection-list" ng-show="order.length">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    #
+                                                </th>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Price
+                                                </th>
+                                                <th>
+                                                    Quantity
+                                                </th>
+                                                <th>
+                                                    Discount
+                                                </th>
+                                                <th>
 
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody >
-                                        <tr ng-repeat="item in order">
-                                            <td class="transaction-index">
-                                                {{$index+1}}
-                                            </td>
-                                            <td >
-                                                <a class="transaction-item-name">{{item.name}}</a>
-                                            </td>
-                                            <td >
-                                                <a class="transaction-item-price">Rp. {{item.price | number : 0}}</a>
-                                            </td>
-                                            <td >
-                                                <a class="transaction-item-quantity" uib-popover-template="'tpl.html'" popover-title="Qty" ng-model="dope" popover-enable="true" popover-is-open="item.isOpen" ng-click="qtyModified.open($index); $event.stopPropagation();">{{item.qty | number : 0}}</a>
-                                            </td>
-                                            <td ng-show="false">
-                                                <a class="transaction-item-id" style="visibility: hidden;">{{item.id}}</a>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-danger btn-xs pull-right" ng-click="deleteItem($index,item.id,item.qty, item.collectionIndex); $event.stopPropagation()">
-                                                    <i class="fa fa-trash" aria-hidden="true" style=""></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="item in order">
+                                                <td class="transaction-index">
+                                                    {{$index+1}}
+                                                </td>
+                                                <td>
+                                                    <a class="transaction-item-name">{{item.name}}</a>
+                                                </td>
+                                                <td>
+                                                    <a class="transaction-item-price">Rp. {{item.price | number : 0}}</a>
+                                                </td>
+                                                <td>
+                                                    <a class="transaction-item-quantity" uib-popover-template="'tpl.html'" popover-title="Quantity" ng-model="dopeQty" popover-enable="true" popover-is-open="item.isQtyOpen" ng-click="qtyModified.open($index); $event.stopPropagation();">{{item.qty | number : 0}}</a>
+                                                </td>
+                                                <td>
+                                                    <a class="transaction-item-discount" uib-popover-template="'tpl.html'" popover-title="Discount" ng-model="dopeDsc" popover-enable="true" popover-is-open="item.isDscOpen" ng-click="dscModified.open($index); $event.stopPropagation();">{{item.discount | number : 0}}</a>
+                                                </td>
+                                                <td ng-show="false">
+                                                    <a class="transaction-item-id" style="visibility: hidden;">{{item.id}}</a>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-danger btn-xs pull-right" ng-click="deleteItem($index,item.id,item.qty, item.collectionIndex); $event.stopPropagation()">
+                                                        <i class="fa fa-trash" aria-hidden="true" style=""></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <section class="col-sm-4 order-holder">
+                        <div class="well">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Total Summary</h3>
+                                </div>
+                                <div class="panel-body order-holder-body" style="">
+                                    <ul class="list-group">
+                                        <li class="list-group-item" ng-repeat="item in order">
+                                            <div class="label label-success order-holder-item">Rp. {{item.totalPrice | number : 0}}</div>
+                                        </li>
+                                    </ul>
+                                    <ul class="list-group order-transaction-dsc">
+                                        <li class="list-group-item">
+                                            <div>
+                                                <label class="order-lbl-dsc" style="">Discount (%)</label>
+                                                <input type="number" value="0" min="0" max="100" class="form-controlc dsc-total-transaction" ng-model="transDsc" ng-change="transCalcDsc(transDsc); $event.stopPropagation();" />
+                                            </div>
+                                            
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="panel-footer order-holder-footer" ng-show="order.length">
+                                    {{getSum()}}
+                                    <div class="label label-danger transaction-sum">Total: Rp. {{valueSum | number : 0}}</div>
+                                    
+                                    <input class="transaction-price" ng-show="false" value="{{valueSum}}" />
+                                </div>
+                                <div class="pull-right order-action-form">
+                                    <span class="btn btn-default" ng-click="clearOrder(); $event.stopPropagation();" ng-disabled="!order.length">Clear</span>
+
+                                    <span class="btn btn-blue add-transaction-btn" ng-disabled="!order.length">Checkout</span>
+                                </div>
+
                             </div>
                         </div>
-
-                    </div>
-                </section>
-
-                <section class="col-sm-4 order-holder">
-                    <div class="well">
-                        <div class="panel panel-primary">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Total Summary</h3>
-                            </div>
-                            <div class="panel-body" style="max-height:320px; overflow:auto;">
-                                <ul class="list-group">
-                                    <li class="list-group-item" ng-repeat="item in order">
-                                        <div class="label label-success " style=" font-size: medium;">Rp. {{item.totalPrice | number : 0}}</div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="panel-footer" ng-show="order.length">
-                                <div class="label label-danger" style=" font-size: medium;">Total: Rp. {{getSum()| number : 0}}</div>
-                                <span class="transaction-price" ng-show="false">{{getSum()}}</span>
-                            </div>
-                            <div class="pull-right" style=" margin-top: 1%;">
-                                <span class="btn btn-default" ng-click="clearOrder(); $event.stopPropagation();" ng-disabled="!order.length">Clear</span>
-                                
-                                <span class="btn btn-blue add-transaction-btn" ng-disabled="!order.length">Checkout</span>
-                                
-                                @*<div class="add-transaction-btn" >
-                                    <input type="submit" value="Checkout " class="btn btn-danger" ng-disabled="!order.length" />
-                                </div>*@
-                                
-                                
-
-                            </div>
-                            
-                        </div>
-                    </div>
-                </section>
-
-
-            </div>
-            @*<a id="ttt" title="Header" data-toggle="test"   data-placement="top" data-content="Content">123</a>*@
-            <script type="text/ng-template" id="tpl.html">
-                <div class="popover-content">
-
-                    <div class="form-group">
-                        <div class="">
-                            <input type="text" class="form-control" value="{{item.qty | number : 0}}" ng-model="dope" />
-                        </div>
-                        <div class="">
-                            <a tabindex="-1" class="btn btn-primary btn-sm" ng-click="editItem(item.id,dope,$index, item.collectionIndex); $event.stopPropagation();">
-                                <i class="fa fa-check" aria-hidden="true"></i>
-                            </a>
-                            <a tabindex="-1" class="btn btn-default btn-sm " ng-click="qtyModified.close($index); $event.stopPropagation();">
-                                <i class="fa fa-times" aria-hidden="true"></i>
-                            </a>
-                        </div>
-
-                    </div>
+                    </section>
 
 
                 </div>
-            </script>
+                @Html.Partial("~/Views/Shared/_ModifierPopUpShopping.cshtml");
+                
+            </div>
 
+            <!-- /#page-wrapper -->
         </div>
+    }    
+</div>
 
-        <!-- /#page-wrapper -->
-    </div>
-}
 
 
 @using (Html.BeginScripts())

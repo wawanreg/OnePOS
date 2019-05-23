@@ -246,6 +246,7 @@ body img {max-width:100%;}
 		} 
         .add-brand-input-btn{padding-top: 15px; padding-bottom: 15px;}
     }
+    //add storage section
     .add-storages-section{
         .add-storages-manual{
             .storages-group-list{ 
@@ -268,32 +269,70 @@ body img {max-width:100%;}
 		} 
         .add-storage-input-btn{padding-top: 15px; padding-bottom: 15px;}
     }
-    .shopping-basket{
-        .collection-item-select{background-color:white;
-            &:hover {background-color:whitesmoke;}
-        }
-    }
-    .invoice-detail-form{ padding-top: 10px; -webkit-print-color-adjust: exact;color: #515151;  background-color: #FFFFFF; padding-bottom: 10px; padding-top: 10px; border-radius: 10px;
-        .invoice-body{
-            .invoice-title-container{
-                padding-bottom: 10px;    padding-top: 10px;
-                .title-left{text-align: left;
-                    .title-store{font-size:35px;font-weight:300;}
+
+    //shopping basket form
+    .shopping-basket-form{ 
+        .shopping-title{}
+        .shopping-stock-empty, .shopping-exceed-stock{display:none; width: 9.333333%;}
+        
+
+        .shopping-basket{
+            .basket-main-input{margin-bottom: 0;}
+            .collection-item-form{margin-bottom: 0;
+                .collection-item-select{background-color:white;
+                    .collection-items{margin-left: 10px;
+                        .control-label:first-child{margin-top: 10px;}
+                    }
+                    &:hover {background-color:whitesmoke;}
                 }
-                .title-right{text-align: right;
-                    .title-invoice{font-size:35px;font-weight:300;color: #0076fe;}
+            }    
+        }
+
+        .order-collection{ 
+            .order-summary{
+                .order-collection-list{cursor:default;
+                    .transaction-item-quantity{cursor:pointer;}
+                    .transaction-item-discount{cursor:pointer;}
                 }
             }
+            .order-holder{
+                .panel-primary{margin-bottom:10%}
+                .order-holder-body{max-height:320px; overflow:auto; text-align:right;
+                    .order-holder-item{font-size: medium;}
+                    .order-transaction-dsc{margin-bottom:0;
+                        .order-lbl-dsc{margin-right: 5%; color: #8a6d3b;}
+                        .dsc-total-transaction{display:initial; width:30%; text-align:right; margin:0;}
+                    }
+                }
+                .order-holder-footer{text-align:right;padding-right:11%;
+                    .transaction-sum{font-size: medium; margin-right:7%;}
+                }
+                .order-action-form{ margin-top: 3%;}
+            }
+        }
+    }
+    
+    //invoice section
+    .invoice-detail-form{ padding-top: 10px; color: #515151;  background-color: #FFFFFF; padding-bottom: 10px; padding-top: 10px; border-radius: 10px;
+        .invoice-body{
             
-            
-                
 
             .invoice-table-header{
+                .invoice-title-container{
+                    padding-bottom: 10px;    padding-top: 10px;
+                    .title-left{text-align: left; padding-left:2%;
+                        .title-store{font-size:35px;font-weight:300;}
+                    }
+                    .title-right{text-align: right; padding-right:2%;
+                        .title-invoice{font-size:35px;font-weight:300;color: #0076fe;}
+                    }
+                }
+            
                 .header-container{height:46px;
-                    .table-header-detail-first {background-color: rgb(245,245,245); padding-left: 20px; border-style: solid; border-color: white; border-left-width: 0px; border-right-width: 1px; border-bottom-width: 1px; border-top-width: 0px;
+                    .table-header-detail-first {background-color: rgb(245,245,245); padding-left: 2%; border-style: solid; border-color: white; border-left-width: 0px; border-right-width: 1px; border-bottom-width: 1px; border-top-width: 0px;
                         .detail-title { color: #0076fe;font-size: 12px;}
                     }
-                    .table-header-detail{background-color: rgb(245,245,245); padding-left: 20px; border-style: solid; border-color: white; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 1px; border-top-width: 0px;
+                    .table-header-detail{background-color: rgb(245,245,245); padding-left: 2%; border-style: solid; border-color: white; border-left-width: 0px; border-right-width: 0px; border-bottom-width: 1px; border-top-width: 0px;
                         .detail-title { color: #0076fe;font-size: 12px;}
                     }
                 }
@@ -311,6 +350,7 @@ body img {max-width:100%;}
                         .category-item{width: 300px; padding-left: 10px;border-top-left-radius: 3px; border-bottom-left-radius: 3px;}
                         .category-price{width: 160px; padding-left: 10px; border-top-left-radius: 3px; border-bottom-left-radius: 3px;}
                         .category-quantity{width: 90px; padding-left: 10px; border-top-left-radius: 3px; border-bottom-left-radius: 3px;}
+                        .category-discount-item{width: 90px; padding-left: 10px; border-top-left-radius: 3px; border-bottom-left-radius: 3px;}
                         .category-total{width: 110px; padding-right: 20px; border-top-left-radius: 3px; border-bottom-left-radius: 3px; text-align:right;
                             span{font-weight:600;}
                         }

@@ -81,9 +81,9 @@ namespace OnePOS.Controllers
             ActionItemViewModels addItemModels = new ActionItemViewModels
             {
                 VendorDropdownLists = DashboardFunction.GetDropdownVendor(db, ""),
-                BranchCategoryDropdownLists = DashboardFunction.GetDropdownBrandCategory(db, ""),
+                BrandCategoryDropdownLists = DashboardFunction.GetDropdownBrandCategory(db, ""),
                 StorageDropdownLists = DashboardFunction.GetDropdownStorage(db, ""),
-                BranchDropdownLists = DashboardFunction.GetDropdownBrand(db, "")
+                BrandDropdownLists = DashboardFunction.GetDropdownBrand(db, "")
             };
             
 
@@ -119,6 +119,11 @@ namespace OnePOS.Controllers
 
                 return RedirectToAction("ListItems");    
             }
+            
+            mItem.BrandDropdownLists = DashboardFunction.GetDropdownBrand(db, mItem.ItemBrandType);
+            mItem.BrandCategoryDropdownLists = DashboardFunction.GetDropdownBrandCategory(db, mItem.ItemBrandCategory);
+            mItem.StorageDropdownLists = DashboardFunction.GetDropdownStorage(db, mItem.ItemStorage);
+            mItem.VendorDropdownLists = DashboardFunction.GetDropdownVendor(db, mItem.ItemVendor);
 
             return View(mItem);
         }
@@ -239,7 +244,7 @@ namespace OnePOS.Controllers
         [HttpPost]
         [Route("Dashboard/EditBrand/{idBrand}")]
         [Authorize(Roles = "Super Admin,Admin")]
-        public ActionResult DashboardEditBrand(int idBrand, ActionBrandViewModels mBrand)
+        public ActionResult DashboardEditBrand(int idBrand, BrandViewModels mBrand)
         {
             
             if (ModelState.IsValid)
@@ -305,10 +310,14 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardEditStorage(int idStorage, ActionStorageViewModels mStorage)
         {
+            if (ModelState.IsValid)
+            {
+                DashboardFunction.EditStorageViewModels(db, SendCurrentUser(), mStorage, idStorage);
 
-            DashboardFunction.EditStorageViewModels(db, SendCurrentUser(), mStorage, idStorage);
+                return RedirectToAction("ListStorages");    
+            }
 
-            return RedirectToAction("ListStorages");
+            return View(mStorage);
         }
 
         [Route("Dashboard/DeleteStorage/{idStorage}")]

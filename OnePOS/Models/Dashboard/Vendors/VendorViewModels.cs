@@ -9,8 +9,11 @@ namespace OnePOS.Models.Dashboard.Vendors
         [Key]
         public int VendorId { get; set; }
         public string VendorUniqueId { get; set; }
+        [Required(ErrorMessage = "Fill This Field")]
         public string VendorName { get; set; }
+        [Required(ErrorMessage = "Fill This Field")]
         public string VendorAddress { get; set; }
+        [Required(ErrorMessage = "Fill This Field")]
         public string VendorPhone { get; set; }
         public string VendorEmail { get; set; }
         public string VendorOwner { get; set; }

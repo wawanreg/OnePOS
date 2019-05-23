@@ -1,0 +1,33 @@
+<script type="text/ng-template" id="tpl.html">
+    <div class="popover-content">
+
+        <div class="form-group" ng-if="item.isQtyOpen">
+            <div class="">
+                <input type="text" class="form-control" value="{{item.qty | number : 0}}" ng-model="dopeQty" />
+            </div>
+            <div class="">
+                <a tabindex="-1" class="btn btn-primary btn-sm" ng-click="editItem(item.id,dopeQty,$index, item.collectionIndex); $event.stopPropagation();">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                </a>
+                <a tabindex="-1" class="btn btn-default btn-sm " ng-click="qtyModified.close($index); $event.stopPropagation();">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="form-group" ng-if="item.isDscOpen">
+            <div class="">
+                <input type="text" class="form-control" value="{{item.discount | number : 0}}" ng-model="dopeDsc" />
+            </div>
+            <div class="">
+                <a tabindex="-1" class="btn btn-primary btn-sm" ng-click="adjustDsc(item.id,dopeDsc,$index, item.collectionIndex); $event.stopPropagation();">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                </a>
+                <a tabindex="-1" class="btn btn-default btn-sm " ng-click="dscModified.close($index); $event.stopPropagation();">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</script>

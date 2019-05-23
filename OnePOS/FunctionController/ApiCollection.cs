@@ -41,7 +41,7 @@ namespace OnePOS.FunctionController
             }).Skip(take * (page - 1)).Take(take).ToList();
 
 
-            return Json(new { @datajson = JsonConvert.SerializeObject(mVendor), itemsPerPage = db.Vendor.Count() }, JsonRequestBehavior.AllowGet);
+            return Json(new { @datajson = JsonConvert.SerializeObject(mVendor), itemsPerPage = db.Vendor.Count(x => !x.Deleted) }, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize(Roles = "Super Admin,Admin")]
@@ -60,7 +60,7 @@ namespace OnePOS.FunctionController
                 ItemId = x.ItemId
             }).Skip(take * (page - 1)).Take(take).ToList();
 
-            return Json(new { @datajson = JsonConvert.SerializeObject(mItem), itemsPerPage = db.Item.Count() }, JsonRequestBehavior.AllowGet);
+            return Json(new { @datajson = JsonConvert.SerializeObject(mItem), itemsPerPage = db.Item.Count(x => !x.Deleted) }, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize(Roles = "Super Admin,Admin")]
@@ -74,7 +74,7 @@ namespace OnePOS.FunctionController
                 BrandId = x.BrandId
             }).Skip(take * (page - 1)).Take(take).ToList();
 
-            return Json(new { @datajson = JsonConvert.SerializeObject(mBrand), itemsPerPage = db.Brand.Count() }, JsonRequestBehavior.AllowGet);
+            return Json(new { @datajson = JsonConvert.SerializeObject(mBrand), itemsPerPage = db.Brand.Count(x => !x.Deleted) }, JsonRequestBehavior.AllowGet);
         }
 
         [Authorize(Roles = "Super Admin,Admin")]
@@ -88,14 +88,14 @@ namespace OnePOS.FunctionController
                 StorageId = x.StorageId
             }).Skip(take * (page - 1)).Take(take).ToList();
 
-            return Json(new { @datajson = JsonConvert.SerializeObject(mStorage), itemsPerPage = db.Storage.Count() }, JsonRequestBehavior.AllowGet);
+            return Json(new { @datajson = JsonConvert.SerializeObject(mStorage), itemsPerPage = db.Storage.Count(x => !x.Deleted) }, JsonRequestBehavior.AllowGet);
         }
-
+        //shopping basket
         [Authorize(Roles = "Super Admin,Admin")]
         [Route("ApiCollection/GetItemCollection")]
         public JsonResult ItemCollectionJson()
         {
-            List<ShoppingBasketCollection> mItemCollections = db.Item.Where(x => !x.Deleted).OrderBy(x => x.ItemId).Where(x => !x.Deleted).Select(x => new ShoppingBasketCollection
+            List<ShoppingBasketCollection> mItemCollections = db.Item.Where(x => !x.Deleted && x.Stock !=0).OrderBy(x => x.ItemId).Select(x => new ShoppingBasketCollection
             {
                 ItemName = x.ItemName,
                 ItemPrice = x.SalePrice,
@@ -116,10 +116,10 @@ namespace OnePOS.FunctionController
                 BillingHeaderId = x.NoBillingHeader,
                 BillingStatus = x.BillingStatus.BillingName,
                 NoInvoice = x.NoInvoice,
-                TotalPayment = x.TotalPaymentAfterTax
+                TotalPayment = x.TotalAfterTax
             }).Skip(take * (page - 1)).Take(take).ToList();
 
-            return Json(new { @datajson = JsonConvert.SerializeObject(mInvoice), itemsPerPage = db.BillingHeader.Count() }, JsonRequestBehavior.AllowGet);
+            return Json(new { @datajson = JsonConvert.SerializeObject(mInvoice), itemsPerPage = db.BillingHeader.Count(x => !x.Deleted) }, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

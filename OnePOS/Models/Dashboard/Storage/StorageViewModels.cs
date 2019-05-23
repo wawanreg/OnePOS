@@ -12,6 +12,7 @@ namespace OnePOS.Models.Dashboard.Storage
         [Key]
         public int StorageId { get; set; }
         public string StorageUniqueId { get; set; }
+        [Required(ErrorMessage = "Fill This Field")]
         public string StorageName { get; set; }
         public string StorageDescription { get; set; }
         public bool Active { get; set; }
