@@ -12,9 +12,15 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	app.controller('POSController',['$scope', '$http', function ($scope,$http) {
 			$scope.itemCollections = [];
 			$scope.tempItemColls = [];
-	        $scope.dope = 0;
-            
-			$scope.primaryUrl = mainJsonUrl;
+			$scope.dopeQty = 0;
+			$scope.dopeDsc = 0;
+			$scope.transDsc = 0;
+			var isGetSum = false;
+	        $scope.valueSum = 0;
+
+
+	        $scope.primaryUrl = mainJsonUrl;
+
 			$scope.init = function() {
 			    $http({
 			        method: "GET",
@@ -56,6 +62,7 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	        $scope.order = [];
 
 	        $scope.add = function (itemIndex,itemId) {
+	            isGetSum = true;
 	            var orderItem;
 	            var nihil = false;
 	            $('#messageLoader').hide();
@@ -93,8 +100,10 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	                                qty: 1,
 	                                price: tempItem.ItemPrice,
 	                                totalPrice: tempItem.ItemPrice,
-	                                isOpen: false,
-                                    collectionIndex : itemIndex
+	                                isQtyOpen: false,
+	                                collectionIndex: itemIndex,
+	                                discount: 0,
+	                                isDscOpen: false,
 	                            };
 	                            tempItem.TotalStock--;
 	                            $scope.order.push(orderItem);
@@ -112,8 +121,10 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	                            qty: 1,
 	                            price: tempItem.ItemPrice,
 	                            totalPrice: tempItem.ItemPrice,
-	                            isOpen: false,
-	                            collectionIndex: itemIndex
+	                            isQtyOpen: false,
+	                            collectionIndex: itemIndex,
+	                            discount: 0,
+	                            isDscOpen: false,
 	                        };
 	                        tempItem.TotalStock--;
 	                        $scope.order.push(orderItem);
@@ -129,6 +140,7 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	        $scope.deleteItem = function (index, itemId, itemQty, collectionIndex) {
 	            
 	            if ($scope.itemCollections[collectionIndex].ItemId == itemId) {
+	                isGetSum = true;
 	                $scope.itemCollections[collectionIndex].TotalStock = $scope.tempItemColls[collectionIndex].cloneStock;
 	            }
 	            
@@ -136,19 +148,22 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	        };
 		
 	        $scope.editItem = function (itemId, itemQty, idx, collectionIndex) {
-	            
+	            isGetSum = true;
 
 	            if ($scope.itemCollections[collectionIndex].ItemId == itemId) {
 	                var tempColletion = $scope.itemCollections[collectionIndex];
 	                var tempItemCol = $scope.tempItemColls[collectionIndex];
-
+	                var currentDiscount = 0;
+	                var currentPrice = 0;
 	                if ($scope.order[idx].id == itemId) {
 	                    if (tempItemCol.cloneStock >= itemQty) {
 	                        tempColletion.TotalStock = tempItemCol.cloneStock - itemQty;
 	                        $scope.order[idx].qty = itemQty;
-	                        $scope.order[idx].totalPrice = $scope.order[idx].price * itemQty;
+	                        currentPrice = $scope.order[idx].price * itemQty;
+	                        currentDiscount = (currentPrice * $scope.order[idx].discount) / 100;
+	                        $scope.order[idx].totalPrice = currentPrice-currentDiscount;
 
-	                        $scope.order[idx].isOpen = false;
+	                        $scope.order[idx].isQtyOpen = false;
 
 	                        $('#exceedsStock').hide();
 	                        checkWarning(false);
@@ -159,35 +174,77 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	                }
 
 	            }
-
-	            
-
 	        };
 
 			
-			 $scope.getSum = function() {
-			   var i = 0,
-				 sum = 0;
-			   for(; i < $scope.order.length; i++) {
-			       sum += parseInt($scope.order[i].totalPrice);
-			       
-			   }
-			   return sum;
-			 };
+	        $scope.getSum = function () {
+               if (isGetSum) {
+                   var i = 0,
+				   sum = 0, cDiscount=0;
+                    for (; i < $scope.order.length; i++) {
+                        sum += parseInt($scope.order[i].totalPrice);
+
+                    }
+                   cDiscount = (sum * $scope.transDsc) / 100;
+
+                   console.log("check sum= " + sum);
+                    
+                    $scope.valueSum = sum - cDiscount;
+                    isGetSum = false;
+               }
+	        };
 			
-	        $scope.clearOrder = function() {
+	        $scope.clearOrder = function () {
+	            isGetSum = true;
 	            $scope.order = [];
 	            $scope.ctrIndex = 0;
 	        };
-            
+	        $scope.adjustDsc = function (itemId, discount, idx, collectionIndex) {
+                
+
+	            if ($scope.itemCollections[collectionIndex].ItemId == itemId) {
+	                isGetSum = true;
+	                var currentDiscount = 0;
+	                var currentPrice = 0;
+	                if ($scope.order[idx].id == itemId) {
+	                    //if (tempItemCol.cloneStock >= itemQty) {
+	                    //    tempColletion.TotalStock = tempItemCol.cloneStock - itemQty;
+	                    //    $scope.order[idx].qty = itemQty;
+	                    //    $scope.order[idx].totalPrice = $scope.order[idx].price * itemQty;
+
+	                    
+
+	                    //    $('#exceedsStock').hide();
+	                    //    checkWarning(false);
+	                    //} else {
+	                    //    $('#exceedsStock').show();
+	                    //    checkWarning(true);
+	                    //}
+	                    $scope.order[idx].discount = discount;
+	                    currentPrice = $scope.order[idx].price * $scope.order[idx].qty;
+	                    currentDiscount = (currentPrice * discount) / 100;
+
+	                    $scope.order[idx].totalPrice = currentPrice - currentDiscount;
+	                    $scope.order[idx].isDscOpen = false;
+	                }
+
+	            }
+	        };
+
+	        $scope.transCalcDsc = function (checkNul) {
+	            if (checkNul != null) {
+	                isGetSum = true;
+	            }
+	            
+	        }
+
 	        $scope.qtyModified = {
 
 	            open: function open(idx) {
 	                
 	                $('#exceedsStock').hide();
 	                checkWarning(false);
-	                $scope.order[idx].isOpen = true;
-	                
+	                $scope.order[idx].isQtyOpen = true;
 	            },
 
 	            close: function close(idx) {
@@ -195,11 +252,30 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	                $('#exceedsStock').hide();
 	                checkWarning(false);
 
-	                $scope.order[idx].isOpen = false;
+	                $scope.order[idx].isQtyOpen = false;
 	                
 	            }
 	        };
+            
+	        $scope.dscModified = {
 
+	            open: function open(idx) {
+
+	                //$('#exceedsStock').hide();
+	                //checkWarning(false);
+	                $scope.order[idx].isdscOpen = true;
+
+	            },
+
+	            close: function close(idx) {
+
+	                //$('#exceedsStock').hide();
+	                //checkWarning(false);
+
+	                $scope.order[idx].isDscOpen = false;
+
+	            }
+	        };
 	
 		}
 	]);
@@ -218,6 +294,12 @@ var transactionData = {
     },
     transactionTotal : {
         value : ""   
+    },
+    discountPerItems: {
+        value: ""
+    },
+    discountTotalTransaction: {
+        value: ""
     }
 };
 
@@ -242,12 +324,21 @@ function functionAddTransaction() {
             transactionData.transactionQuantity.value.push($(this).find('.transaction-item-quantity').text());
             transactionTotal += parseInt($(this).find('.transaction-item-quantity').text());
         });
-        
+
+        transactionData.discountPerItems.value = [];        
+        $('#transactionTable tbody tr').each(function () {
+
+            transactionData.discountPerItems.value.push($(this).find('.transaction-item-discount').text());
+
+        });
+
+
         document.getElementById("TransactionItem").value = transactionData.transactionItem.value.join('|');
         document.getElementById("TransactionQuantity").value = transactionData.transactionQuantity.value.join('|');
         document.getElementById("TransactionTotal").value = transactionTotal + "";
-        document.getElementById("TransactionTotalPayment").value = parseInt($('.transaction-price').html()) + "";
-
+        document.getElementById("TransactionTotalPayment").value = $('.transaction-price').val() + "";
+        document.getElementById("DiscountPerItems").value = transactionData.discountPerItems.value.join('|');
+        document.getElementById("DiscountTotalTransaction").value = $('.dsc-total-transaction').val() + "";
 
         $('#ShoppingBasketPost').submit();
 

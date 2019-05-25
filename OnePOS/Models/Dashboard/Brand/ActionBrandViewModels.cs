@@ -12,10 +12,9 @@ namespace OnePOS.Models.Dashboard.Brand
     {
        
         public int BrandId { get; set; }
-        [Required(ErrorMessage = "Please fill the brand name")]
+        [Required(ErrorMessage = "Please fill this")]
         public string BrandName { get; set; }
         public string BrandDescription { get; set; }
-        
         public IEnumerable<SelectListItem> BrandCategoryDropdownLists { get; set; }
         public string BrandCategoryId { get; set; }
 

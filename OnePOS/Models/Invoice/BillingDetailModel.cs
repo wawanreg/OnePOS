@@ -18,6 +18,7 @@ namespace OnePOS.Models.Invoice
         public virtual ItemViewModels Item { get; set; }
         [DisplayFormat(DataFormatString = "{0:n0}", ApplyFormatInEditMode = true)]
         public decimal Quantity { get; set; }
+        public int DiscontPerItems { get; set; }
         public bool Active { get; set; }
         public bool Deleted { get; set; }
         public string CreatedBy { get; set; }

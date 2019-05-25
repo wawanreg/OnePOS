@@ -1,8 +1,14 @@
 ﻿var getNumbro;
 
 function changeInputNumber(eInput) {
+    
     getNumbro = $(eInput).val();
+    
+    if (getNumbro == "") {
+        getNumbro = 0;
+    }
     $(eInput).val(numbro(getNumbro).format('0,0'));
+    
 }
 
 function unNumbro(number) {

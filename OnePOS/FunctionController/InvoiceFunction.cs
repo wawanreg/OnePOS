@@ -37,13 +37,17 @@ namespace OnePOS.FunctionController
 
             var arrTransactionItemId = mTransaction.ItemId.Split('|');
             var arrTransactionItemQty = mTransaction.Quantity.Split('|');
-
+            var arrDiscountPerItem = mTransaction.DiscountPerItems.Split('|');
 
             BillingHeaderModel mBillingHeader = new BillingHeaderModel
             {
                 InvoiceDate = DateTime.UtcNow,
                 TotalItem = mTransaction.TotalTransaction,
-                TotalPaymentAfterTax = mTransaction.TotalPayment,
+                TotalAfterTax = mTransaction.TotalPayment,// not clear enough
+                DiscontTransaction = mTransaction.DiscountTotalTransaction,//not clear enough
+                TotalBeforeDiscount = mTransaction.TotalPayment,//not clear enough
+                TotalTransaction = mTransaction.TotalTransaction,
+                TotalPayment = mTransaction.TotalPayment,
                 Active = true,
                 CreatedBy = userName,
                 UpdatedBy = userName,
@@ -81,7 +85,8 @@ namespace OnePOS.FunctionController
                     CreatedDate = DateTime.UtcNow,
                     UpdatedBy = userName,
                     UpdatedDate = DateTime.UtcNow,
-                    Quantity = int.Parse(arrTransactionItemQty[i])
+                    Quantity = int.Parse(arrTransactionItemQty[i]),
+                    DiscontPerItems = int.Parse(arrDiscountPerItem[i])
                 };
                 db.BillingDetail.Add(mBillingDetail);
                 db.SaveChanges();
@@ -117,7 +122,7 @@ namespace OnePOS.FunctionController
                 BillingStatus = mBillingHeader.BillingStatus,
                 InvoiceDate = mBillingHeader.InvoiceDate,
                 TotalItem = mBillingHeader.TotalItem,
-                TotalPayment = mBillingHeader.TotalPaymentAfterTax,
+                TotalPayment = mBillingHeader.TotalAfterTax,
                 BillStatusDropdownLists = new SelectList(db.BillingStatus.ToList(), "BillingStatusId", "BillingName", mBillingHeader.BillingStatus.BillingStatusId),
                 IsDeleted = mBillingHeader.Deleted
             };
@@ -242,7 +247,7 @@ namespace OnePOS.FunctionController
         //                    InvoiceDate = minDate.AddMonths(1),
         //                    NoMos = mMerchant.NoMos,
         //                    DueDate = dueDate,
-        //                    TotalPaymentBeforeTax = (mMerchant.PricePerTransaction * mHistoryClaim.Count) + (mMerchant.PricePerTransaction * mHistoryRedeem.Count),
+        //                    TotalBeforeTax = (mMerchant.PricePerTransaction * mHistoryClaim.Count) + (mMerchant.PricePerTransaction * mHistoryRedeem.Count),
         //                    TotalTransaction = mHistoryClaim.Count + mHistoryRedeem.Count,
         //                    Tax = 10,
         //                    Merchant = mMerchant,
@@ -259,8 +264,8 @@ namespace OnePOS.FunctionController
         //                if (mDataBillHeader != null)
         //                {
         //                    mDataBillHeader.NoInvoice = mDataBillHeader.NoBillingHeader + "/LE/" + InvoiceControllerServices.ToRomanNumeral(mDataBillHeader.DueDate.Month) + "/" + InvoiceControllerServices.ToRomanNumeral(int.Parse(mDataBillHeader.StartTransactionDate.ToString("yy")));
-        //                    mDataBillHeader.PaymentTax = mDataBillHeader.TotalPaymentBeforeTax / mDataBillHeader.Tax;
-        //                    mDataBillHeader.TotalPaymentAfterTax = mDataBillHeader.TotalPaymentBeforeTax + (mDataBillHeader.TotalPaymentBeforeTax / mDataBillHeader.Tax);
+        //                    mDataBillHeader.PaymentTax = mDataBillHeader.TotalBeforeTax / mDataBillHeader.Tax;
+        //                    mDataBillHeader.TotalAfterTax = mDataBillHeader.TotalBeforeTax + (mDataBillHeader.TotalBeforeTax / mDataBillHeader.Tax);
 
         //                    db.Entry(mDataBillHeader).State = EntityState.Modified;
         //                    db.SaveChanges();

@@ -25,20 +25,18 @@
                 
                 <form id="invoice-container" class="form-horizontal table-responsive" role="form" style="">
                     <div class="invoice-body panel panel-default">
-                        <div class="col-sm-12 invoice-title-container">
-                            
-                            <div class="col-sm-6 title-left" >
-                                <span class="title-store">OnePOS</span>
-                            </div>
-                            <div class="col-sm-6 title-right">
-                                <span class="title-invoice">INVOICE</span>
-                            </div>
-                        </div>
-                            
-                        
                         <table class="invoice-table-header table">
                             <thead>
-                                <tr class="header-container" >
+                                <tr class="invoice-title-container">
+                                    <th class="col-sm-6 title-left">
+                                        <span class="title-store">Depot Motor</span>
+                                    </th>
+                                    <th class="col-sm-6 title-right">
+                                        <span class="title-invoice">INVOICE</span>
+                                    </th>
+                                </tr>
+                                <tr class="header-container">
+                                    
                                     <th class="col-sm-6 table-header-detail-first" style="">
                                         <span class="detail-title">
                                             <span>Invoice Date</span>
@@ -60,7 +58,7 @@
                                             <span>Total</span>
                                         </span>
                                         <br>
-                                        <span>@Model.TotalPaymentAfterTax</span>
+                                        <span>@Model.TotalAfterTax</span>
                                     </th>
                                     <th class="col-sm-6 table-header-detail">
                                         <span class="detail-title">
@@ -75,18 +73,21 @@
                         </table>
                         <table class="invoice-table-body table">
                             <thead>
-                                <tr class="body-title-container" style="">
+                                <tr class="body-title-container">
                                     <th>
-                                        <span>#</span> 
+                                        <span>#</span>
                                     </th>
                                     <th>
                                         <span>ITEM</span>
                                     </th>
-                                    <th>
+                                    <th class="title-price">
                                         <span>PRICE</span>
                                     </th>
                                     <th>
                                         <span>QUANTITY</span>
+                                    </th>
+                                    <th>
+                                        <span>DISCOUNT</span>
                                     </th>
                                     <th class="th-last">
                                         <span>TOTAL (Rp)</span>
@@ -96,12 +97,12 @@
                             <tbody>
                                 @{
                                     var i = 0;
-                                    
+
                                     foreach (var mDetail in Model.BillingDetails)
                                     {
                                         <tr class="table-item-list">
                                             <td class="category-number">
-                                                <span style="">@(i+1)</span>
+                                                <span style="">@(i + 1)</span>
                                             </td>
                                             <td class="category-item">
                                                 <span style="">@mDetail.Item.ItemName</span>
@@ -112,11 +113,20 @@
                                             <td class="category-quantity">
                                                 <span>@mDetail.Quantity.ToString("#,##0")</span>
                                             </td>
+                                            <td class="category-discount-item">
+                                                <span>@mDetail.DiscontPerItems.ToString("#,##0")</span>
+                                            </td>
                                             <td class="category-total">
-                                                <span>@((mDetail.Item.SalePrice * mDetail.Quantity).ToString("#,##0"))</span>
+                                                <span>
+                                                    @{ var cPrice = mDetail.Item.SalePrice * mDetail.Quantity;
+                                                     var cDiscount = (cPrice * mDetail.DiscontPerItems) / 100;
+                                                     var price = cPrice - cDiscount;
+                                                    }
+                                                    @price.ToString("#,##0")
+                                                </span>
                                             </td>
                                         </tr>
-                                        
+
                                         i++;
                                     }
                                 }
@@ -124,6 +134,15 @@
                         </table>
                         <table class="invoice-table-footer table">
                             <tbody>
+                                <tr class="footer-container">
+
+                                    <td class="col-sm-10 footer-detail-title">
+                                        Discount(%)
+                                    </td>
+                                    <td class="col-sm-2 footer-detail-summary">
+                                        @Model.DiscontTransaction.ToString("#,##0")
+                                    </td>
+                                </tr>
                                 <tr class="footer-container">
 
                                     <td class="col-sm-10 footer-detail-title">
@@ -139,7 +158,7 @@
                                         TOTAL
                                     </td>
                                     <td class="col-sm-2 footer-detail-summary">
-                                        @Model.TotalPaymentAfterTax.ToString("#,##0")
+                                        @Model.TotalAfterTax.ToString("#,##0")
                                     </td>
                                 </tr>
 
@@ -147,6 +166,7 @@
                         </table>
                     </div>
                 </form>
+
             </div>
 
             
