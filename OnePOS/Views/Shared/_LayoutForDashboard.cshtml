@@ -1,4 +1,4 @@
-﻿@using Loyalti.Helpers
+﻿@using OnePOS.Helpers
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/Assets/css/invoice-detail.css" type="text/css" media="print" />
     
     <link rel="stylesheet" href="~/Assets/font-awesome/css/font-awesome.min.css" />
-    
+    <link rel="stylesheet" href="~/Assets/css/chart.min.css" />
 
     @*<link rel="stylesheet" href="/Assets/css/invoice-detail.css" type="text/css" />*@
 </head>
@@ -239,19 +239,23 @@
 
     @*<script src="/Scripts/jquery-1.10.2.js"></script>
     <script src="/Scripts/bootstrap.min.js"></script>*@
+    
+    <script src="~/Assets/js/angular.min.js"></script>
+    <script src="~/Assets/js/angular-resource.js"></script>
 
     <script src="~/Assets/js/metisMenu.js"></script>
     <script src="~/Assets/js/sb-admin-2.js"></script>
 
+    <script src="~/Assets/js/chart.min.js"></script>
     <script src="~/Assets/js/moment.min.js"></script>
     <script src="~/Assets/js/numbro.min.js"></script>
     <script src="~/Assets/js/application.js"></script>
     
-    <script src="~/Assets/js/angular.min.js"></script>
-    <script src="~/Assets/js/angular-resource.js"></script>
+    
     
     <script src="~/Assets/js/dirPagination.js"></script>
     <script src="~/Assets/js/ui-bootstrap-tpls-2.5.0.min.js"></script>
+    <script src="~/Assets/js/angular-chart.min.js"></script>
 
     @if (IsSectionDefined("AdditionalJavascript")) { @RenderSection("AdditionalJavascript") ; }
     @RenderSection("scripts", required: false)

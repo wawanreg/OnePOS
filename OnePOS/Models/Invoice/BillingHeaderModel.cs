@@ -34,6 +34,7 @@ namespace OnePOS.Models.Invoice
         public decimal TotalBeforeDiscount { get; set; }
         public decimal TotalPayment { get; set; }
         public int DiscontTransaction { get; set; }
+        public int ReduceInvoiceValue { get; set; }
         public int Tax { get; set; }
         public string MerchantEmail { get; set; }
         public bool Active { get; set; }

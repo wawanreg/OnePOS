@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Net.Mime;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using OfficeOpenXml;
 using OnePOS.FunctionController;
 using OnePOS.Models;
 using OnePOS.Models.Dashboard;
@@ -15,6 +21,7 @@ using OnePOS.Models.Dashboard.Items;
 using OnePOS.Models.Dashboard.Storage;
 using OnePOS.Models.Dashboard.Vendors;
 using OnePOS.Models.Invoice;
+using System.Web.UI.WebControls;
 
 namespace OnePOS.Controllers
 {
@@ -47,6 +54,25 @@ namespace OnePOS.Controllers
         //        _roleManager = value;
         //    }
         //}
+        public void GetUploadStatus()
+        {
+            ViewBag.SuccessCtr = TempData["SuccessMessage"];
+            ViewBag.FailedCtr = TempData["FailedMessage"];
+        }
+
+        private void SetUploadStatus(UploadModel uploadStatus)
+        {
+            if (uploadStatus.IsSuccess)
+            {
+                if (uploadStatus.SuccessCtr > 0)
+                    TempData["SuccessMessage"] = uploadStatus.SuccessCtr + " file successfully upload";
+                else
+                    TempData["SuccessMessage"] = uploadStatus.SuccessCtr + " there's no new files";
+
+                if (uploadStatus.FailedCtr > 0)
+                    TempData["FailedMessage"] = uploadStatus.FailedCtr + " file failed to upload";
+            }
+        }
 
         public string SendCurrentUser()
         {
@@ -78,6 +104,7 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardAddItems()
         {
+            GetUploadStatus();
             ActionItemViewModels addItemModels = new ActionItemViewModels
             {
                 VendorDropdownLists = DashboardFunction.GetDropdownVendor(db, ""),
@@ -197,9 +224,10 @@ namespace OnePOS.Controllers
         public ActionResult DashboardAddVendors()
         {
             //DashboardFunction.StarDashboardIndex();
-
+            GetUploadStatus();
             return View();
         }
+
         [HttpPost]
         [Route("Dashboard/AddVendors")]
         [Authorize(Roles = "Super Admin,Admin")]
@@ -214,6 +242,7 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardAddBrands()
         {
+            GetUploadStatus();
             return View();
         }
         
@@ -224,6 +253,7 @@ namespace OnePOS.Controllers
         {
             DashboardFunction.AddBrandsToDb(db, brandData, SendCurrentUser());
             
+
             return RedirectToAction("AddBrands");
         }
 
@@ -253,7 +283,6 @@ namespace OnePOS.Controllers
                 return RedirectToAction("ListBrands");
             }
 
-
             return View(mBrand); //RedirectToAction("DashboardEditBrand"); //RedirectToAction("ListBrands");
         }
 
@@ -278,6 +307,7 @@ namespace OnePOS.Controllers
         [Authorize(Roles = "Super Admin,Admin")]
         public ActionResult DashboardAddStorages()
         {
+            GetUploadStatus();
             return View();
         }
 
@@ -401,6 +431,126 @@ namespace OnePOS.Controllers
             InvoiceControllerServices.DeleteInvoice(db, SendCurrentUser(), billingId, mBillingHeaderModel);
 
             return RedirectToAction("ListInvoice");
+        }
+
+        [Route("Dashboard/Excel/{targetedDb}")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public void DashboardDownloadExcel(string targetedDb)
+        {
+            byte[] fileData;
+            string fileName;
+
+            switch (targetedDb)
+            {
+                case "brand": 
+                    fileData = ExcelFunction.DownloadBrandExcel(db,SendCurrentUser());
+                    fileName = "OnePos-Brand.xlsx";
+                    MimeMapping.GetMimeMapping(fileName);
+                    Response.AppendHeader("Content-Disposition", String.Format("attachment;filename={0}", fileName));
+                    Response.BinaryWrite(fileData);
+                    Response.End();
+
+                    break;
+
+                case "storage": 
+                    fileData = ExcelFunction.DownloadStorageExcel(db, SendCurrentUser());
+                    fileName = "OnePos-Storage.xlsx";
+                    MimeMapping.GetMimeMapping(fileName);
+                    Response.AppendHeader("Content-Disposition", String.Format("attachment;filename={0}", fileName));
+                    Response.BinaryWrite(fileData);
+                    Response.End();
+
+                    break;
+
+                case "vendor":
+                    fileData = ExcelFunction.DownloadVendorExcel(db, SendCurrentUser());
+                    fileName = "OnePos-Vendor.xlsx";
+                    MimeMapping.GetMimeMapping(fileName);
+                    Response.AppendHeader("Content-Disposition", String.Format("attachment;filename={0}", fileName));
+                    Response.BinaryWrite(fileData);
+                    Response.End();
+
+                    break;
+
+                case "item":
+                    fileData = ExcelFunction.DownloadItemExcel(db, SendCurrentUser());
+                    fileName = "OnePos-Item.xlsx";
+                    MimeMapping.GetMimeMapping(fileName);
+                    Response.AppendHeader("Content-Disposition", String.Format("attachment;filename={0}", fileName));
+                    Response.BinaryWrite(fileData);
+                    Response.End();
+
+                    break;
+            }
+        }
+
+        
+        [HttpPost]
+        [Route("Dashboard/UploadExcel")]
+        [Authorize(Roles = "Super Admin,Admin")]
+        public ActionResult UploadExcel(string targetedDb, HttpPostedFileBase excelFile)
+        {
+            
+
+            var position = "";
+            var userName = SendCurrentUser();
+
+            switch (targetedDb)
+            {
+                case "brand":
+
+                    if (excelFile.ContentType != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && excelFile.ContentType != "application/vnd.ms-excel")
+                    {
+                        return View("DashboardAddBrands");
+                    }        
+                    
+                    SetUploadStatus(ExcelFunction.UploadBrandExcel(db,userName,excelFile));
+                    
+                    position = "DashboardAddBrands";
+
+                    break;
+
+                case "storage":
+
+                    if (excelFile.ContentType != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && excelFile.ContentType != "application/vnd.ms-excel")
+                    {
+                        return View("DashboardAddStorages");
+                    }
+
+                    SetUploadStatus(ExcelFunction.UploadStorageExcel(db, userName, excelFile));
+
+                    position = "DashboardAddStorages";
+
+                    break;
+
+                case "vendor":
+
+                    if (excelFile.ContentType != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && excelFile.ContentType != "application/vnd.ms-excel")
+                    {
+                        return View("DashboardAddVendors");
+                    }
+
+                    SetUploadStatus(ExcelFunction.UploadVendorExcel(db, userName, excelFile));
+
+                    position = "DashboardAddVendors";
+
+                    break;
+
+                case "item":
+
+                    if (excelFile.ContentType != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && excelFile.ContentType != "application/vnd.ms-excel")
+                    {
+                        return View("DashboardAddItems");
+                    }
+
+                    SetUploadStatus(ExcelFunction.UploadItemExcel(db, userName, excelFile));
+
+                    position = "DashboardAddItems";
+
+                    break;
+            }
+            
+            return RedirectToAction(position);
         }
 
         protected override void Dispose(bool disposing)

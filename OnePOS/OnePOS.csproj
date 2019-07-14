@@ -39,11 +39,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EPPlus, Version=4.5.3.1, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.4.5.3.1\lib\net40\EPPlus.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -166,6 +172,9 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="FunctionController\ApiCollection.cs" />
     <Compile Include="FunctionController\DashboardFunction.cs" />
+    <Compile Include="FunctionController\ExcelFunction.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="FunctionController\InvoiceFunction.cs" />
     <Compile Include="FunctionController\Json\Converter\ItemListJsonConverter.cs" />
     <Compile Include="FunctionController\Json\Converter\VendorListJsonConverter.cs" />
@@ -174,9 +183,18 @@
     </Compile>
     <Compile Include="Helpers\HtmlHelpers.cs" />
     <Compile Include="Helpers\JsonHelper.cs" />
+    <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Migrations\201905221455597_Initial.cs" />
     <Compile Include="Migrations\201905221455597_Initial.Designer.cs">
       <DependentUpon>201905221455597_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906102101290_UpdateShoppingModel.cs" />
+    <Compile Include="Migrations\201906102101290_UpdateShoppingModel.Designer.cs">
+      <DependentUpon>201906102101290_UpdateShoppingModel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907141242040_AddNewModel.cs" />
+    <Compile Include="Migrations\201907141242040_AddNewModel.Designer.cs">
+      <DependentUpon>201907141242040_AddNewModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -195,13 +213,16 @@
     <Compile Include="Models\Dashboard\ManufacturerViewModels.cs" />
     <Compile Include="Models\Dashboard\Brand\BrandViewModels.cs" />
     <Compile Include="Models\Dashboard\Items\ItemViewModels.cs" />
+    <Compile Include="Models\History\ListTransactionHistoryModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Invoice\BillingDetailCollectionModel.cs" />
     <Compile Include="Models\Invoice\BillingDetailModel.cs" />
     <Compile Include="Models\Invoice\BillingCollectionModel.cs" />
     <Compile Include="Models\Invoice\ListInvoiceModel.cs" />
     <Compile Include="Models\Invoice\TransactionViewModels.cs" />
     <Compile Include="Models\Invoice\BillingHeaderModel.cs" />
     <Compile Include="Models\Invoice\BillingStatusModel.cs" />
+    <Compile Include="Models\ExcelUploadModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Dashboard\Items\DdCollectionItemModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -212,9 +233,11 @@
       <DependentUpon>application.css</DependentUpon>
     </Content>
     <None Include="Assets\css\application.scss" />
+    <Content Include="Assets\css\chart.min.css" />
     <Content Include="Assets\css\font-awesome.css" />
     <Content Include="Assets\css\invoice-detail.css" />
     <Content Include="Assets\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Assets\js\angular-chart.min.js" />
     <Content Include="Assets\js\angular-resource.js" />
     <Content Include="Assets\js\angular.min.js" />
     <Content Include="Assets\css\application.css">
@@ -225,6 +248,8 @@
     </Content>
     <Content Include="Assets\css\sb-admin-2.css" />
     <Content Include="Assets\css\sb-admin-2.min.css" />
+    <Content Include="Assets\js\chart.min.js" />
+    <Content Include="Assets\js\invoice.js" />
     <Content Include="Assets\js\Brand\addBrands.js" />
     <Content Include="Assets\js\dirPagination.js" />
     <Content Include="Assets\font-awesome\css\font-awesome.css" />
@@ -376,12 +401,20 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201905221455597_Initial.resx">
       <DependentUpon>201905221455597_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906102101290_UpdateShoppingModel.resx">
+      <DependentUpon>201906102101290_UpdateShoppingModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907141242040_AddNewModel.resx">
+      <DependentUpon>201907141242040_AddNewModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

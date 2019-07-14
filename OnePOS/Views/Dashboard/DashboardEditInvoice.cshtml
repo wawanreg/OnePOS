@@ -1,5 +1,4 @@
-﻿@using Microsoft.Ajax.Utilities
-@model OnePOS.Models.Invoice.BillingCollectionModel
+﻿@model OnePOS.Models.Invoice.BillingCollectionModel
 
 @{
     ViewBag.Title = "EditInvoice";
@@ -21,10 +20,10 @@
                 @using (Html.BeginForm("DashboardEditInvoice", "Dashboard", FormMethod.Post, new { @id = "EditInvoicePost", @class = "form-horizontal", role = "form" }))
                 {
                     <div class="form-section edit-invoice-manual section-header">
-                       
-                        <div class="vendors-group-list">
+
+                        <div class="edit-invoice-group-list">
                             <div class="panel panel-default invoice-form-container">
-                                <div class="panel-body vendors-group-form">
+                                <div class="panel-body vendors-group-form invoice-body-detail">
                                     @*@Html.HiddenFor(m => m.BillingStatus.BillingStatusId)*@
 
                                     <div class="col-sm-12 form-group">
@@ -37,32 +36,93 @@
                                         </div>
                                         <div class="col-sm-6 invoice-status">
                                             <label class="control-label">Billing Status</label>
-                                            @Html.DropDownListFor(m => m.BillingStatus.BillingStatusId  , Model.BillStatusDropdownLists, new { @class = "form-control" })
+                                            @Html.DropDownListFor(m => m.BillingStatus.BillingStatusId, Model.BillStatusDropdownLists, new { @class = "form-control" })
                                         </div>
                                     </div>
-                                    
-                                    <div style="border: black solid 1px; width: 100%;"></div>
+                                    <div class="col-sm-12" style="background-color: black"></div>
 
-                                    <div class="col-sm-12 form-group">
+                                    <div class="col-sm-12 form-group invoice-detail-title">
                                         <h2>Invoice Detail</h2>
                                     </div>
-                                    @for (var i = 0; i < Model.BillingDetails.Count; i++)
-                                    {
-                                        @Html.HiddenFor(m=> m.BillingDetails[i].NoBillingDetail)
-                                        @Html.HiddenFor(m => m.BillingDetails[i].Item.ItemId)
-                                        <div class="form-group">
-                                            <div class="col-sm-6 item-name">
-                                                <label class="control-label">Item Name</label>
-                                                @Html.TextBoxFor(m => m.BillingDetails[i].Item.ItemName, new { @class = "form-control", @readonly = true })
+                                    <div class="col-sm-12 edit-invoice-contents">
+                                        @{
+                                            <input value="@Model.NoBillingHeader" hidden />
+                                            for (var i = 0; i < Model.DetailCollections.Count; i++)
+                                            {
+                                                @Html.TextBoxFor(m=>m.DetailCollections[i].ItemId, new{@class="", @hidden="hidden"})
+                                                @Html.TextBoxFor(m => m.DetailCollections[i].BillingDetailId, new { @class = "", @hidden = "hidden" })
+                                            
+                                                <div class="col-sm-3 item-name">
+                                                    <label class="control-label">Item Name</label>
+                                                    @Html.TextBoxFor(m => m.DetailCollections[i].ItemName, new { @class = "form-control", @readonly = true })
+                                                </div>
+                                                <div class="col-sm-2 item-price">
+                                                    <label class="control-label">Price</label>
+                                                    @Html.HiddenFor(m=> m.DetailCollections[i].PricePerItem)
+                                                    @Html.EditorFor(m => m.DetailCollections[i].PricePerItem, new { htmlAttributes = new { @class = "form-control sale-price", @readonly="readonly" } })
+                                                </div>
+                                                <div class="col-sm-3 item-quantity">
+                                                    <label class="control-label">Quantity</label><span class="field-warning text-danger">Exceed the Stock</span>
+                                                    @Html.HiddenFor(m => m.MaxStorageItm[i], new { @class = "max-storage" })
+                                                    @Html.HiddenFor(m => Model.DetailCollections[i].OriginalQuantity, new { @class = "original-stock" })
 
-                                            </div>
-                                            <div class="col-sm-6 item-quantity">
-                                                <label class="control-label">Quantity</label>
-                                                @Html.EditorFor(m => m.BillingDetails[i].Quantity, new { htmlAttributes = new { @class = "form-control" } })
-                                            </div>
+                                                
+
+                                                    @Html.EditorFor(m => m.DetailCollections[i].BuyQuantity, new { htmlAttributes = new { @class = "form-control quantity-value", @onchange = "checkQuantity(this)", placeholder =
+                                                                 "Quantity(" + @Html.DisplayFor(m => m.DetailCollections[i].BuyQuantity) + ") Stock(" + @Html.DisplayFor(m => m.MaxStorageItm[i]) + ")"
+                                                        }
+                                                        })
+                                                </div>
+                                                <div class="col-sm-2 item-discount">
+                                                    <label class="control-label">Discount</label>
+                                                    @Html.EditorFor(m => m.DetailCollections[i].DiscountPerItem, new { htmlAttributes = new { @class = "form-control", @onchange = "checkDiscount(this)" } })
+                                                </div>
+                                                <div class="col-sm-2 item-total-price" style="text-align: right;">
+                                                    <label class="control-label">Total(Rp)</label>
+                                                    @Html.EditorFor(m => m.DetailCollections[i].TotalPricePerItemAfterDiscount, new { htmlAttributes = new { @class = "form-control price-item-discount",  @style = "text-align:right;" } })
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                </div>
+
+                                <div class="panel-body invoice-footer-detail">
+                                    <div class="col-sm-12" style="background-color: grey;"></div>
+
+                                    <div class="col-sm-12 footer-detail-content" style="padding-top:1%;">
+                                        <div class="col-sm-10 footer-detail-title">
+                                            Discount(%)
                                         </div>
-                                    }
-                                    
+                                        <div class="col-sm-2 invoice-discount">
+                                            @Html.EditorFor(m => m.DiscontTransaction, new { htmlAttributes = new { @class = "form-control footer-detail-summary", @onchange = "checkInvoiceDiscount(this)", @type="text" } })
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 footer-detail-content">
+                                        <div class="col-sm-10 footer-detail-title">
+                                            PPN	
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <input value="@Model.PaymentTax.ToString("#,##0")" class="form-control footer-detail-summary" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 footer-detail-content">
+                                        <div class="col-sm-10 footer-detail-title">
+                                            Reduce
+                                        </div>
+                                        <div class="col-sm-2 adjust-invoice">
+                                            @Html.EditorFor(m => m.ReduceInvoiceValue, new { htmlAttributes = new { @class = "form-control footer-detail-summary", @onchange = "adjustInvoiceValue(this)", @type = "text" } })
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 footer-detail-content">
+                                        <div class="col-sm-10 footer-detail-title">
+                                            Total
+                                        </div>
+                                        <div class="col-sm-2 invoice-total-trans">
+                                            @Html.EditorFor(m => m.TotalPayment, new { htmlAttributes = new { @class = "form-control footer-detail-summary", @readonly = true, } })
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -70,11 +130,10 @@
                     </div>
 
                     <div class="edit-invoice-input-btn" style="padding-bottom: 10px;">
-                        <input type="submit" value="Edit Invoice " class="btn btn-blue btn-lg submit-button" />
+                        <input type="submit" value="Edit Invoice " class="btn btn-blue btn-lg edit-invoice-btn" />
                     </div>
 
                 }
-
             </div>
 
         </div>
@@ -86,9 +145,12 @@
 </div>
 <!-- /#wrapper -->
 @section AdditionalJavascript {
-    
+    <script src="~/Assets/js/invoice.js"></script>
 }
 
 @section PageJavascript {
-    
+
+
+
+
 }

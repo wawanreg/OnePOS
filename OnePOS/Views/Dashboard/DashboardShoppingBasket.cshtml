@@ -1,5 +1,4 @@
 ﻿@model OnePOS.Models.Invoice.TransactionViewModels
-@using Loyalti.Helpers
 
 @{
     ViewBag.Title = "ShoppingBasket";
@@ -14,6 +13,7 @@
         @Html.HiddenFor(m => m.TotalTransaction, new { @id = "TransactionTotal" })
         @Html.HiddenFor(m => m.DiscountPerItems, new { @id = "DiscountPerItems" })
         @Html.HiddenFor(m => m.DiscountTotalTransaction, new { @id = "DiscountTotalTransaction" })
+        @Html.HiddenFor(m => m.ReduceInvoiceValue, new { @id = "ReduceInvoiceValue" })
 
         <div id="wrapper">
             <div id="page-wrapper" ng-app="app" ng-controller="POSController" ng-init="init()" class="ng-cloak">
@@ -128,11 +128,16 @@
                                         <li class="list-group-item">
                                             <div>
                                                 <label class="order-lbl-dsc" style="">Discount (%)</label>
-                                                <input type="number" value="0" min="0" max="100" class="form-controlc dsc-total-transaction" ng-model="transDsc" ng-change="transCalcDsc(transDsc); $event.stopPropagation();" />
+                                                <input value="0" min="0" max="100" class="form-control discount-total-transaction" ng-model="transDsc" ng-change="transCalcDsc(transDsc); $event.stopPropagation();" />
                                             </div>
-                                            
+                                            <div style="margin-top: 5%;">
+                                                <label class="order-lbl-dsc" style="">Adjust (-)</label>
+                                                <input value="0" min="0" class="form-control reduce-total-transaction" ng-model="reduceVal" ng-change="reduceInvoiceVal(reduceVal); $event.stopPropagation();" />
+                                            </div>    
                                         </li>
+                                        
                                     </ul>
+                                    
                                 </div>
                                 <div class="panel-footer order-holder-footer" ng-show="order.length">
                                     {{getSum()}}
@@ -163,8 +168,7 @@
 
 
 
-@using (Html.BeginScripts())
-{
+@section PageJavascript {
     <script src="~/Assets/js/shoppingBasket.js"></script>
     <script>
         var webroot = "@Url.Content("~/")";
@@ -178,15 +182,11 @@
             sendUrl);
         functionAddTransaction();
     </script>
-    
-}
-
-@section PageJavascript {
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             //popup
             $('[data-toggle="test"]').popover();
         })
     </script>
-    
 }
+

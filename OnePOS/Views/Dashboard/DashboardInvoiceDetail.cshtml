@@ -1,5 +1,4 @@
-﻿@using Loyalti.Helpers
-@using Microsoft.Ajax.Utilities
+﻿
 @model OnePOS.Models.Invoice.BillingHeaderModel
 
 
@@ -58,7 +57,7 @@
                                             <span>Total</span>
                                         </span>
                                         <br>
-                                        <span>@Model.TotalAfterTax</span>
+                                        <span>@Model.TotalPayment.ToString("#,##0")</span>
                                     </th>
                                     <th class="col-sm-6 table-header-detail">
                                         <span class="detail-title">
@@ -98,7 +97,7 @@
                                 @{
                                     var i = 0;
 
-                                    foreach (var mDetail in Model.BillingDetails)
+                                    foreach (var mDetail in Model.BillingDetails.Where(x=> !x.Deleted))
                                     {
                                         <tr class="table-item-list">
                                             <td class="category-number">
@@ -155,10 +154,19 @@
                                 <tr class="footer-container">
 
                                     <td class="col-sm-10 footer-detail-title">
+                                        Adjust(-)
+                                    </td>
+                                    <td class="col-sm-2 footer-detail-summary">
+                                        @Model.ReduceInvoiceValue
+                                    </td>
+                                </tr>
+                                <tr class="footer-container">
+
+                                    <td class="col-sm-10 footer-detail-title">
                                         TOTAL
                                     </td>
                                     <td class="col-sm-2 footer-detail-summary">
-                                        @Model.TotalAfterTax.ToString("#,##0")
+                                        @Model.TotalPayment.ToString("#,##0")
                                     </td>
                                 </tr>
 
@@ -180,8 +188,7 @@
 
 }
 
-@using (Html.BeginScripts())
-{
+@section PageJavascript {
     <script>
        
 

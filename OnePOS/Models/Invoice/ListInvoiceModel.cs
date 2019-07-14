@@ -6,7 +6,7 @@ using Microsoft.VisualBasic;
 
 namespace OnePOS.Models.Invoice
 {
-    public class ListInvoiceMode
+    public class ListInvoiceModel
     {
         public int BillingHeaderId { get; set; }
         public string NoInvoice { get; set; }

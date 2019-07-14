@@ -16,6 +16,7 @@ namespace OnePOS.Models.Invoice
         public string ItemId { get; set; }
         public string DiscountPerItems { get; set; }
         public int DiscountTotalTransaction { get; set; }
+        public int ReduceInvoiceValue { get; set; }
 
     }
 }

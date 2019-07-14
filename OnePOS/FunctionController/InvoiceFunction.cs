@@ -46,8 +46,9 @@ namespace OnePOS.FunctionController
                 TotalAfterTax = mTransaction.TotalPayment,// not clear enough
                 DiscontTransaction = mTransaction.DiscountTotalTransaction,//not clear enough
                 TotalBeforeDiscount = mTransaction.TotalPayment,//not clear enough
-                TotalTransaction = mTransaction.TotalTransaction,
+                //TotalTransaction = mTransaction.TotalTransaction,
                 TotalPayment = mTransaction.TotalPayment,
+                ReduceInvoiceValue = mTransaction.ReduceInvoiceValue,
                 Active = true,
                 CreatedBy = userName,
                 UpdatedBy = userName,
@@ -113,18 +114,34 @@ namespace OnePOS.FunctionController
         public static BillingCollectionModel SetBillingCollection(ApplicationDbContext db, int billingId)
         {
             BillingHeaderModel mBillingHeader = GetBillingHeader(db, billingId);
+            //var billingDetails = mBillingHeader.BillingDetails.Where(x => !x.Deleted);
+            List<BillingDetailCollectionModel> mBillingDetailCollectionModels =
+                
+                mBillingHeader.BillingDetails.Where(x=> !x.Deleted).Select(x => new BillingDetailCollectionModel
+                {
+                    ItemId = x.Item.ItemId,
+                    ItemName = x.Item.ItemName,
+                    BuyQuantity = x.Quantity,
+                    OriginalQuantity = x.Quantity,
+                    PricePerItem = x.Item.SalePrice,
+                    DiscountPerItem = x.DiscontPerItems,
+                    BillingDetailId = x.NoBillingDetail
+                }).ToList();
 
             BillingCollectionModel mBillCollectionModel = new BillingCollectionModel
             {
-                BillingDetails = mBillingHeader.BillingDetails.Where(x=> !x.Deleted).ToList(),
+                DetailCollections = mBillingDetailCollectionModels,
+                MaxStorageItm = mBillingHeader.BillingDetails.Where(x => !x.Deleted).Select(x => x.Item).Select(x=> x.Stock).ToList(),
                 NoInvoice = mBillingHeader.NoInvoice,
                 NoBillingHeader = mBillingHeader.NoBillingHeader,
                 BillingStatus = mBillingHeader.BillingStatus,
                 InvoiceDate = mBillingHeader.InvoiceDate,
                 TotalItem = mBillingHeader.TotalItem,
-                TotalPayment = mBillingHeader.TotalAfterTax,
                 BillStatusDropdownLists = new SelectList(db.BillingStatus.ToList(), "BillingStatusId", "BillingName", mBillingHeader.BillingStatus.BillingStatusId),
-                IsDeleted = mBillingHeader.Deleted
+                IsDeleted = mBillingHeader.Deleted,
+                DiscontTransaction = mBillingHeader.DiscontTransaction,
+                PaymentTax = mBillingHeader.PaymentTax,
+                ReduceInvoiceValue = mBillingHeader.ReduceInvoiceValue
             };
             return mBillCollectionModel;
         }
@@ -135,41 +152,61 @@ namespace OnePOS.FunctionController
             if (mBillingCollectionModel.BillingStatus != null)
             {
                 var mBillingStatus = db.BillingStatus.Find(mBillingCollectionModel.BillingStatus.BillingStatusId);
-                mBillingHeader.BillingStatus = mBillingStatus;    
+                mBillingHeader.BillingStatus = mBillingStatus;
             }
 
-            
+            mBillingHeader.TotalPayment = mBillingCollectionModel.TotalPayment;
+            mBillingHeader.ReduceInvoiceValue = mBillingCollectionModel.ReduceInvoiceValue;
+            mBillingHeader.TotalAfterTax = mBillingCollectionModel.TotalPayment;
             mBillingHeader.UpdatedBy = currentUserName;
             mBillingHeader.UpdatedDate = DateTime.UtcNow;
+            mBillingHeader.TotalItem = mBillingCollectionModel.DetailCollections.Sum(x => x.BuyQuantity);
+            mBillingHeader.DiscontTransaction = mBillingCollectionModel.DiscontTransaction;
+
+            //    TotalAfterTax = mTransaction.TotalPayment,// not clear enough
+            //    TotalBeforeDiscount = mTransaction.TotalPayment,//not clear enough
 
             //check for billing detail
-            for (var i = 0; i < mBillingCollectionModel.BillingDetails.Count; i++)
+            foreach (var currentBillingDetail in mBillingCollectionModel.DetailCollections)
             {
-                var curretBillingDetail = mBillingCollectionModel.BillingDetails[i];
-                if (curretBillingDetail.Quantity == 0)
+                
+                BillingDetailCollectionModel detail = currentBillingDetail;
+               
+                BillingDetailModel mBillingDetail = db.BillingDetail.Single(x => x.NoBillingDetail == detail.BillingDetailId);
+                
+                ItemViewModels mItem = db.Item.Single(x => !x.Deleted && x.ItemId == detail.ItemId);
+
+                
+                /////Item
+                if (detail.BuyQuantity != mBillingDetail.Quantity)
                 {
-
-                    BillingDetailModel mBillingDetail =
-                        db.BillingDetail.Single(x => x.NoBillingDetail == curretBillingDetail.NoBillingDetail);
-
-                    mBillingDetail.Deleted = true;
-                    mBillingDetail.UpdatedBy = currentUserName;
-                    mBillingDetail.UpdatedDate = DateTime.UtcNow;
-
-                    db.Entry(mBillingDetail).State = EntityState.Modified;
-                    db.SaveChanges();
-
-
-                    ItemViewModels mItem = db.Item.Single(x => !x.Deleted && x.ItemId == curretBillingDetail.Item.ItemId);
-                    mItem.Stock += mBillingDetail.Quantity;
+                    if (detail.BuyQuantity == 0)
+                    {
+                        mBillingDetail.Deleted = true;
+                        mItem.Stock += mBillingDetail.Quantity;
+                    }
+                    else if (detail.BuyQuantity > mBillingDetail.Quantity)
+                    {
+                        mItem.Stock -= detail.BuyQuantity;
+                    }
+                    else
+                    {
+                        mItem.Stock += detail.BuyQuantity;
+                    }
+                    
                     mItem.UpdatedBy = currentUserName;
                     mItem.UpdatedDate = DateTime.UtcNow;
 
                     db.Entry(mItem).State = EntityState.Modified;
                     db.SaveChanges();
-
-
                 }
+
+                mBillingDetail.DiscontPerItems = detail.DiscountPerItem;
+                mBillingDetail.UpdatedBy = currentUserName;
+                mBillingDetail.UpdatedDate = DateTime.UtcNow;
+                
+                db.Entry(mBillingDetail).State = EntityState.Modified;
+                db.SaveChanges();
             }
 
 

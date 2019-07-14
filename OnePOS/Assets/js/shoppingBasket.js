@@ -15,6 +15,7 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 			$scope.dopeQty = 0;
 			$scope.dopeDsc = 0;
 			$scope.transDsc = 0;
+			$scope.reduceVal = 0;
 			var isGetSum = false;
 	        $scope.valueSum = 0;
 
@@ -161,7 +162,7 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	                        $scope.order[idx].qty = itemQty;
 	                        currentPrice = $scope.order[idx].price * itemQty;
 	                        currentDiscount = (currentPrice * $scope.order[idx].discount) / 100;
-	                        $scope.order[idx].totalPrice = currentPrice-currentDiscount;
+	                        $scope.order[idx].totalPrice = currentPrice - currentDiscount - $scope.reduceVal;
 
 	                        $scope.order[idx].isQtyOpen = false;
 
@@ -185,11 +186,9 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
                         sum += parseInt($scope.order[i].totalPrice);
 
                     }
-                   cDiscount = (sum * $scope.transDsc) / 100;
+                    cDiscount = (sum * $scope.transDsc) / 100;
 
-                   console.log("check sum= " + sum);
-                    
-                    $scope.valueSum = sum - cDiscount;
+                   $scope.valueSum = sum - cDiscount - $scope.reduceVal;
                     isGetSum = false;
                }
 	        };
@@ -207,19 +206,6 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	                var currentDiscount = 0;
 	                var currentPrice = 0;
 	                if ($scope.order[idx].id == itemId) {
-	                    //if (tempItemCol.cloneStock >= itemQty) {
-	                    //    tempColletion.TotalStock = tempItemCol.cloneStock - itemQty;
-	                    //    $scope.order[idx].qty = itemQty;
-	                    //    $scope.order[idx].totalPrice = $scope.order[idx].price * itemQty;
-
-	                    
-
-	                    //    $('#exceedsStock').hide();
-	                    //    checkWarning(false);
-	                    //} else {
-	                    //    $('#exceedsStock').show();
-	                    //    checkWarning(true);
-	                    //}
 	                    $scope.order[idx].discount = discount;
 	                    currentPrice = $scope.order[idx].price * $scope.order[idx].qty;
 	                    currentDiscount = (currentPrice * discount) / 100;
@@ -236,6 +222,13 @@ var shoppingCollection = function (classBelowWarning,mainJsonUrl) {
 	                isGetSum = true;
 	            }
 	            
+	        }
+            
+	        $scope.reduceInvoiceVal = function (checkNul) {
+	            if (checkNul != null) {
+	                isGetSum = true;
+	            }
+
 	        }
 
 	        $scope.qtyModified = {
@@ -300,6 +293,9 @@ var transactionData = {
     },
     discountTotalTransaction: {
         value: ""
+    },
+    reduceInvoiceValue: {
+        value: ""
     }
 };
 
@@ -338,11 +334,10 @@ function functionAddTransaction() {
         document.getElementById("TransactionTotal").value = transactionTotal + "";
         document.getElementById("TransactionTotalPayment").value = $('.transaction-price').val() + "";
         document.getElementById("DiscountPerItems").value = transactionData.discountPerItems.value.join('|');
-        document.getElementById("DiscountTotalTransaction").value = $('.dsc-total-transaction').val() + "";
+        document.getElementById("DiscountTotalTransaction").value = $('.discount-total-transaction').val() + "";
+        document.getElementById("ReduceInvoiceValue").value = $('.reduce-total-transaction').val() + "";
 
         $('#ShoppingBasketPost').submit();
-
-
     });
 }
 

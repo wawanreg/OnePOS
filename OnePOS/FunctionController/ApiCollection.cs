@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
@@ -11,6 +14,7 @@ using OnePOS.Models.Dashboard.Items;
 using OnePOS.Models.Dashboard.ShoppingBasket;
 using OnePOS.Models.Dashboard.Storage;
 using OnePOS.Models.Dashboard.Vendors;
+using OnePOS.Models.History;
 using OnePOS.Models.Invoice;
 
 
@@ -110,18 +114,130 @@ namespace OnePOS.FunctionController
         [Route("ApiCollection/GetInvoiceList")]
         public JsonResult InvoiceListJson(int take, int page)
         {
-            List<ListInvoiceMode> mInvoice = db.BillingHeader.Where(x => !x.Deleted).OrderBy(x => x.NoBillingHeader).Select(x => new ListInvoiceMode
+            List<ListInvoiceModel> mInvoice = db.BillingHeader.Where(x => !x.Deleted).OrderBy(x => x.NoBillingHeader).Select(x => new ListInvoiceModel
             {
                 InvoiceDate = x.InvoiceDate,
                 BillingHeaderId = x.NoBillingHeader,
                 BillingStatus = x.BillingStatus.BillingName,
                 NoInvoice = x.NoInvoice,
-                TotalPayment = x.TotalAfterTax
+                TotalPayment = x.TotalPayment
             }).Skip(take * (page - 1)).Take(take).ToList();
 
             return Json(new { @datajson = JsonConvert.SerializeObject(mInvoice), itemsPerPage = db.BillingHeader.Count(x => !x.Deleted) }, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize(Roles = "Super Admin,Admin")]
+        [Route("ApiCollection/HistoryTransaction")]
+        public JsonResult HistoryTransaction()
+        {
+            var currentDate = DateTime.UtcNow;
+            var crnYear = currentDate.Year;
+            var crnMonth = currentDate.Month;
+
+            //var currentDate = new DateTime(2019, 6, 15);
+            var lastDateOfWeek = currentDate.AddDays(-7);
+            var addDay = currentDate.AddDays(1);
+
+            List<WeeklyHistory> listWeekly = new List<WeeklyHistory>();
+
+            for (var i = lastDateOfWeek.Day; i <= currentDate.Day; i++)
+            {
+                listWeekly.Add(new WeeklyHistory
+                {
+                    Date = new DateTime(crnYear,crnMonth,i),
+                    TotalPayment = 0
+                });
+            }
+
+            var history = db.BillingHeader.Where(x => !x.Deleted &&
+                x.CreatedDate >= lastDateOfWeek
+                && x.CreatedDate < addDay).OrderBy(x => x.NoBillingHeader).Select(x => new ListTransactionHistoryModel
+            {
+                InvoiceDate = x.InvoiceDate,
+                BillingHeaderId = x.NoBillingHeader,
+                BillingStatus = x.BillingStatus.BillingName,
+                NoInvoice = x.NoInvoice,
+                TotalPayment = x.TotalPayment
+            }).ToList().GroupBy(x => x.DayOfWeek).Select(x => new
+            {
+                DayOfWeek = x.Key,
+                TotalPayment = x.Sum(t => t.TotalPayment),
+                InvoiceDate = x.First().InvoiceDate,
+                Day = x.First().InvoiceDate.Day,
+                Month = x.First().InvoiceDate.Month,
+                Year = x.First().InvoiceDate.Year
+            });
+
+            
+            foreach (var weekly in listWeekly)
+            {
+                WeeklyHistory weekly1 = weekly;
+                var day = weekly1.Date.Day;
+                var month = weekly1.Date.Month;
+                var year = weekly1.Date.Year;
+
+                foreach (var mHistory in history.Where(mHistory => day == mHistory.Day && month == mHistory.Month))
+                {
+                    weekly1.TotalPayment += mHistory.TotalPayment;
+                }
+            }
+
+            return Json(new { @datajson = JsonConvert.SerializeObject(listWeekly), itemsPerPage = 0 }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "Super Admin,Admin")]
+        [Route("ApiCollection/MonthHistoryTransaction")]
+        public JsonResult MonthHistoryTransaction()
+        {
+            var currentDate = DateTime.UtcNow;
+            var crnYear = currentDate.Year;
+            var crnMonth = currentDate.Month;
+
+            List<MonthlyHistory> listMonthly = new List<MonthlyHistory>();
+
+            for (var i = 0; i <12; i++)
+            {
+                listMonthly.Add(new MonthlyHistory
+                {
+                    Date = new DateTime(crnYear, i+1, 1),
+                    TotalPayment = 0
+                });
+            }
+
+            var history = db.BillingHeader.Where(x => !x.Deleted &&
+                x.CreatedDate.Year == crnYear).OrderBy(x => x.NoBillingHeader).Select(x => new ListTransactionHistoryModel
+                {
+                    InvoiceDate = x.InvoiceDate,
+                    BillingHeaderId = x.NoBillingHeader,
+                    BillingStatus = x.BillingStatus.BillingName,
+                    NoInvoice = x.NoInvoice,
+                    TotalPayment = x.TotalPayment
+                }).ToList().GroupBy(x => x.InvoiceDate.Month).Select(x => new
+                {
+                    Key = x.Key,
+                    TotalPayment = x.Sum(t => t.TotalPayment),
+                    InvoiceDate = x.First().InvoiceDate,
+                    Day = x.First().InvoiceDate.Day,
+                    Month = x.First().InvoiceDate.Month,
+                    Year = x.First().InvoiceDate.Year
+                });
+
+
+            foreach (var monthly in listMonthly)
+            {
+                MonthlyHistory monthly1 = monthly;
+                
+                var month = monthly1.Date.Month;
+                var year = monthly1.Date.Year;
+
+                foreach (var mHistory in history.Where(mHistory => month == mHistory.Month && year == mHistory.Year))
+                {
+                    monthly1.TotalPayment += mHistory.TotalPayment;
+                }
+            }
+
+            return Json(new { @datajson = JsonConvert.SerializeObject(listMonthly), itemsPerPage = 0 }, JsonRequestBehavior.AllowGet);
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

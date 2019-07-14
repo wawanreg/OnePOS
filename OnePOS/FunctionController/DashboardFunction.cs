@@ -28,15 +28,15 @@ namespace OnePOS.FunctionController
         }
         public static SelectList GetDropdownVendor(ApplicationDbContext db, string selectedVal)
         {
-            return new SelectList(db.Vendor.Where(x => x.Active).ToList(), "VendorId", "VendorName", selectedVal);
+            return new SelectList(db.Vendor.Where(x => !x.Deleted).ToList(), "VendorId", "VendorName", selectedVal);
         }
         public static SelectList GetDropdownBrand(ApplicationDbContext db, string selectedVal)
         {
-            return new SelectList(db.Brand.Where(x => x.Active).ToList(), "BrandId", "BrandName", selectedVal);
+            return new SelectList(db.Brand.Where(x => !x.Deleted).ToList(), "BrandId", "BrandName", selectedVal);
         }
         public static SelectList GetDropdownStorage(ApplicationDbContext db, string selectedVal)
         {
-            return new SelectList(db.Storage.Where(x => x.Active).ToList(), "StorageId", "StorageName", selectedVal);
+            return new SelectList(db.Storage.Where(x => !x.Deleted).ToList(), "StorageId", "StorageName", selectedVal);
         }
 
         public static ItemViewModels GetItemViewModels(ApplicationDbContext db, int? itemId)

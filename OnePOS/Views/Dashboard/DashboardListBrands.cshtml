@@ -1,6 +1,4 @@
-﻿@using Loyalti.Helpers
-@using Microsoft.Ajax.Utilities
-
+﻿
 @{
     ViewBag.Title = "ListBrands";
     Layout = "~/Views/Shared/_LayoutForDashboard.cshtml";
@@ -75,8 +73,7 @@
     
 }
 
-@using (Html.BeginScripts())
-{
+@section PageJavascript {
     <script src="~/Assets/js/global-tabling-json.js"></script>
     <script>
         var webroot = "@Url.Content("~/")";
