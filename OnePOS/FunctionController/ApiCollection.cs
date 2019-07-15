@@ -238,6 +238,49 @@ namespace OnePOS.FunctionController
 
             return Json(new { @datajson = JsonConvert.SerializeObject(listMonthly), itemsPerPage = 0 }, JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize(Roles = "Super Admin,Admin")]
+        [Route("ApiCollection/ItemHistoryTransaction")]
+        public JsonResult ItemHistoryTransaction()
+        {
+            var currentDate = DateTime.UtcNow;
+            var crnYear = currentDate.Year;
+            //var crnMonth = currentDate.Month;
+
+            //List<ItemMonthHistory> monthlyItem = new List<ItemMonthHistory>();
+
+            //for (var i = 0; i < 12; i++)
+            //{
+            //    monthlyItem.Add(new ItemMonthHistory
+            //    {
+            //        Date = new DateTime(crnYear, i + 1, 1),
+            //        TotalItem = 0
+            //    });
+            //}
+
+            var history = db.BillingDetail.Where(x => !x.Deleted &&
+                x.CreatedDate.Year == crnYear).OrderBy(x => x.NoBillingDetail).Select(x => new ListTransactionDetailHistoryModel()
+                {
+                    ItemId = x.Item.ItemId,
+                    ItemName = x.Item.ItemName,
+                    CreateDate = x.CreatedDate,
+                    NoBillingDetail = x.NoBillingDetail,
+                    TotalItem = x.Quantity
+                }).ToList().OrderBy(x=> x.ItemId).GroupBy(x => new {x.ItemName, x.CreateDate.Month}).Select(x => new
+            {
+                
+                ItemId = x.First().ItemId,
+                ItemName = x.First().ItemName,
+                TotalItem = x.Sum(t => t.TotalItem),
+                InvoiceDate = x.First().CreateDate,
+                Day = x.First().CreateDate.Day,
+                Month = x.First().CreateDate.Month,
+                Year = x.First().CreateDate.Year
+            });
+
+            return Json(new { @datajson = JsonConvert.SerializeObject(history), itemsPerPage = 0 }, JsonRequestBehavior.AllowGet);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

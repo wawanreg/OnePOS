@@ -21,6 +21,22 @@ namespace OnePOS.Models.History
         }
     }
 
+    public class ListTransactionDetailHistoryModel
+    {
+        public int NoBillingDetail { get; set; }
+        public int ItemId { get; set; }
+        public string ItemName { get; set; }
+        [Column(TypeName = "DateTime2")]
+        public DateTime CreateDate { get; set; }
+        public string BillingStatus { get; set; }
+        public decimal TotalItem { get; set; }
+        public DayOfWeek DayOfWeek
+        {
+            get { return CreateDate.DayOfWeek; }
+            set { }
+        }
+    }
+
     public class WeeklyHistory
     {
         [Column(TypeName = "DateTime2")]
@@ -36,6 +52,20 @@ namespace OnePOS.Models.History
         [Column(TypeName = "DateTime2")]
         public DateTime Date { get; set; }
         public decimal TotalPayment { get; set; }
+        public int Month
+        {
+            get { return Date.Month; }
+            set { }
+        }
+    }
+
+    public class ItemMonthHistory
+    {
+        [Column(TypeName = "DateTime2")]
+        public DateTime Date { get; set; }
+        public int ItemId { get; set; }
+        public string ItemName { get; set; }
+        public decimal TotalItem { get; set; }
         public int Month
         {
             get { return Date.Month; }

@@ -34,90 +34,21 @@
                     <!-- /.panel-body -->
                 </div>
                 <!-- /.panel -->
-                @*<div class="panel panel-default">
+                <div class="panel panel-default">
                     <div class="panel-heading">
-                        <i class="fa fa-bar-chart-o fa-fw"></i> Bar Chart Example
-
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Total Purchase Item
+                        <div class="pull-right">
+                            <select ng-model="barValue" ng-options="x.value for x in barList"
+                                    ng-change="changeDataFunction(barValue)"></select>
+                        </div>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-hover table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Date</th>
-                                                <th>Time</th>
-                                                <th>Amount</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>3326</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:29 PM</td>
-                                                <td>$321.33</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3325</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:20 PM</td>
-                                                <td>$234.34</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3324</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:03 PM</td>
-                                                <td>$724.17</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3323</td>
-                                                <td>10/21/2013</td>
-                                                <td>3:00 PM</td>
-                                                <td>$23.71</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3322</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:49 PM</td>
-                                                <td>$8345.23</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3321</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:23 PM</td>
-                                                <td>$245.12</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3320</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:15 PM</td>
-                                                <td>$5663.54</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3319</td>
-                                                <td>10/21/2013</td>
-                                                <td>2:13 PM</td>
-                                                <td>$943.45</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <!-- /.table-responsive -->
-                            </div>
-                            <!-- /.col-lg-4 (nested) -->
-                            <div class="col-lg-8">
-                                <div id="morris-bar-chart"></div>
-                            </div>
-                            <!-- /.col-lg-8 (nested) -->
-                        </div>
-                        <!-- /.row -->
+                        <canvas class="chart chart-bar" chart-data="dataItem" chart-labels="labelItem"></canvas>
                     </div>
                     <!-- /.panel-body -->
                 </div>
-                <!-- /.panel -->*@
+                <!-- /.panel -->
             </div>
             <!-- /.col-lg-6 -->
             @*<div class="col-lg-4">
@@ -145,8 +76,8 @@
 <!-- /#wrapper -->
 @section PageJavascript {
     <script>
-        angular.module("app", ["chart.js"]).controller("homeChart", function ($scope, $http) {
-            
+        angular.module("app", ["chart.js"]).controller("homeChart", function($scope, $http) {
+
             var w = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
             var m = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -155,19 +86,18 @@
             $scope.copyMonthLabel = [];
             $scope.copyMonthData = [];
 
-            
-            
 
             $scope.labels1 = [];
             $scope.data1 = [];
 
             $scope.optionList = [{ id: 1, value: "Weekly" }, { id: 2, value: "Monthly" }];
+
             $scope.ddValue = $scope.optionList[0];
 
-            $scope.colors = ['#45b7cd', '#ff6384', '#ff8e72'];
-            
-            $scope.datasetOverride = [
 
+            $scope.colors = ['#45b7cd', '#ff6384', '#ff8e72'];
+
+            $scope.datasetOverride = [
                 {
                     label: "Total Income",
                     borderWidth: 3,
@@ -177,13 +107,13 @@
                 }
             ];
 
-            $scope.init = function () {
+            $scope.init = function() {
                 $http({
                     method: "GET",
                     url: "ApiCollection/HistoryTransaction"
                 }).then(function(data, status) {
                     var collectJson = JSON.parse(data.data.datajson);
-                    
+
                     for (var i = 0; i < collectJson.length; i++) {
 
                         $scope.copyWeekLabel.push(w[collectJson[i].Day]);
@@ -198,13 +128,13 @@
             }
 
             $scope.ddFunction = function(action) {
-                
+
                 if (action.id == 1) {
                     $scope.data1 = $scope.copyWeekData;
                     $scope.labels1 = $scope.copyWeekLabel;
                 } else {
                     if ($scope.copyMonthData.length == []) {
-                        
+
                         $http({
                             method: "GET",
                             url: "ApiCollection/MonthHistoryTransaction"
@@ -214,25 +144,79 @@
 
                             for (var i = 0; i < collectJson.length; i++) {
 
-                                $scope.copyMonthLabel.push(m[collectJson[i].Month-1]);
+                                $scope.copyMonthLabel.push(m[collectJson[i].Month - 1]);
                                 $scope.copyMonthData.push(collectJson[i].TotalPayment);
                             }
 
                             $scope.labels1 = $scope.copyMonthLabel;
                             $scope.data1 = $scope.copyMonthData;
-                            
+
                         }, function error() {
 
                         });
                     } else {
-                        
+
                         $scope.labels1 = $scope.copyMonthLabel;
                         $scope.data1 = $scope.copyMonthData;
-                    } 
+                    }
                 }
             }
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+            $scope.barList = [
+                { id: 1, value: "January" },
+                { id: 2, value: "February" },
+                { id: 3, value: "March" },
+                { id: 4, value: "April" },
+                { id: 5, value: "May" },
+                { id: 6, value: "June" },
+                { id: 7, value: "July" },
+                { id: 8, value: "August" },
+                { id: 9, value: "September" },
+                { id: 10, value: "October" },
+                { id: 11, value: "November" },
+                { id: 12, value: "December" }
+            ];
+            $scope.barValue = $scope.barList[0];
 
+            var itemJson;
+            $scope.labelItem = [];
+            $scope.dataItem = [];
+
+            var setItemList = function (actionId) {
+
+                var itemFilter = itemJson.filter(function (data) {
+                    return data.Month == actionId;
+                });
+
+                for (var i = 0; i < itemFilter.length; i++) {
+                    $scope.labelItem.push(itemFilter[i].ItemName);
+                    $scope.dataItem.push(itemFilter[i].TotalItem);
+                }
+            }
+            
+            if ($scope.labelItem == []) {
+                $http({
+                    method: "GET",
+                    url: "ApiCollection/ItemHistoryTransaction"
+                }).then(function(data, status) {
+                    var collectJson = JSON.parse(data.data.datajson);
+                    //console.log(collectJson);
+                    itemJson = collectJson;
+
+                    setItemList(1);
+                }, function error() {
+
+                });
+            }
+
+            $scope.changeDataFunction = function(action) {
+                $scope.labelItem = [];
+                $scope.dataItem = [];
+
+                setItemList(action.id);
+            };
+            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             $scope.labels2 = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
             $scope.data2 = [300, 500, 100];
         });
