@@ -72,4 +72,10 @@ namespace OnePOS.Models.History
             set { }
         }
     }
+
+    public class TotalAssets
+    {
+        public decimal TotalAsset { get; set; }
+        
+    }
 }

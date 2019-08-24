@@ -249,6 +249,7 @@
     <Content Include="Assets\css\sb-admin-2.css" />
     <Content Include="Assets\css\sb-admin-2.min.css" />
     <Content Include="Assets\js\chart.min.js" />
+    <Content Include="Assets\js\GraphFunction.js" />
     <Content Include="Assets\js\invoice.js" />
     <Content Include="Assets\js\Brand\addBrands.js" />
     <Content Include="Assets\js\dirPagination.js" />

@@ -121,9 +121,10 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 			$scope.searchUrl = '';
 			
 			var dataListing = function (data) {
-			    
 			    var collectJson = JSON.parse(data.datajson);
+
 			    $scope.pageSize = data.itemsPerPage;
+			    
 			    $scope.jsonLists = [];
 
 			    $scope.totalItem = data.itemsPerPage;
@@ -132,11 +133,12 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 			        $scope.pageSize = 10;
 			    }
 
-			    for (var i = 0; i < collectJson.length; i++) {
-			        $scope.jsonLists.push(collectJson[i]);
-			    }
+			    $scope.jsonLists = collectJson.map(function (jsonData) {
+                    return jsonData;
+			    });
+
 			    standarPackage("success", collectJson.length);
-			    //console.log($scope.jsonLists);
+
 			}
 
 
@@ -156,8 +158,6 @@ var globalTablingJson = function (tableName, classBelowWarning, mainJsonUrl, sea
 			            triggerPagging = false;
 			            
 			            dataListing(response.data);
-			            
-			            
 
 			        }).catch(function onError(response) {
 			            console.log(response.statusText);

@@ -13,28 +13,27 @@
         </div>
 
         <!-- /.row -->
-        <div class="row" ng-app="app" ng-controller="homeChart" ng-init="init()">
+        <div class="row" ng-app="app" ng-controller="homeChart" >
             <div class="col-lg-8">
-                <div class="panel panel-default">
+                <div class="panel panel-default" ng-init="init()">
                     <div class="panel-heading">
                         <i class="fa fa-bar-chart-o fa-fw"></i> Total Income Chart
                         <div class="pull-right">
                             <select ng-model="ddValue" ng-options="x.value for x in optionList"
-                                    ng-change="ddFunction(ddValue)">
-                            </select>
+                                    ng-change="ddFunction(ddValue)"></select>
                         </div>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
 
-                        <canvas class="chart chart-line" chart-data="data1" chart-colors="colors"
-                                chart-labels="labels1" chart-dataset-override="datasetOverride"></canvas>
+                        <canvas class="chart chart-line" chart-data="dataIncome" chart-colors="colors"
+                                chart-labels="labelIncome" chart-dataset-override="datasetOverride"></canvas>
 
                     </div>
                     <!-- /.panel-body -->
                 </div>
                 <!-- /.panel -->
-                <div class="panel panel-default">
+                <div class="panel panel-default" ng-init="itemInit()">
                     <div class="panel-heading">
                         <i class="fa fa-bar-chart-o fa-fw"></i> Total Purchase Item
                         <div class="pull-right">
@@ -51,7 +50,23 @@
                 <!-- /.panel -->
             </div>
             <!-- /.col-lg-6 -->
-            @*<div class="col-lg-4">
+            <div class="col-lg-4">
+
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Total Assets
+                    </div>
+                    <div class="panel-body">
+                        <canvas class="chart chart-bar"
+                                chart-data="dataTotalAsset" chart-labels="labelTotalAsset"></canvas>
+                    </div>
+                    <!-- /.panel-body -->
+                </div>
+                <!-- /.panel -->
+
+            </div>
+            <div class="col-lg-4">
 
 
                 <div class="panel panel-default">
@@ -66,7 +81,7 @@
                 </div>
                 <!-- /.panel -->
 
-            </div>*@
+            </div>
             <!-- /.col-lg-6 -->
         </div>
         <!-- /.row -->
@@ -75,150 +90,8 @@
 </div>
 <!-- /#wrapper -->
 @section PageJavascript {
+    <script src="~/Assets/js/GraphFunction.js"></script>
     <script>
-        angular.module("app", ["chart.js"]).controller("homeChart", function($scope, $http) {
-
-            var w = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            var m = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-            $scope.copyWeekLabel = [];
-            $scope.copyWeekData = [];
-            $scope.copyMonthLabel = [];
-            $scope.copyMonthData = [];
-
-
-            $scope.labels1 = [];
-            $scope.data1 = [];
-
-            $scope.optionList = [{ id: 1, value: "Weekly" }, { id: 2, value: "Monthly" }];
-
-            $scope.ddValue = $scope.optionList[0];
-
-
-            $scope.colors = ['#45b7cd', '#ff6384', '#ff8e72'];
-
-            $scope.datasetOverride = [
-                {
-                    label: "Total Income",
-                    borderWidth: 3,
-                    hoverBackgroundColor: "rgba(255,99,132,0.4)",
-                    hoverBorderColor: "rgba(255,99,132,1)",
-                    type: 'line'
-                }
-            ];
-
-            $scope.init = function() {
-                $http({
-                    method: "GET",
-                    url: "ApiCollection/HistoryTransaction"
-                }).then(function(data, status) {
-                    var collectJson = JSON.parse(data.data.datajson);
-
-                    for (var i = 0; i < collectJson.length; i++) {
-
-                        $scope.copyWeekLabel.push(w[collectJson[i].Day]);
-                        $scope.copyWeekData.push(setNumbro(collectJson[i].TotalPayment));
-                    }
-
-                    $scope.labels1 = $scope.copyWeekLabel;
-                    $scope.data1 = $scope.copyWeekData;
-                }, function error() {
-
-                });
-            }
-
-            $scope.ddFunction = function(action) {
-
-                if (action.id == 1) {
-                    $scope.data1 = $scope.copyWeekData;
-                    $scope.labels1 = $scope.copyWeekLabel;
-                } else {
-                    if ($scope.copyMonthData.length == []) {
-
-                        $http({
-                            method: "GET",
-                            url: "ApiCollection/MonthHistoryTransaction"
-                        }).then(function(data, status) {
-                            var collectJson = JSON.parse(data.data.datajson);
-                            //console.log(collectJson);
-
-                            for (var i = 0; i < collectJson.length; i++) {
-
-                                $scope.copyMonthLabel.push(m[collectJson[i].Month - 1]);
-                                $scope.copyMonthData.push(collectJson[i].TotalPayment);
-                            }
-
-                            $scope.labels1 = $scope.copyMonthLabel;
-                            $scope.data1 = $scope.copyMonthData;
-
-                        }, function error() {
-
-                        });
-                    } else {
-
-                        $scope.labels1 = $scope.copyMonthLabel;
-                        $scope.data1 = $scope.copyMonthData;
-                    }
-                }
-            }
-            ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
-            $scope.barList = [
-                { id: 1, value: "January" },
-                { id: 2, value: "February" },
-                { id: 3, value: "March" },
-                { id: 4, value: "April" },
-                { id: 5, value: "May" },
-                { id: 6, value: "June" },
-                { id: 7, value: "July" },
-                { id: 8, value: "August" },
-                { id: 9, value: "September" },
-                { id: 10, value: "October" },
-                { id: 11, value: "November" },
-                { id: 12, value: "December" }
-            ];
-            $scope.barValue = $scope.barList[0];
-
-            var itemJson;
-            $scope.labelItem = [];
-            $scope.dataItem = [];
-
-            var setItemList = function (actionId) {
-
-                var itemFilter = itemJson.filter(function (data) {
-                    return data.Month == actionId;
-                });
-
-                for (var i = 0; i < itemFilter.length; i++) {
-                    $scope.labelItem.push(itemFilter[i].ItemName);
-                    $scope.dataItem.push(itemFilter[i].TotalItem);
-                }
-            }
-            
-            if ($scope.labelItem == []) {
-                $http({
-                    method: "GET",
-                    url: "ApiCollection/ItemHistoryTransaction"
-                }).then(function(data, status) {
-                    var collectJson = JSON.parse(data.data.datajson);
-                    //console.log(collectJson);
-                    itemJson = collectJson;
-
-                    setItemList(1);
-                }, function error() {
-
-                });
-            }
-
-            $scope.changeDataFunction = function(action) {
-                $scope.labelItem = [];
-                $scope.dataItem = [];
-
-                setItemList(action.id);
-            };
-            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            $scope.labels2 = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
-            $scope.data2 = [300, 500, 100];
-        });
+        GraphFunction();
     </script>
 }

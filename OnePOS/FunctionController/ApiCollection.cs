@@ -134,53 +134,62 @@ namespace OnePOS.FunctionController
             var crnYear = currentDate.Year;
             var crnMonth = currentDate.Month;
 
-            //var currentDate = new DateTime(2019, 6, 15);
-            var lastDateOfWeek = currentDate.AddDays(-7);
-            var addDay = currentDate.AddDays(1);
+            var lastDateOfWeek = currentDate.AddDays(-6);
+            
 
             List<WeeklyHistory> listWeekly = new List<WeeklyHistory>();
 
-            for (var i = lastDateOfWeek.Day; i <= currentDate.Day; i++)
+            for (var i = lastDateOfWeek.Day; i < currentDate.Day; i++)
             {
+                var totalPayment = 0;
+                var listData = db.BillingHeader.Where(x => !x.Deleted && x.CreatedDate.Year == crnYear
+                                                               && x.CreatedDate.Month == crnMonth &&
+                                                               x.CreatedDate.Day == lastDateOfWeek.Day).ToList();
+                if (listData.Count > 0)
+                {
+                    totalPayment = (int) listData.Sum(x => x.TotalPayment);
+                }
+
                 listWeekly.Add(new WeeklyHistory
                 {
                     Date = new DateTime(crnYear,crnMonth,i),
-                    TotalPayment = 0
+                    TotalPayment = totalPayment
                 });
+                lastDateOfWeek = lastDateOfWeek.AddDays(1);
             }
 
-            var history = db.BillingHeader.Where(x => !x.Deleted &&
-                x.CreatedDate >= lastDateOfWeek
-                && x.CreatedDate < addDay).OrderBy(x => x.NoBillingHeader).Select(x => new ListTransactionHistoryModel
-            {
-                InvoiceDate = x.InvoiceDate,
-                BillingHeaderId = x.NoBillingHeader,
-                BillingStatus = x.BillingStatus.BillingName,
-                NoInvoice = x.NoInvoice,
-                TotalPayment = x.TotalPayment
-            }).ToList().GroupBy(x => x.DayOfWeek).Select(x => new
-            {
-                DayOfWeek = x.Key,
-                TotalPayment = x.Sum(t => t.TotalPayment),
-                InvoiceDate = x.First().InvoiceDate,
-                Day = x.First().InvoiceDate.Day,
-                Month = x.First().InvoiceDate.Month,
-                Year = x.First().InvoiceDate.Year
-            });
+            //var history = db.BillingHeader.Where(x => !x.Deleted &&
+            //    x.CreatedDate >= lastDateOfWeek
+            //    && x.CreatedDate < addDay).OrderBy(x => x.NoBillingHeader).Select(x => new ListTransactionHistoryModel
+            //{
+            //    InvoiceDate = x.InvoiceDate,
+            //    BillingHeaderId = x.NoBillingHeader,
+            //    BillingStatus = x.BillingStatus.BillingName,
+            //    NoInvoice = x.NoInvoice,
+            //    TotalPayment = x.TotalPayment
+            //}).ToList().GroupBy(x => x.DayOfWeek).Select(x => new
+            //{
+            //    DayOfWeek = x.Key,
+            //    TotalPayment = x.Sum(t => t.TotalPayment),
+            //    InvoiceDate = x.First().InvoiceDate,
+            //    Day = x.First().InvoiceDate.Day,
+            //    Month = x.First().InvoiceDate.Month,
+            //    Year = x.First().InvoiceDate.Year
+            //});
 
             
-            foreach (var weekly in listWeekly)
-            {
-                WeeklyHistory weekly1 = weekly;
-                var day = weekly1.Date.Day;
-                var month = weekly1.Date.Month;
-                var year = weekly1.Date.Year;
+            //foreach (var weekly in listWeekly)
+            //{
+            //    WeeklyHistory weekly1 = weekly;
+            //    var day = weekly1.Date.Day;
+            //    var month = weekly1.Date.Month;
+            //    var year = weekly1.Date.Year;
 
-                foreach (var mHistory in history.Where(mHistory => day == mHistory.Day && month == mHistory.Month))
-                {
-                    weekly1.TotalPayment += mHistory.TotalPayment;
-                }
-            }
+            //    foreach (var mHistory in history.Where(mHistory => day == mHistory.Day && month == mHistory.Month))
+            //    {
+            //        weekly1.TotalPayment += mHistory.TotalPayment;
+            //    }
+            //}
 
             return Json(new { @datajson = JsonConvert.SerializeObject(listWeekly), itemsPerPage = 0 }, JsonRequestBehavior.AllowGet);
         }
@@ -191,50 +200,59 @@ namespace OnePOS.FunctionController
         {
             var currentDate = DateTime.UtcNow;
             var crnYear = currentDate.Year;
-            var crnMonth = currentDate.Month;
 
             List<MonthlyHistory> listMonthly = new List<MonthlyHistory>();
 
-            for (var i = 0; i <12; i++)
+            for (var i = 1; i <+12; i++)
             {
+                var ctrMonth = i;
+                var totalPayment = 0;
+                var listData =
+                    db.BillingHeader.Where(
+                        x => !x.Deleted && x.CreatedDate.Year == crnYear && x.CreatedDate.Month == ctrMonth).ToList();
+
+                if (listData.Count > 0)
+                {
+                    totalPayment = (int)listData.Sum(x => x.TotalPayment);
+                }
                 listMonthly.Add(new MonthlyHistory
                 {
-                    Date = new DateTime(crnYear, i+1, 1),
-                    TotalPayment = 0
+                    Date = new DateTime(crnYear, ctrMonth, 1),
+                    TotalPayment = totalPayment
                 });
             }
 
-            var history = db.BillingHeader.Where(x => !x.Deleted &&
-                x.CreatedDate.Year == crnYear).OrderBy(x => x.NoBillingHeader).Select(x => new ListTransactionHistoryModel
-                {
-                    InvoiceDate = x.InvoiceDate,
-                    BillingHeaderId = x.NoBillingHeader,
-                    BillingStatus = x.BillingStatus.BillingName,
-                    NoInvoice = x.NoInvoice,
-                    TotalPayment = x.TotalPayment
-                }).ToList().GroupBy(x => x.InvoiceDate.Month).Select(x => new
-                {
-                    Key = x.Key,
-                    TotalPayment = x.Sum(t => t.TotalPayment),
-                    InvoiceDate = x.First().InvoiceDate,
-                    Day = x.First().InvoiceDate.Day,
-                    Month = x.First().InvoiceDate.Month,
-                    Year = x.First().InvoiceDate.Year
-                });
+            //var history = db.BillingHeader.Where(x => !x.Deleted &&
+            //    x.CreatedDate.Year == crnYear).OrderBy(x => x.NoBillingHeader).Select(x => new ListTransactionHistoryModel
+            //    {
+            //        InvoiceDate = x.InvoiceDate,
+            //        BillingHeaderId = x.NoBillingHeader,
+            //        BillingStatus = x.BillingStatus.BillingName,
+            //        NoInvoice = x.NoInvoice,
+            //        TotalPayment = x.TotalPayment
+            //    }).ToList().GroupBy(x => x.InvoiceDate.Month).Select(x => new
+            //    {
+            //        Key = x.Key,
+            //        TotalPayment = x.Sum(t => t.TotalPayment),
+            //        InvoiceDate = x.First().InvoiceDate,
+            //        Day = x.First().InvoiceDate.Day,
+            //        Month = x.First().InvoiceDate.Month,
+            //        Year = x.First().InvoiceDate.Year
+            //    });
 
 
-            foreach (var monthly in listMonthly)
-            {
-                MonthlyHistory monthly1 = monthly;
+            //foreach (var monthly in listMonthly)
+            //{
+            //    MonthlyHistory monthly1 = monthly;
                 
-                var month = monthly1.Date.Month;
-                var year = monthly1.Date.Year;
+            //    var month = monthly1.Date.Month;
+            //    var year = monthly1.Date.Year;
 
-                foreach (var mHistory in history.Where(mHistory => month == mHistory.Month && year == mHistory.Year))
-                {
-                    monthly1.TotalPayment += mHistory.TotalPayment;
-                }
-            }
+            //    foreach (var mHistory in history.Where(mHistory => month == mHistory.Month && year == mHistory.Year))
+            //    {
+            //        monthly1.TotalPayment += mHistory.TotalPayment;
+            //    }
+            //}
 
             return Json(new { @datajson = JsonConvert.SerializeObject(listMonthly), itemsPerPage = 0 }, JsonRequestBehavior.AllowGet);
         }
@@ -245,18 +263,8 @@ namespace OnePOS.FunctionController
         {
             var currentDate = DateTime.UtcNow;
             var crnYear = currentDate.Year;
-            //var crnMonth = currentDate.Month;
 
-            //List<ItemMonthHistory> monthlyItem = new List<ItemMonthHistory>();
-
-            //for (var i = 0; i < 12; i++)
-            //{
-            //    monthlyItem.Add(new ItemMonthHistory
-            //    {
-            //        Date = new DateTime(crnYear, i + 1, 1),
-            //        TotalItem = 0
-            //    });
-            //}
+            
 
             var history = db.BillingDetail.Where(x => !x.Deleted &&
                 x.CreatedDate.Year == crnYear).OrderBy(x => x.NoBillingDetail).Select(x => new ListTransactionDetailHistoryModel()
@@ -279,6 +287,28 @@ namespace OnePOS.FunctionController
             });
 
             return Json(new { @datajson = JsonConvert.SerializeObject(history), itemsPerPage = 0 }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "Super Admin,Admin")]
+        [Route("ApiCollection/TotalAssets")]
+        public JsonResult TotalAssets()
+        {
+
+            //var currentDate = DateTime.UtcNow;
+            var totalBuyPrice = db.Item.Where(x => !x.Deleted).Sum(x => x.BuyPrice * x.Stock);
+            var totalSalePrice = db.Item.Where(x => !x.Deleted).Sum(x => x.SalePrice * x.Stock);
+
+            var totalAssets = new List<TotalAssets>();
+            totalAssets.Add(new TotalAssets
+            {
+                TotalAsset = totalBuyPrice
+            });
+            totalAssets.Add(new TotalAssets
+            {
+                TotalAsset = totalSalePrice
+            });
+
+            return Json(new { @datajson = JsonConvert.SerializeObject(totalAssets), itemsPerPage = 0 }, JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)
