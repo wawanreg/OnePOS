@@ -2,6 +2,7 @@
 
     angular.module("app", ["chart.js"]).controller("homeChart", function ($scope, $http) {
 
+        /////////////////////////////
         var w = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         var m = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -15,21 +16,12 @@
         $scope.dataIncome = [];
 
         $scope.optionList = [{ id: 1, value: "Weekly" }, { id: 2, value: "Monthly" }];
-
+       
         $scope.ddValue = $scope.optionList[0];
 
 
         $scope.colors = ['#45b7cd', '#ff6384', '#ff8e72'];
 
-        $scope.datasetOverride = [
-            {
-                label: "Total Income",
-                borderWidth: 3,
-                hoverBackgroundColor: "rgba(255,99,132,0.4)",
-                hoverBorderColor: "rgba(255,99,132,1)",
-                type: 'line'
-            }
-        ];
 
         $scope.init = function () {
 
@@ -41,6 +33,7 @@
                 var collectJson = JSON.parse(response.data.datajson);
 
                 $scope.copyWeekLabel = collectJson.map(function (label) {
+                    
                     return w[label.Day];
                 });
                 $scope.copyWeekData = collectJson.map(function (label) {
@@ -49,6 +42,28 @@
 
                 $scope.labelIncome = $scope.copyWeekLabel;
                 $scope.dataIncome = $scope.copyWeekData;
+                
+                $scope.options = {
+                    tooltips: {
+                        callbacks: {
+                            label: function (tooltipItem, data) {
+                                return "Total Payment: " + setNumbro(tooltipItem.yLabel);
+                            }
+                        }
+                    },
+                    scales: {
+                        yAxes: [
+                            {
+                                ticks: {
+                                    callback: function (label, index, labels) {
+                                        return setNumbro(label);
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                };
+
             }).catch(function onError(response) {
 
             });
@@ -70,14 +85,17 @@
                         var collectJson = JSON.parse(response.data.datajson);
 
                         $scope.copyMonthLabel = collectJson.map(function (label) {
-                            return m[label.Month - 1];
+                            return m[label.Month ];
                         });
+
                         $scope.copyMonthData = collectJson.map(function (label) {
                             return label.TotalPayment;
                         });
 
                         $scope.labelIncome = $scope.copyMonthLabel;
                         $scope.dataIncome = $scope.copyMonthData;
+
+                        
                     }).catch(function onError(response) {
 
                     });
@@ -123,7 +141,30 @@
             $scope.dataItem = itemFilter.map(function (label) {
                 return label.TotalItem;
             });
+
+            $scope.options2 = {
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            return "Total Purchased Items: " + setNumbro(tooltipItem.yLabel);
+                        }
+                    }
+                },
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                callback: function (label, index, labels) {
+                                    return setNumbro(label);
+                                }
+                            }
+                        }
+                    ]
+                }
+            };
+
         }
+
         $scope.itemInit = function () {
             $http({
                 method: "GET",
@@ -138,8 +179,6 @@
             }).catch(function onError(response) {
 
             });
-
-
         }
 
         $scope.labelTotalAsset = [];
@@ -149,7 +188,7 @@
             method: "GET",
             url: "ApiCollection/TotalAssets"
         }).then(function onSuccess(response) {
-            console.log(response.data.datajson);
+            //console.log(response.data.datajson);
             var collectJson = JSON.parse(response.data.datajson);
 
             itemJson = collectJson;
@@ -162,7 +201,26 @@
             $scope.dataTotalAsset = itemJson.map(function (label) {
                 return label.TotalAsset;
             });
-            
+            $scope.options3 = {
+                tooltips: {
+                    callbacks: {
+                        label: function (tooltipItem, data) {
+                            return "Total Assets: " + setNumbro(tooltipItem.yLabel);
+                        }
+                    }
+                },
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                callback: function (label, index, labels) {
+                                    return setNumbro(label);
+                                }
+                            }
+                        }
+                    ]
+                }
+            };
         }).catch(function onError(response) {
 
         });

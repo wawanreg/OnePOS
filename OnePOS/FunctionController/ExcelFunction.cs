@@ -149,7 +149,8 @@ namespace OnePOS.FunctionController
                 maxRow = listData.Count();
                 for (int i = 1; i <= listData.Count; i++)
                 {
-                    ddList.Cells[i, sourcePosition].Value = listData[i - 1].StorageName;
+                    ddList.Cells[i, sourcePosition].Value = listData[i - 1].StorageId;
+                    ddList.Cells[i, sourcePosition+1].Value = listData[i - 1].StorageName;
                 }
                 fetchingDataSuccess = true;
             }else if (dbTarget == "brand")
@@ -159,7 +160,8 @@ namespace OnePOS.FunctionController
                 maxRow = listData.Count();
                 for (int i = 1; i <= listData.Count; i++)
                 {
-                    ddList.Cells[i, sourcePosition].Value = listData[i - 1].BrandName;
+                    ddList.Cells[i, sourcePosition].Value = listData[i - 1].BrandId;
+                    ddList.Cells[i, sourcePosition+1].Value = listData[i - 1].BrandName;
                 }
                 fetchingDataSuccess = true;
             }else if (dbTarget == "vendor")
@@ -169,7 +171,8 @@ namespace OnePOS.FunctionController
                 maxRow = listData.Count();
                 for (int i = 1; i <= listData.Count; i++)
                 {
-                    ddList.Cells[i, sourcePosition].Value = listData[i - 1].VendorName;
+                    ddList.Cells[i, sourcePosition].Value = listData[i - 1].VendorId;
+                    ddList.Cells[i, sourcePosition+1].Value = listData[i - 1].VendorName;
                 }
                 fetchingDataSuccess = true;
             }
@@ -180,7 +183,8 @@ namespace OnePOS.FunctionController
                 maxRow = listData.Count();
                 for (int i = 1; i <= listData.Count; i++)
                 {
-                    ddList.Cells[i, sourcePosition].Value = listData[i - 1].BrandCategoryName;
+                    ddList.Cells[i, sourcePosition].Value = listData[i - 1].BrandCategoryId;
+                    ddList.Cells[i, sourcePosition+1].Value = listData[i - 1].BrandCategoryName;
                 }
                 fetchingDataSuccess = true;
             }
@@ -234,10 +238,16 @@ namespace OnePOS.FunctionController
                 ExcelWorksheet ddList = p.Workbook.Worksheets.Add("DropDownList");
 
                 SetDropdownExcelList(db, ddList, p, "storage", ws, 6, 1);
-                SetDropdownExcelList(db, ddList, p, "brand", ws, 7, 2);
-                SetDropdownExcelList(db, ddList, p, "vendor", ws, 8, 3);
-                SetDropdownExcelList(db, ddList, p, "brandCategory", ws, 9, 4);
-                    
+                SetDropdownExcelList(db, ddList, p, "brand", ws, 7, 3);
+                SetDropdownExcelList(db, ddList, p, "vendor", ws, 8, 5);
+                SetDropdownExcelList(db, ddList, p, "brandCategory", ws, 9, 7);
+
+                ExcelWorksheet ddListValue = p.Workbook.Worksheets.Add("Current List Value");
+                ddListValue.Cells["A1"].Value = "Storage Value";
+                ddListValue.Cells["B1"].Value = "Brand Value";
+                ddListValue.Cells["C1"].Value = "Vendor Value";
+                ddListValue.Cells["D1"].Value = "Brand Category Value";
+
                 foreach (var data in dt)
                 {
                     ws.Cells[index, 1].Value = data.ItemId;
@@ -449,7 +459,7 @@ namespace OnePOS.FunctionController
                     }
                     else if (!db.Item.Any(x => !x.Deleted && x.ItemId == itemId))
                     {
-                        var mStorage = db.Storage.Single(x => !x.Deleted && x.StorageName == (string) itemStorageName);
+                        var mStorage = db.Storage.Single(x => !x.Deleted && x.StorageName == (string)itemStorageName);
                         var mBrand = db.Brand.Single(x => !x.Deleted && x.BrandName == (string)itemBrandName);
                         var mVendor = db.Vendor.Single(x => !x.Deleted && x.VendorName == (string)itemVendorName);
                         var mBrandCategory = db.BrandCategory.Single(x => x.BrandCategoryName == (string)itemBrandCategoryName);
@@ -457,15 +467,39 @@ namespace OnePOS.FunctionController
                         mActionItem.ItemName = itemName.ToString();
                         mActionItem.ItemSalePrice = itemSalePrice.ToString();
                         mActionItem.ItemBuyPrice = itemBuyPrice.ToString();
-                        mActionItem.ItemQuantitiy = stock.ToString();
+                        mActionItem.ItemStock = stock.ToString();
                         mActionItem.ItemStorage = mStorage.StorageId.ToString();
                         mActionItem.ItemBrandType = mBrand.BrandId.ToString();
                         mActionItem.ItemVendor = mVendor.VendorId.ToString();
                         mActionItem.ItemBrandCategory = mBrandCategory.BrandCategoryId.ToString();
-                        
+
                         DashboardFunction.AddItemsToDb(db, mActionItem, currentUserName);
 
                         successCtr++;
+                    }
+                    else {
+                        var crnItem = db.Item.Single(x => !x.Deleted && x.ItemId == itemId);
+
+                        var crnStorage = db.Storage.Single(x => !x.Deleted && x.StorageName == (string)itemStorageName);
+                        //var mBrand = db.Brand.Single(x => !x.Deleted && x.BrandName == (string)itemBrandName);
+                        //var mVendor = db.Vendor.Single(x => !x.Deleted && x.VendorName == (string)itemVendorName);
+                        //var mBrandCategory = db.BrandCategory.Single(x => x.BrandCategoryName == (string)itemBrandCategoryName);
+                       
+                        if (!crnItem.ItemName.Equals(itemName))
+                            crnItem.ItemName = itemName.ToString();
+
+                        if (!crnItem.SalePrice.Equals(itemSalePrice))
+                            crnItem.SalePrice = int.Parse(itemSalePrice.ToString());
+
+                        if (!crnItem.BuyPrice.Equals(itemBuyPrice))
+                            crnItem.BuyPrice = int.Parse(itemBuyPrice.ToString());
+
+                        if (!crnItem.Stock.Equals(stock))
+                            crnItem.Stock = int.Parse(stock.ToString());
+                        var test = "lol";
+                        if (!crnStorage.StorageId.Equals(crnStorage.StorageId))
+                            test = "";//crnItem.SalePrice = itemSalePrice;
+
                     }
                 }
 

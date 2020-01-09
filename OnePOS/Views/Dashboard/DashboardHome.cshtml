@@ -14,20 +14,41 @@
 
         <!-- /.row -->
         <div class="row" ng-app="app" ng-controller="homeChart" >
+            @*<div class="col-lg-8">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <i class="fa fa-bar-chart-o fa-fw"></i> Total Income Chart
+                    </div>
+
+                    <div class="panel-body">
+                        <canvas id="line" class="chart chart-line" chart-data="data" 
+                               chart-labels="labels" chart-series="series" chart-options="options"
+                               chart-dataset-override="datasetOverride" chart-click="onClick">
+                        </canvas>
+
+
+
+                        <canvas class="chart chart-line" chart-data="dataIncome" chart-colors="colors"
+                                chart-legend="true" chart-series="series"
+                                chart-labels="labelIncome" chart-options="options2"></canvas>
+
+                    </div>
+                </div>*@
             <div class="col-lg-8">
                 <div class="panel panel-default" ng-init="init()">
                     <div class="panel-heading">
                         <i class="fa fa-bar-chart-o fa-fw"></i> Total Income Chart
                         <div class="pull-right">
                             <select ng-model="ddValue" ng-options="x.value for x in optionList"
-                                    ng-change="ddFunction(ddValue)"></select>
+                                     ng-change="ddFunction(ddValue)"></select>
                         </div>
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
 
                         <canvas class="chart chart-line" chart-data="dataIncome" chart-colors="colors"
-                                chart-labels="labelIncome" chart-dataset-override="datasetOverride"></canvas>
+                                chart-legend="true" chart-series="series"
+                                chart-labels="labelIncome" chart-options="options"></canvas>
 
                     </div>
                     <!-- /.panel-body -->
@@ -43,13 +64,13 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <canvas class="chart chart-bar" chart-data="dataItem" chart-labels="labelItem"></canvas>
+                        <canvas class="chart chart-bar" chart-data="dataItem" chart-labels="labelItem" chart-options="options2"></canvas>
                     </div>
                     <!-- /.panel-body -->
                 </div>
                 <!-- /.panel -->
             </div>
-            <!-- /.col-lg-6 -->
+             
             <div class="col-lg-4">
 
 
@@ -59,14 +80,14 @@
                     </div>
                     <div class="panel-body">
                         <canvas class="chart chart-bar"
-                                chart-data="dataTotalAsset" chart-labels="labelTotalAsset"></canvas>
+                                chart-data="dataTotalAsset" chart-labels="labelTotalAsset" chart-options="options3"></canvas>
                     </div>
                     <!-- /.panel-body -->
                 </div>
                 <!-- /.panel -->
 
             </div>
-            <div class="col-lg-4">
+            @*<div class="col-lg-4">
 
 
                 <div class="panel panel-default">
@@ -81,7 +102,7 @@
                 </div>
                 <!-- /.panel -->
 
-            </div>
+            </div>*@
             <!-- /.col-lg-6 -->
         </div>
         <!-- /.row -->

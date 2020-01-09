@@ -17,7 +17,7 @@ namespace OnePOS.Models.Dashboard.Items
         [Required(ErrorMessage = "Fill This Field")]
         public string ItemBuyPrice   { get; set; }
         [Required(ErrorMessage = "Fill This Field")]
-        public string ItemQuantitiy { get; set; }
+        public string ItemStock { get; set; }
         public string ItemStorage { get; set; }
         public string ItemBrandType { get; set; }
         public string ItemVendor { get; set; }

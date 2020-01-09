@@ -205,7 +205,7 @@ function functionAddFormItem() {
             document.getElementById("ItemBuyPrice").value = itemsData.itemBuyPrice.value.join('|');
             document.getElementById("ItemStorage").value = itemsData.itemStorage.value.join('|');
             document.getElementById("ItemBrandType").value = itemsData.itemBrandType.value.join('|');
-            document.getElementById("ItemQuantity").value = itemsData.itemStock.value.join('|');
+            document.getElementById("ItemStock").value = itemsData.itemStock.value.join('|');
             document.getElementById("ItemVendor").value = itemsData.itemVendor.value.join('|');
             document.getElementById("ItemBrandCategory").value = itemsData.itemBrandCategory.value.join('|');
 

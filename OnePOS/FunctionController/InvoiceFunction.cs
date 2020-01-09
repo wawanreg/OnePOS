@@ -100,7 +100,7 @@ namespace OnePOS.FunctionController
                     ItemBrandCategory = itemViewModel.BrandCategory.BrandCategoryId.ToString(),
                     ItemStorage = itemViewModel.Storage.StorageId.ToString(),
                     ItemName = itemViewModel.ItemName,
-                    ItemQuantitiy = (itemViewModel.Stock - mBillingDetail.Quantity).ToString(),
+                    ItemStock = (itemViewModel.Stock - mBillingDetail.Quantity).ToString(),
                     ItemBuyPrice = itemViewModel.BuyPrice.ToString(),
                     ItemSalePrice = itemViewModel.SalePrice.ToString()
                 };

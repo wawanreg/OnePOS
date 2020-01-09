@@ -54,7 +54,7 @@ namespace OnePOS.FunctionController
             actionItemModels.ItemName = mItem.ItemName;
             actionItemModels.ItemBuyPrice = mItem.BuyPrice.ToString();
             actionItemModels.ItemSalePrice = mItem.SalePrice.ToString();
-            actionItemModels.ItemQuantitiy = mItem.Stock.ToString();
+            actionItemModels.ItemStock = mItem.Stock.ToString();
 
             actionItemModels.BrandCategoryDropdownLists = GetDropdownBrandCategory(db,
                 mItem.BrandCategory.BrandCategoryId.ToString());
@@ -77,7 +77,7 @@ namespace OnePOS.FunctionController
             var arrItemBuyPrice = mItemsList.ItemBuyPrice.Split('|');
             var arrItemStorage = mItemsList.ItemStorage.Split('|');
             var arrItemBrandType = mItemsList.ItemBrandType.Split('|');
-            var arrItemQuantitiy = mItemsList.ItemQuantitiy.Split('|');
+            var arrItemStock = mItemsList.ItemStock.Split('|');
             var arrItemVendor = mItemsList.ItemVendor.Split('|');
             var arrItemBrandCategory = mItemsList.ItemBrandCategory.Split('|');
 
@@ -103,7 +103,7 @@ namespace OnePOS.FunctionController
                     BuyPrice = int.Parse(arrItemBuyPrice[i]),
                     Storage = mStorage,
                     Brand = mBrand,
-                    Stock = int.Parse(arrItemQuantitiy[i]),
+                    Stock = int.Parse(arrItemStock[i]),
                     Vendor = mVendor,
                     BrandCategory = mBrandCategory,
                     CreatedBy = userName,
@@ -133,7 +133,7 @@ namespace OnePOS.FunctionController
             StorageViewModels mStorage = db.Storage.SingleOrDefault(x => x.StorageId == valStorageId);
 
             mItem.ItemName = mEditItem.ItemName;
-            mItem.Stock = decimal.Parse(mEditItem.ItemQuantitiy);
+            mItem.Stock = decimal.Parse(mEditItem.ItemStock);
             mItem.BuyPrice = decimal.Parse(mEditItem.ItemBuyPrice);
             mItem.SalePrice = decimal.Parse(mEditItem.ItemSalePrice);
             mItem.Vendor = mVendor;
@@ -160,8 +160,7 @@ namespace OnePOS.FunctionController
             //db.Item.Remove(mItem);
             db.SaveChanges();
         }
-        
-        
+      
         public static VendorViewModels GetVendorViewModels(ApplicationDbContext db, int? vendorId)
         {
             VendorViewModels mVendor = db.Vendor.Single(x=> !x.Deleted && x.VendorId == vendorId);
